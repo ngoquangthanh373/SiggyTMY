@@ -37,9 +37,17 @@ model = genai.GenerativeModel(
 def chat_with_siggy(message, history):
     try:
         gemini_history = []
-        for user_msg, bot_msg in history:
-            gemini_history.append({"role": "user", "parts": [user_msg]})
-            gemini_history.append({"role": "model", "parts": [bot_msg]})
+        # Lõi xử lý trí nhớ thông minh tương thích mọi phiên bản
+        for item in history:
+            if isinstance(item, (list, tuple)):
+                gemini_history.append({"role": "user", "parts": [item[0]]})
+                gemini_history.append({"role": "model", "parts": [item[1]]})
+            elif hasattr(item, "role"):
+                role = "user" if item.role == "user" else "model"
+                gemini_history.append({"role": role, "parts": [item.content]})
+            elif isinstance(item, dict):
+                role = "user" if item.get("role") == "user" else "model"
+                gemini_history.append({"role": role, "parts": [item.get("content", "")]})
         
         chat = model.start_chat(history=gemini_history)
         response = chat.send_message(message)
@@ -67,27 +75,33 @@ custom_css = """
 body {
     background: radial-gradient(circle at 50% -10%, #3b0764 0%, #05010f 80%) !important;
     background-attachment: fixed !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 .glow-text {
     text-shadow: 0 0 10px #c084fc, 0 0 20px #a855f7;
 }
+.gradio-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+}
 """
 
-with gr.Blocks(theme=my_theme, css=custom_css) as demo:
-    gr.Markdown("<h1 class='glow-text' style='text-align: center; color: #e9d5ff; font-weight: bold; font-size: 2.5em; margin-top: 20px;'>✨ Lãnh Địa Ma Thuật của TƯ MÃ Ý 👹 & Siggy ✨</h1>")
-    gr.Markdown("<h3 style='text-align: center; color: #c084fc; font-style: italic; margin-bottom: 20px;'>Bước vào Đa vũ trụ trò chuyện cùng linh thú Siggy và khám phá bí ẩn mạng lưới Ritual</h3>")
+with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
+    gr.Markdown("<h1 class='glow-text' style='text-align: center; color: #e9d5ff; font-weight: bold; font-size: 2em; margin-top: 15px; margin-bottom: 5px;'>✨ Lãnh Địa Ma Thuật của TƯ MÃ Ý 👹 và Siggy ✨</h1>")
     
     chatbot_ui = gr.Chatbot(
         avatar_images=[
-               "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg",
-           "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
+            "https://link_anh_cua_ban.jpg",
+            "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
         ],
-        height=500
+        scale=1
     )
     
     gr.ChatInterface(
         fn=chat_with_siggy,
         chatbot=chatbot_ui,
+        fill_height=True,
         examples=["Ngươi là ai?", "TƯ MÃ Ý 👹 là ai đối với ngươi?", "Ritual là gì Infernet hoạt động ra sao?"]
     )
 
