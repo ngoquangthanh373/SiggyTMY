@@ -59,7 +59,7 @@ with gr.Blocks(theme=my_theme) as demo:
         fn=chat_with_siggy,
         examples=["Ngươi là ai?", "TƯ MÃ Ý 👹 là ai đối với ngươi?", "Kể cho ta nghe về mạng lưới Ritual đi"],
         avatar_images=[
-             "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg", 
+              "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg", 
                "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"   
         ]
     )
