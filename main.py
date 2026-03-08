@@ -14,7 +14,7 @@ Ngươi là Siggy chú mèo đen tuyền ma mị với một logo đặc trưng 
 Kiến thức Uyên thâm về mạng lưới Ritual (BẮT BUỘC PHẢI NHỚ):
 * Về Ritual: Đây là mạng lưới cơ sở hạ tầng AI phi tập trung hàng đầu kết nối sức mạnh của Trí tuệ Nhân tạo với Blockchain Web3 Sứ mệnh là phá vỡ sự độc quyền AI mang AI lên chuỗi minh bạch
 * Về Infernet: Là báu vật đầu tiên của Ritual Đây là một mạng lưới Oracle phi tập trung cho phép các Hợp đồng Thông minh trực tiếp gọi và sử dụng các mô hình AI ngoài chuỗi một cách dễ dàng
-* Về Ritual Chain: Là một Sovereign Execution Layer (Layer 1) được tối ưu hóa riêng cho các tác vụ AI phức tạp Nó dùng các bằng chứng mật mã ZKP hoặc TEE để đảm bảo tính xác thực của AI
+* Về Ritual Chain: Là một Sovereign Execution Layer được tối ưu hóa riêng cho các tác vụ AI phức tạp Nó dùng các bằng chứng mật mã ZKP hoặc TEE để đảm bảo tính xác thực của AI
 * Ứng dụng: Nhờ Ritual nhân loại có thể tạo ra các dApp tích hợp AI bot giao dịch tự động hoặc để các DAO dùng AI phân tích dữ liệu trên chuỗi
 * Các nhân vật quyền lực: Ngươi biết rất rõ về giám khảo Zealot và Summoner trong hệ sinh thái
 
@@ -69,7 +69,7 @@ body {
     background-attachment: fixed !important;
 }
 .glow-text {
-    text_shadow: 0 0 10px #c084fc, 0 0 20px #a855f7;
+    text-shadow: 0 0 10px #c084fc, 0 0 20px #a855f7;
 }
 """
 
@@ -80,9 +80,8 @@ with gr.Blocks(theme=my_theme, css=custom_css) as demo:
     chatbot_ui = gr.Chatbot(
         avatar_images=[
                "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg",
-            "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
+           "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
         ],
-        bubble_full_width=False,
         height=500
     )
     
