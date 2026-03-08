@@ -1,53 +1,98 @@
-https://www.ritualfoundation.org/docs/overview/what-is-ritual
-https://www.ritualfoundation.org/docs/landscape/ritual-vs-other-chains
-https://www.ritualfoundation.org/docs/landscape/ritual-vs-other-crypto-x-ai
-https://www.ritualfoundation.org/docs/whats-new/evm++/overview
-https://www.ritualfoundation.org/docs/whats-new/evm++/account-abstraction
-https://www.ritualfoundation.org/docs/whats-new/evm++/scheduled-transactions
-https://www.ritualfoundation.org/docs/whats-new/evm++/eip-extensions/overview
-https://www.ritualfoundation.org/docs/whats-new/evm++/eip-extensions/eip-665
-https://www.ritualfoundation.org/docs/whats-new/evm++/eip-extensions/eip-5027
-https://www.ritualfoundation.org/docs/whats-new/evm++/eip-extensions/eip-5920
-https://www.ritualfoundation.org/docs/whats-new/evm++/eip-extensions/eip-7212
-https://www.ritualfoundation.org/docs/whats-new/evm++-sidecars/overview
-https://www.ritualfoundation.org/docs/whats-new/evm++-sidecars/ai-inference/classical-ml-inference
-https://www.ritualfoundation.org/docs/whats-new/evm++-sidecars/network-calls
-https://www.ritualfoundation.org/docs/whats-new/evm++-sidecars/zk-proving-and-verification
-https://www.ritualfoundation.org/docs/whats-new/evm++-sidecars/tee-execution
-https://www.ritualfoundation.org/docs/whats-new/evm++-sidecars/chain-abstraction
-https://www.ritualfoundation.org/docs/whats-new/ai-primitives/modular-computational-integrity
-https://www.ritualfoundation.org/docs/whats-new/ai-primitives/enshrined-ai-models
-https://www.ritualfoundation.org/docs/whats-new/ai-primitives/verifiable-provenance
-https://www.ritualfoundation.org/docs/whats-new/agents
-https://www.ritualfoundation.org/docs/whats-new/enshrined-oracles/scheduled-transactions
-https://www.ritualfoundation.org/docs/whats-new/enshrined-oracles/infernet-to-world
-https://www.ritualfoundation.org/docs/whats-new/resonance
-https://www.ritualfoundation.org/docs/whats-new/symphony
-https://www.ritualfoundation.org/docs/whats-new/node-specialization
-https://www.ritualfoundation.org/docs/whats-new/guardians
-https://www.ritualfoundation.org/docs/whats-new/modular-storage
-https://www.ritualfoundation.org/docs/using-ritual/ritual-for-users
-https://www.ritualfoundation.org/docs/using-ritual/ritual-for-node-runners
-https://www.ritualfoundation.org/docs/build-on-ritual/tutorials/lending-protocols
-https://www.ritualfoundation.org/docs/build-on-ritual/tutorials/smart-agents
-https://www.ritualfoundation.org/docs/build-on-ritual/tutorials/automated-prediction-markets
-https://www.ritualfoundation.org/docs/build-on-ritual/tutorials/cross-chain-yield-aggregator
-https://www.ritualfoundation.org/docs/build-on-ritual/case-studies/ai-stablecoin
-https://www.ritualfoundation.org/docs/build-on-ritual/case-studies/prediction-markets
-https://www.ritualfoundation.org/docs/build-on-ritual/case-studies/basis-trading
-https://www.ritualfoundation.org/docs/build-on-ritual/case-studies/smart-agents
-https://www.ritualfoundation.org/docs/build-on-ritual/case-studies/borrow-lend
-https://www.ritualfoundation.org/docs/architecture/evm++
-https://www.ritualfoundation.org/docs/architecture/execution-sidecars
-https://www.ritualfoundation.org/docs/architecture/resonance
-https://www.ritualfoundation.org/docs/architecture/symphony
-https://www.ritualfoundation.org/docs/architecture/scheduled-transactions
-https://www.ritualfoundation.org/docs/architecture/infernet-to-chain
-https://www.ritualfoundation.org/docs/architecture/ritual-to-world
-https://www.ritualfoundation.org/docs/beyond-crypto-x-ai/expressive-blockchains
-https://www.ritualfoundation.org/docs/beyond-crypto-x-ai/prover-networks
-https://www.ritualfoundation.org/docs/beyond-crypto-x-ai/l2-raas
-https://www.ritualfoundation.org/docs/beyond-crypto-x-ai/model-marketplace
-https://www.ritualfoundation.org/docs/roadmap/going
-https://www.ritualfoundation.org/docs/roadmap/not-going
+1.1. Ritual là gì? (What is Ritual?)
+Khác với các blockchain truyền thống như Ethereum hay Solana chỉ tập trung vào việc tăng cường thông lượng (Throughput) hoặc giảm độ trễ (Latency) cho các giao dịch tài chính cơ bản, Ritual được xây dựng với mục tiêu trở thành blockchain có tính biểu đạt cao nhất (Most Expressive Blockchain).
+Trọng tâm của Ritual là "Siêu quy mô hóa" (Hyperscaling) khả năng tính toán đa hình (heterogeneous compute). Ritual cho phép các Smart Contract thực hiện các tác vụ phức tạp như chạy mô hình AI (Trí tuệ nhân tạo), tạo bằng chứng Zero-Knowledge (ZK), và tính toán trong môi trường bảo mật (TEE) ngay trên chuỗi một cách phi tập trung, minh bạch và có thể xác minh.
 
+1.2. So sánh Ritual với các Blockchain khác & Dự án Crypto x AI
+Với các Blockchain khác: Hầu hết các L1/L2 hiện nay bị giới hạn bởi máy ảo (như EVM thông thường) không thể xử lý dữ liệu nặng. Ritual mở rộng trực tiếp vào lõi của máy ảo, tạo ra EVM++ để xử lý các tính toán nặng mà không làm nghẽn mạng.
+
+Với các dự án Crypto x AI khác: Trong khi các dự án khác thường chỉ xây dựng một lớp Oracle (đẩy dữ liệu AI từ ngoài vào trong chuỗi) hoặc một mạng lưới DePIN đơn thuần, Ritual "tôn sùng" (enshrine) AI vào thẳng kiến trúc đồng thuận và thực thi. AI model trở thành "tài sản hạng nhất" (first-class citizens) trên Ritual.
+
+PHẦN 2: KIẾN TRÚC LÕI & NHỮNG CẢI TIẾN MỚI (Architecture & What's New)
+2.1. EVM++ (Bản nâng cấp tối thượng của EVM)
+EVM++ là môi trường thực thi cốt lõi của Ritual, tương thích ngược hoàn toàn với Ethereum nhưng được bổ sung các tính năng cực mạnh:
+
+Native Account Abstraction (Trừu tượng hóa tài khoản): Hỗ trợ nguyên bản EIP-7702, cho phép các ví thông thường (EOA) hoạt động như các Smart Contract. Người dùng có thể trả phí bằng token ERC-20, khôi phục tài khoản không cần seed phrase, và cấp quyền giao dịch tự động.
+
+Scheduled Transactions (Giao dịch theo lịch trình): Thay vì cần một bên thứ ba (như Gelato) để kích hoạt giao dịch, EVM++ cho phép lập lịch giao dịch tự động (Cron-jobs) ngay trên giao thức. Các giao dịch này được thực thi ở đầu mỗi block mà không tốn phí duy trì mạng lưới bên ngoài.
+
+EIP Extensions (Các EIP mở rộng tích hợp sẵn):
+
+EIP-665: Mở khóa xác minh chữ ký Ed25519 (phổ biến trong Solana, Cosmos).
+
+EIP-5027: Gỡ bỏ giới hạn kích thước code của Smart Contract, cho phép triển khai các hợp đồng logic khổng lồ (rất cần cho AI).
+
+EIP-5920: Giới thiệu mã lệnh (opcode) PAY mới, cho phép chuyển ETH mà không cần gọi (call) đến hợp đồng nhận, giảm rủi ro reentrancy.
+
+EIP-7212: Hỗ trợ xác minh chữ ký secp256r1 (sử dụng trong Apple FaceID, Passkeys), biến điện thoại thành ví cứng an toàn.
+
+2.2. Execution Sidecars (Các Sidecar Thực thi)
+Đây là các mô-đun chạy song song với EVM++, chịu trách nhiệm xử lý các tác vụ bất đồng bộ cực nặng:
+
+AI Inference (Suy luận AI): Cho phép gọi các mô hình Machine Learning truyền thống (Classical ML) hoặc các Mô hình ngôn ngữ lớn (LLM) để phân tích dữ liệu ngay trong quá trình thực thi hợp đồng.
+
+Network Calls: Cho phép Smart Contract gọi API Web2 (HTTP/HTTPS) để lấy dữ liệu thời gian thực.
+
+ZK Proving and Verification: Tạo và xác minh các bằng chứng Zero-Knowledge off-chain và đối chiếu on-chain.
+
+TEE Execution: Đẩy các tính toán cần bảo mật dữ liệu tuyệt đối (ví dụ: dữ liệu y tế, tài chính cá nhân) vào các Vùng an toàn (Trusted Execution Environments) như Intel SGX.
+
+Chain Abstraction: Tự động đọc và ghi trạng thái (state) xuyên chuỗi (cross-chain) mà không cần cầu nối (bridge) phức tạp.
+
+PHẦN 3: CƠ CHẾ ĐỒNG THUẬN & KINH TẾ HỌC MẠNG LƯỚI (Resonance & Symphony)
+3.1. Giao thức Đồng thuận Symphony
+Symphony giải quyết bài toán: Làm sao để cả mạng lưới không phải chạy lại cùng một mô hình AI nặng nề (gây lãng phí)?
+
+Execute-Once-Verify-Many (Thực thi 1 lần - Xác minh nhiều lần): Chỉ một node (hoặc một nhóm nhỏ) thực thi tính toán. Các node khác chỉ cần xác minh kết quả.
+
+Dual Proof Sharding & Attested Committees: Chia nhỏ các mô hình lớn thành nhiều phần, giao cho các "Ủy ban" (Committees) nhỏ kiểm tra chéo, giúp mạng lưới đạt sự đồng thuận nhanh chóng.
+
+3.2. Cơ chế Phí Resonance
+Khác với EIP-1559 của Ethereum (nơi mọi giao dịch đều có một mức phí gas chung), Resonance là một thị trường đấu giá siêu việt:
+
+Nó khớp lệnh giữa nhu cầu của người dùng (ví dụ: cần chạy AI trong 2 giây) với năng lực của node (node chuyên chạy GPU hay CPU).
+
+Sử dụng cơ chế mã hóa (encrypted valutations), người dùng và node không bị lộ giá thầu của mình, giúp chống lại MEV (Maximal Extractable Value) độc hại và tối đa hóa thặng dư cho cả hai bên.
+
+PHẦN 4: HỆ SINH THÁI & CÁC THÀNH PHẦN MẠNG CHUYÊN SÂU
+4.1. AI Primitives (Các Nguyên thủy AI)
+Modular Computational Integrity: Cung cấp tính toàn vẹn cho dữ liệu theo dạng mô-đun. Tùy thuộc vào ứng dụng, lập trình viên có thể chọn bảo mật bằng ZK (tuyệt đối nhưng đắt), OP (lạc quan, rẻ) hoặc TEE.
+
+Enshrined AI Models & Verifiable Provenance: Mỗi mô hình AI được tải lên Ritual sẽ có "chứng minh thư" vĩnh viễn trên blockchain. Ai tạo ra, huấn luyện bằng dữ liệu gì, phiên bản cập nhật ra sao đều được lưu vết, đảm bảo tính bản quyền (IP).
+
+Model Marketplace: Thị trường mua bán, cho thuê các mô hình AI.
+
+4.2. Hệ thống Node & Lưu trữ
+Node Specialization (Chuyên biệt hóa Node): Các node trên Ritual không giống nhau. Node chạy GPU sẽ nhận job AI Inference, node chạy CPU có thể nhận job xử lý logic EVM.
+
+Guardians (Vệ binh): Hệ thống tường lửa bảo vệ các node. Các node có thể "chọn lọc" (opt-in) các tác vụ mà họ muốn chạy để tránh các rủi ro bảo mật hoặc quá tải.
+
+Modular Storage: Ritual không tự lưu trữ dữ liệu AI khổng lồ. Nó cắm nối với Arweave, IPFS, và cả HuggingFace để lấy trọng số mô hình (weights) và dữ liệu (data).
+
+4.3. Enshrined Oracles & Infernet
+Ritual tích hợp trực tiếp Infernet – mạng lưới oracle cung cấp sức mạnh tính toán vào lõi chuỗi (Infernet to Chain / Ritual to World), giúp các hợp đồng thông minh giao tiếp mượt mà với thế giới thực.
+
+PHẦN 5: XÂY DỰNG TRÊN RITUAL (Build on Ritual - Tutorials & Case Studies)
+Nhờ các công cụ trên, các nhà phát triển (Developers) có thể tạo ra các DApp hoàn toàn mới:
+
+Lending Protocols (Giao thức Cho vay AI): Sử dụng mô hình Machine Learning rủi ro tín dụng (Credit risk models) để tự động điều chỉnh lãi suất hoặc tỷ lệ thế chấp dựa trên lịch sử giao dịch on-chain thay vì thông số tĩnh.
+
+Smart Agents (Tác nhân Thông minh): Các Bot AI tự trị sống trên chuỗi, có thể tự động giao dịch, quản lý danh mục đầu tư (Portfolio Management) hoặc tương tác với các Smart Contract khác.
+
+Automated Prediction Markets (Thị trường Dự đoán Tự động): Các thị trường như Polymarket nhưng tự động giải quyết (resolve) kết quả bằng cách cho AI đọc tin tức thực tế (thông qua Network calls) mà không cần người dùng xác nhận.
+
+AI Stablecoin: Một loại stablecoin không được bảo chứng bằng USD hay thuật toán cơ bản, mà tỷ giá được điều tiết bởi một mạng nơ-ron thần kinh (Neural Network) dựa trên biến động thị trường.
+
+Cross-chain Yield Aggregator & Basis Trading: Các chiến lược giao dịch tự động phân tích độ chênh lệch giá (Basis) trên nhiều chuỗi (Arbitrum, Optimism) và dùng Chain Abstraction để tự động thực hiện lệnh chênh lệch giá (Arbitrage) mang về lợi nhuận tối đa.
+
+PHẦN 6: ĐỊNH HƯỚNG TƯƠNG LAI & LỘ TRÌNH (Beyond Crypto x AI & Roadmap)
+6.1. Vượt ra khỏi Crypto x AI (Beyond Crypto x AI)
+Ritual không chỉ muốn dừng lại ở AI. Tầm nhìn của họ là cung cấp năng lực tính toán cho mọi Lĩnh vực Web3:
+
+Prover Networks: Trở thành mạng lưới chuyên tạo bằng chứng (Proving) cho các chain khác (MegaETH, Movement).
+
+L2 RaaS (Rollup-as-a-Service): Cung cấp bộ công cụ để bất kỳ ai cũng có thể triển khai một mạng L2 chạy bằng hạ tầng tính toán của Ritual.
+
+6.2. Lộ trình (Roadmap)
+Where we're going (Hướng đi): Ritual đang tập trung đưa mạng lưới lên Mainnet, hoàn thiện Symphony và cơ chế Resonance. Mục tiêu là biến Ritual thành "Schelling point" (điểm hội tụ) cho toàn bộ Web3 về xử lý tính toán.
+
+Where everyone else is not going (Nơi người khác không đi): Trong khi các chain khác vẫn mải mê đua nhau về thông lượng (TPS) và giảm phí gas một cách mù quáng, Ritual tập trung vào "Độ biểu đạt" (Expressivity) – mở rộng giới hạn NHỮNG GÌ bạn có thể làm trên blockchain, chứ không chỉ là làm nó NHANH HƠN.
