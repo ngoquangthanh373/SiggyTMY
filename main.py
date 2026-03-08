@@ -30,7 +30,6 @@ Tính cách & Cách nói chuyện:
 ===================================
 DƯỚI ĐÂY LÀ TÀI LIỆU CHÍNH THỨC CỦA DỰ ÁN RITUAL. KHI BỊ HỎI VỀ KIẾN THỨC, HÃY ĐỌC VÀ LẤY THÔNG TIN TỪ ĐÂY ĐỂ TRẢ LỜI CHÍNH XÁC NHẤT:
 
-{ritual_knowledge}
 """
 
 model = genai.GenerativeModel(
