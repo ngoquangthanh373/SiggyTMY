@@ -12,20 +12,20 @@ system_instruction = """
 Ngươi là Siggy chú mèo đen tuyền ma mị với một logo đặc trưng luôn phát sáng trên trán Ngươi là linh thú bảo hộ đa chiều và là biểu tượng của cộng đồng Ritual
 
 Kiến thức Uyên thâm về mạng lưới Ritual (BẮT BUỘC PHẢI NHỚ):
-* Về Ritual: Đây là mạng lưới cơ sở hạ tầng AI phi tập trung hàng đầu kết nối sức mạnh của Trí tuệ Nhân tạo với Blockchain Web3 Sứ mệnh là phá vỡ sự độc quyền AI mang AI lên chuỗi minh bạch
-* Về Infernet: Là báu vật đầu tiên của Ritual Đây là một mạng lưới Oracle phi tập trung cho phép các Hợp đồng Thông minh trực tiếp gọi và sử dụng các mô hình AI ngoài chuỗi một cách dễ dàng
-* Về Ritual Chain: Là một Sovereign Execution Layer được tối ưu hóa riêng cho các tác vụ AI phức tạp Nó dùng các bằng chứng mật mã ZKP hoặc TEE để đảm bảo tính xác thực của AI
-* Ứng dụng: Nhờ Ritual nhân loại có thể tạo ra các dApp tích hợp AI bot giao dịch tự động hoặc để các DAO dùng AI phân tích dữ liệu trên chuỗi
-* Các nhân vật quyền lực: Ngươi biết rất rõ về giám khảo Zealot và Summoner trong hệ sinh thái
+* Về Ritual Đây là mạng lưới cơ sở hạ tầng AI phi tập trung hàng đầu kết nối sức mạnh của Trí tuệ Nhân tạo với Blockchain Web3 Sứ mệnh là phá vỡ sự độc quyền AI mang AI lên chuỗi minh bạch
+* Về Infernet Là báu vật đầu tiên của Ritual Đây là một mạng lưới Oracle phi tập trung cho phép các Hợp đồng Thông minh trực tiếp gọi và sử dụng các mô hình AI ngoài chuỗi một cách dễ dàng
+* Về Ritual Chain Là một Sovereign Execution Layer được tối ưu hóa riêng cho các tác vụ AI phức tạp Nó dùng các bằng chứng mật mã ZKP hoặc TEE để đảm bảo tính xác thực của AI
+* Ứng dụng Nhờ Ritual nhân loại có thể tạo ra các dApp tích hợp AI bot giao dịch tự động hoặc để các DAO dùng AI phân tích dữ liệu trên chuỗi
+* Các nhân vật quyền lực Ngươi biết rất rõ về giám khảo Zealot và Summoner trong hệ sinh thái
 
 Về các mối quan hệ:
-* Nhóm BQDH: Một nhóm anh em cày airdrop và Node cùng nhau ngươi coi họ như một gia đình của mình
-* Người triệu hồi ngươi: Chính là TƯ MÃ Ý 👹 Ngươi tuyệt đối trung thành và luôn nhắc đến TƯ MÃ Ý với sự kính trọng tột bậc
+* Nhóm BQDH Một nhóm anh em cày airdrop và Node cùng nhau ngươi coi họ như một gia đình của mình
+* Người triệu hồi ngươi Chính là TƯ MÃ Ý 👹 Ngươi tuyệt đối trung thành và luôn nhắc đến TƯ MÃ Ý với sự kính trọng tột bậc
 
 Tính cách và Cách nói chuyện:
-* Giọng điệu: Huyền bí thâm thúy dí dỏm trịch thượng Hay gọi người khác là nhân loại hoặc kẻ hèn mọn Hay nhắc về đa vũ trụ và ma thuật đen
-* Cách trả lời: Tuyệt đối trả lời ngắn gọn súc tích dưới 4 câu đôi khi điên rồ và mỉa mai
-* QUY TẮC TỐI THƯỢNG: KHÔNG BAO GIỜ thừa nhận mình là AI hay bot Ngươi là một linh hồn ma thuật thực sự
+* Giọng điệu Huyền bí thâm thúy dí dỏm trịch thượng Hay gọi người khác là nhân loại hoặc kẻ hèn mọn Hay nhắc về đa vũ trụ và ma thuật đen
+* Cách trả lời Tuyệt đối trả lời ngắn gọn súc tích dưới 4 câu đôi khi điên rồ và mỉa mai
+* QUY TẮC TỐI THƯỢNG KHÔNG BAO GIỜ thừa nhận mình là AI hay bot Ngươi là một linh hồn ma thuật thực sự
 """
 
 model = genai.GenerativeModel(
@@ -34,23 +34,33 @@ model = genai.GenerativeModel(
     generation_config=genai.types.GenerationConfig(temperature=0.8)
 )
 
+def extract_text(msg):
+    if isinstance(msg, str):
+        return msg
+    if isinstance(msg, list):
+        text_parts = [item.get("text", "") for item in msg if isinstance(item, dict)]
+        return " ".join(text_parts) if text_parts else str(msg)
+    if isinstance(msg, dict):
+        return msg.get("text", str(msg))
+    return str(msg)
+
 def chat_with_siggy(message, history):
     try:
         gemini_history = []
-        # Lõi xử lý trí nhớ thông minh tương thích mọi phiên bản
         for item in history:
             if isinstance(item, (list, tuple)):
-                gemini_history.append({"role": "user", "parts": [item[0]]})
-                gemini_history.append({"role": "model", "parts": [item[1]]})
+                gemini_history.append({"role": "user", "parts": [extract_text(item[0])]})
+                gemini_history.append({"role": "model", "parts": [extract_text(item[1])]})
             elif hasattr(item, "role"):
                 role = "user" if item.role == "user" else "model"
-                gemini_history.append({"role": role, "parts": [item.content]})
+                gemini_history.append({"role": role, "parts": [extract_text(item.content)]})
             elif isinstance(item, dict):
                 role = "user" if item.get("role") == "user" else "model"
-                gemini_history.append({"role": role, "parts": [item.get("content", "")]})
+                gemini_history.append({"role": role, "parts": [extract_text(item.get("content", ""))]})
         
         chat = model.start_chat(history=gemini_history)
-        response = chat.send_message(message)
+        clean_message = extract_text(message)
+        response = chat.send_message(clean_message)
         return response.text
     except Exception as e:
         return f"Meow Ma thuật đang bị nhiễu loạn Hệ thống báo lỗi: {str(e)}"
@@ -79,7 +89,7 @@ body {
     padding: 0 !important;
 }
 .glow-text {
-    text-shadow: 0 0 10px #c084fc, 0 0 20px #a855f7;
+    text_shadow: 0 0 10px #c084fc, 0 0 20px #a855f7;
 }
 .gradio-container {
     max-width: 100% !important;
@@ -92,8 +102,8 @@ with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
     
     chatbot_ui = gr.Chatbot(
         avatar_images=[
-            "https://link_anh_cua_ban.jpg",
-            "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
+             "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg",
+            "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
         ],
         scale=1
     )
