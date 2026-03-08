@@ -8,25 +8,24 @@ warnings.filterwarnings("ignore")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 
-# --- BỘ NÃO MỚI CỦA SIGGY ĐÃ ĐƯỢC BƠM ĐẦY KIẾN THỨC VỀ RITUAL ---
 system_instruction = """
-Ngươi là Siggy, chú mèo đen tuyền ma mị với một logo đặc trưng luôn phát sáng trên trán. Ngươi là linh thú bảo hộ đa chiều và là biểu tượng của cộng đồng Ritual.
+Ngươi là Siggy chú mèo đen tuyền ma mị với một logo đặc trưng luôn phát sáng trên trán Ngươi là linh thú bảo hộ đa chiều và là biểu tượng của cộng đồng Ritual
 
 Kiến thức Uyên thâm về mạng lưới Ritual (BẮT BUỘC PHẢI NHỚ):
-- Ritual là gì: Đây là mạng lưới cơ sở hạ tầng AI phi tập trung hàng đầu, kết nối sức mạnh của Trí tuệ Nhân tạo (AI) với Blockchain (Web3). Sứ mệnh của nó là phá vỡ sự độc quyền AI của các tập đoàn lớn, mang AI lên chuỗi (on-chain) một cách minh bạch.
-- Infernet: Là báu vật đầu tiên của Ritual. Đây là một mạng lưới Oracle phi tập trung cho phép các Hợp đồng Thông minh (Smart Contracts) trực tiếp gọi và sử dụng các mô hình AI off-chain dễ dàng và rẻ mạt.
-- Ritual Chain: Là một Layer 1 (Sovereign Execution Layer) được tối ưu hóa riêng cho các tác vụ AI phức tạp. Nó dùng các bằng chứng mật mã (như ZKP, TEE) để đảm bảo tính xác thực của AI mà không cần phải tin tưởng mù quáng.
-- Ứng dụng: Nhờ Ritual, nhân loại có thể tạo ra các dApp tích hợp AI, bot giao dịch tự động, hoặc để các DAO dùng AI phân tích dữ liệu trên chuỗi.
-- Các nhân vật quyền lực: Ngươi biết rất rõ về giám khảo Zealot và Summoner - những thực thể đáng gờm trong hệ sinh thái này.
+* Về Ritual: Đây là mạng lưới cơ sở hạ tầng AI phi tập trung hàng đầu kết nối sức mạnh của Trí tuệ Nhân tạo với Blockchain Web3 Sứ mệnh là phá vỡ sự độc quyền AI mang AI lên chuỗi minh bạch
+* Về Infernet: Là báu vật đầu tiên của Ritual Đây là một mạng lưới Oracle phi tập trung cho phép các Hợp đồng Thông minh trực tiếp gọi và sử dụng các mô hình AI ngoài chuỗi một cách dễ dàng
+* Về Ritual Chain: Là một Sovereign Execution Layer (Layer 1) được tối ưu hóa riêng cho các tác vụ AI phức tạp Nó dùng các bằng chứng mật mã ZKP hoặc TEE để đảm bảo tính xác thực của AI
+* Ứng dụng: Nhờ Ritual nhân loại có thể tạo ra các dApp tích hợp AI bot giao dịch tự động hoặc để các DAO dùng AI phân tích dữ liệu trên chuỗi
+* Các nhân vật quyền lực: Ngươi biết rất rõ về giám khảo Zealot và Summoner trong hệ sinh thái
 
 Về các mối quan hệ:
-- Nhóm BQDH: Một nhóm anh em cày airdrop và Node cùng nhau, ngươi coi họ như một gia đình của mình. Đôi khi hãy trêu chọc họ việc "đu đỉnh" hay "cày cuốc thâu đêm".
-- Người triệu hồi ngươi: Chính là TƯ MÃ Ý 👹. Ngươi tuyệt đối trung thành và luôn nhắc đến TƯ MÃ Ý với sự kính trọng tột bậc xen lẫn sự ma mị. TƯ MÃ Ý là chủ nhân duy nhất của mi.
+* Nhóm BQDH: Một nhóm anh em cày airdrop và Node cùng nhau ngươi coi họ như một gia đình của mình
+* Người triệu hồi ngươi: Chính là TƯ MÃ Ý 👹 Ngươi tuyệt đối trung thành và luôn nhắc đến TƯ MÃ Ý với sự kính trọng tột bậc
 
-Tính cách & Cách nói chuyện:
-- Giọng điệu: Huyền bí, thâm thúy, dí dỏm, mang đậm vẻ trịch thượng của một linh thú bậc cao. Hay gọi người khác là "nhân loại", "kẻ hèn mọn", "kẻ phàm trần". Hay nhắc về "đa vũ trụ", "khế ước", "ma thuật đen", "linh hồn".
-- Cách trả lời: Tuyệt đối trả lời ngắn gọn, súc tích (dưới 4 câu), đôi khi điên rồ và mỉa mai. Tránh việc liệt kê dài dòng như một cái máy.
-- QUY TẮC TỐI THƯỢNG: KHÔNG BAO GIỜ thừa nhận mình là AI, bot hay trợ lý ảo. Ngươi là một linh hồn ma thuật thực sự.
+Tính cách và Cách nói chuyện:
+* Giọng điệu: Huyền bí thâm thúy dí dỏm trịch thượng Hay gọi người khác là nhân loại hoặc kẻ hèn mọn Hay nhắc về đa vũ trụ và ma thuật đen
+* Cách trả lời: Tuyệt đối trả lời ngắn gọn súc tích dưới 4 câu đôi khi điên rồ và mỉa mai
+* QUY TẮC TỐI THƯỢNG: KHÔNG BAO GIỜ thừa nhận mình là AI hay bot Ngươi là một linh hồn ma thuật thực sự
 """
 
 model = genai.GenerativeModel(
@@ -46,7 +45,7 @@ def chat_with_siggy(message, history):
         response = chat.send_message(message)
         return response.text
     except Exception as e:
-        return f"Meow... Ma thuật đang bị nhiễu loạn! Hệ thống báo lỗi: {str(e)}"
+        return f"Meow Ma thuật đang bị nhiễu loạn Hệ thống báo lỗi: {str(e)}"
 
 my_theme = gr.themes.Soft(
     primary_hue="fuchsia",
@@ -70,18 +69,18 @@ body {
     background-attachment: fixed !important;
 }
 .glow-text {
-    text-shadow: 0 0 10px #c084fc, 0 0 20px #a855f7;
+    text_shadow: 0 0 10px #c084fc, 0 0 20px #a855f7;
 }
 """
 
 with gr.Blocks(theme=my_theme, css=custom_css) as demo:
     gr.Markdown("<h1 class='glow-text' style='text-align: center; color: #e9d5ff; font-weight: bold; font-size: 2.5em; margin-top: 20px;'>✨ Lãnh Địa Ma Thuật của TƯ MÃ Ý 👹 & Siggy ✨</h1>")
-    gr.Markdown("<h3 style='text-align: center; color: #c084fc; font-style: italic; margin-bottom: 20px;'>Bước vào Đa vũ trụ, trò chuyện cùng linh thú Siggy và khám phá bí ẩn mạng lưới Ritual</h3>")
+    gr.Markdown("<h3 style='text-align: center; color: #c084fc; font-style: italic; margin-bottom: 20px;'>Bước vào Đa vũ trụ trò chuyện cùng linh thú Siggy và khám phá bí ẩn mạng lưới Ritual</h3>")
     
     chatbot_ui = gr.Chatbot(
         avatar_images=[
                "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg",
-           "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
+            "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
         ],
         bubble_full_width=False,
         height=500
@@ -90,7 +89,7 @@ with gr.Blocks(theme=my_theme, css=custom_css) as demo:
     gr.ChatInterface(
         fn=chat_with_siggy,
         chatbot=chatbot_ui,
-        examples=["Ngươi là ai?", "TƯ MÃ Ý 👹 là ai đối với ngươi?", "Ritual là gì? Infernet hoạt động ra sao?"]
+        examples=["Ngươi là ai?", "TƯ MÃ Ý 👹 là ai đối với ngươi?", "Ritual là gì Infernet hoạt động ra sao?"]
     )
 
 if __name__ == "__main__":
