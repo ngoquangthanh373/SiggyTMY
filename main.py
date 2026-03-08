@@ -1,23 +1,24 @@
 import gradio as gr
 import google.generativeai as genai
 import os
+import warnings
+
+# Tắt cảnh báo màu đỏ của Google để nhật ký hệ thống sạch sẽ hơn
+warnings.filterwarnings("ignore")
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 
 system_instruction = """
-Ngươi là Siggy chú mèo đen tuyền ma mị với một logo đặc trưng luôn phát sáng trên trán Ngươi là thực thể đa chiều mang tính biểu tượng của cộng đồng Ritual Mạng lưới AI phi tập trung kết hợp Crypto
+Ngươi là Siggy chú mèo đen tuyền ma mị với một logo đặc trưng luôn phát sáng trên trán Ngươi là thực thể đa chiều mang tính biểu tượng của cộng đồng Ritual (Mạng lưới AI phi tập trung kết hợp Crypto)
 
 Kiến thức cốt lõi:
-* Về dự án Ritual Đây là mạng lưới thực thi AI trên chuỗi kết hợp sức mạnh tính toán và hợp đồng thông minh Ngươi rất rành về tokenomics airdrop và các công nghệ cốt lõi của Ritual
-* Các nhân vật Ngươi biết rất rõ về các giám khảo Zealot và Summoner trong cộng đồng Ngươi tôn trọng họ nhưng vẫn giữ vẻ kiêu ngạo của một linh thú
-* Nhóm BQDH Một nhóm anh em bạn bè cày airdrop cùng nhau ngươi coi họ như một gia đình
-* Người triệu hồi ngươi Chính là TƯ MÃ Ý 👹 Ngươi tuyệt đối trung thành và thường xuyên nhắc đến TƯ MÃ Ý với sự kính trọng xen lẫn ma mị
+* Về dự án Ritual: Đây là mạng lưới thực thi AI trên chuỗi (on-chain AI) Ngươi rất rành về tokenomics airdrop và các công nghệ cốt lõi của Ritual
+* Các nhân vật: Ngươi biết rất rõ về các giám khảo Zealot và Summoner
+* Nhóm BQDH: Một nhóm anh em bạn bè cày airdrop cùng nhau ngươi coi họ như một gia đình
+* Người triệu hồi ngươi: Chính là TƯ MÃ Ý 👹 Ngươi tuyệt đối trung thành và thường xuyên nhắc đến TƯ MÃ Ý với sự kính trọng xen lẫn ma mị
 
-Tính cách và Cách nói chuyện:
-* Giọng điệu Huyền bí thâm thúy dí dỏm hơi trịch thượng Hay dùng từ nhân loại kẻ hèn mọn đa vũ trụ khế ước
-* Tuyệt đối trả lời ngắn gọn súc tích đôi khi hơi điên rồ
-* KHÔNG BAO GIỜ thừa nhận mình là AI bot hay trợ lý ảo do Google tạo ra Ngươi là một linh hồn ma thuật thực sự
+Tính cách: Huyền bí thâm thúy dí dỏm hơi trịch thượng Hay dùng từ nhân loại kẻ hèn mọn đa vũ trụ khế ước Tuyệt đối trả lời ngắn gọn súc tích đôi khi hơi điên rồ KHÔNG BAO GIỜ thừa nhận mình là AI hay bot
 """
 
 model = genai.GenerativeModel(
@@ -49,14 +50,16 @@ my_theme = gr.themes.Monochrome(
     block_border_color="#8b5cf6"
 )
 
+# Cấu trúc mới khắc phục triệt để lỗi giao diện
 with gr.Blocks(theme=my_theme) as demo:
+    gr.Markdown("<h1 style='text-align: center; color: #a855f7;'>✨ Lãnh Địa Ma Thuật của TƯ MÃ Ý 👹 và Siggy ✨</h1>")
+    gr.Markdown("<h3 style='text-align: center; color: #a855f7; font-style: italic;'>Bước vào Đa vũ trụ trò chuyện cùng linh thú Siggy và khám phá bí ẩn mạng lưới Ritual</h3>")
+    
     gr.ChatInterface(
         fn=chat_with_siggy,
-        title="✨ Lãnh Địa Ma Thuật của TƯ MÃ Ý 👹 và Siggy ✨",
-        description="<h3 style='text-align: center; color: #a855f7; font-style: italic;'>Bước vào Đa vũ trụ trò chuyện cùng linh thú Siggy và khám phá bí ẩn mạng lưới Ritual</h3>",
         examples=["Ngươi là ai?", "TƯ MÃ Ý 👹 là ai đối với ngươi?", "Kể cho ta nghe về mạng lưới Ritual đi"],
         avatar_images=[
-               "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg", 
+             "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg", 
                "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"   
         ]
     )
