@@ -65,7 +65,7 @@ def chat_with_siggy(message, history):
     except Exception as e:
         return f"Meow Ma thuật đang bị nhiễu loạn Hệ thống báo lỗi: {str(e)}"
 
-Giao diện Hắc Nguyệt: Phông chữ viễn tưởng, loại bỏ các viền hộp cứng nhắc
+# Giao diện Hắc Nguyệt: Phông chữ viễn tưởng, loại bỏ các viền hộp cứng nhắc
 my_theme = gr.themes.Monochrome(
     font=[gr.themes.GoogleFont("Space Grotesk"), "ui-sans-serif", "system-ui", "sans-serif"],
     text_size="lg",
