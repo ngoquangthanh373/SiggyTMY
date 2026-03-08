@@ -1,3 +1,2 @@
-discord.py
+gradio
 google-generativeai
-python-dotenv
