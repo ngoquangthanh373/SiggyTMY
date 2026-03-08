@@ -65,35 +65,49 @@ def chat_with_siggy(message, history):
     except Exception as e:
         return f"Meow Ma thuật đang bị nhiễu loạn Hệ thống báo lỗi: {str(e)}"
 
+# Nâng cấp phông chữ và kích thước
 my_theme = gr.themes.Soft(
     primary_hue="fuchsia",
     secondary_hue="purple",
     neutral_hue="slate",
+    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui", "sans-serif"],
+    text_size="lg"
 ).set(
     body_text_color="#f8fafc",
-    block_background_fill="rgba(15, 23, 42, 0.45)",
+    block_background_fill="rgba(15, 23, 42, 0.6)",
     block_border_color="#8b5cf6",
     block_border_width="1px",
-    block_radius="xl",
-    block_shadow="0 0 20px rgba(139, 92, 246, 0.15)",
-    input_background_fill="rgba(30, 41, 59, 0.6)",
+    block_radius="2xl",
+    block_shadow="0 8px 32px rgba(139, 92, 246, 0.2)",
+    input_background_fill="rgba(30, 41, 59, 0.8)",
     button_primary_background_fill="#9333ea",
     button_primary_background_fill_hover="#a855f7",
 )
 
+# Ép tràn viền tuyệt đối và làm mượt chữ
 custom_css = """
-body {
-    background: radial-gradient(circle at 50% -10%, #3b0764 0%, #05010f 80%) !important;
+body, html {
+    background: radial-gradient(circle at 50% 0%, #3b0764 0%, #02000a 100%) !important;
     background-attachment: fixed !important;
     margin: 0 !important;
     padding: 0 !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow-x: hidden !important;
 }
 .glow-text {
     text_shadow: 0 0 10px #c084fc, 0 0 20px #a855f7;
 }
 .gradio-container {
-    max-width: 100% !important;
+    max-width: 100vw !important;
+    width: 100vw !important;
+    min-height: 100vh !important;
     padding: 0 !important;
+    margin: 0 !important;
+}
+.message-wrap .message {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
 }
 """
 
@@ -102,10 +116,11 @@ with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
     
     chatbot_ui = gr.Chatbot(
         avatar_images=[
-             "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg",
-            "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
+            "https://link_anh_cua_ban.jpg",
+            "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
         ],
-        scale=1
+        scale=1,
+        show_label=False
     )
     
     gr.ChatInterface(
