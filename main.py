@@ -65,37 +65,30 @@ def chat_with_siggy(message, history):
     except Exception as e:
         return f"Meow Ma thuật đang bị nhiễu loạn Hệ thống báo lỗi: {str(e)}"
 
-# Giao diện Hắc Nguyệt: Phông chữ viễn tưởng, loại bỏ các viền hộp cứng nhắc
-my_theme = gr.themes.Monochrome(
-    font=[gr.themes.GoogleFont("Space Grotesk"), "ui-sans-serif", "system-ui", "sans-serif"],
+# Giao diện tối giản mô phỏng hoàn hảo Gemini Dark Mode
+my_theme = gr.themes.Default(
+    font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui", "sans-serif"],
     text_size="lg",
 ).set(
-    body_text_color="#e2e8f0",
-    block_background_fill="transparent",
+    body_background_fill="#131314",
+    body_text_color="#e3e3e3",
+    block_background_fill="#131314",
     block_border_width="0px",
-    input_background_fill="rgba(15, 23, 42, 0.7)",
-    input_border_color="#581c87",
-    button_primary_background_fill="#7e22ce",
-    button_primary_background_fill_hover="#9333ea",
+    input_background_fill="#1e1f20",
+    input_border_color="#1e1f20",
+    button_primary_background_fill="#1e1f20",
+    button_primary_background_fill_hover="#333538",
+    button_primary_text_color="#e3e3e3",
 )
 
 custom_css = """
 body, html {
-    background-color: #030008 !important;
-    background-image: radial-gradient(circle at 50% 0%, #3b0764 0%, #000000 80%) !important;
-    background-attachment: fixed !important;
+    background-color: #131314 !important;
     margin: 0 !important;
     padding: 0 !important;
     height: 100vh !important;
     width: 100vw !important;
     overflow-x: hidden !important;
-}
-.glow-text {
-    background: linear-gradient(to right, #c084fc, #e879f9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0px 5px 25px rgba(192, 132, 252, 0.4);
-    letter-spacing: 1px;
 }
 .gradio-container {
     max-width: 100vw !important;
@@ -104,25 +97,27 @@ body, html {
     padding: 0 !important;
     margin: 0 !important;
 }
-/* Biến tin nhắn thành các khối pha lê mờ lơ lửng */
-.bubble-wrap {
+/* Ép tin nhắn trong suốt, xóa bong bóng chat */
+.message-wrap .message {
     background: transparent !important;
     border: none !important;
-}
-.message {
-    background: rgba(30, 41, 59, 0.3) !important;
-    border: 1px solid rgba(139, 92, 246, 0.15) !important;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
-    border-radius: 16px !important;
+    box-shadow: none !important;
     font-size: 16px !important;
     line-height: 1.6 !important;
-    padding: 15px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+/* Thu gọn thanh nhập liệu ở giữa màn hình */
+.form {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    border-radius: 24px !important;
+    overflow: hidden !important;
+    background-color: #1e1f20 !important;
 }
 """
 
 with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
-    gr.Markdown("<h1 class='glow-text' style='text-align: center; font-weight: 700; font-size: 2.2em; margin-top: 20px; margin-bottom: 5px;'>✨ Lãnh Địa Ma Thuật của TƯ MÃ Ý 👹 & Siggy ✨</h1>")
-    
     chatbot_ui = gr.Chatbot(
         avatar_images=[
             "https://link_anh_cua_ban.jpg",
