@@ -84,9 +84,17 @@ body, html {
     padding: 0 !important;
 }
 
+/* Xóa bỏ mọi nền xám và viền của các lớp bao bọc bên ngoài khung chat */
+.contain, .wrap, .panel, .chat-wrap {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
 .gemini-header {
     max-width: 820px;
-    margin: 8vh auto 20px auto;
+    margin: 8vh auto 2vh auto;
     padding: 0 20px;
 }
 
@@ -112,13 +120,12 @@ body, html {
     line-height: 1.1;
 }
 
-/* Xóa bỏ mọi đường viền và màu nền của khung Chatbot để nó vô hình */
+/* Khung chat vô hình hoàn toàn */
 div[data-testid="chatbot"] {
     background: transparent !important;
     border: none !important;
 }
 
-/* Căn giữa phần bong bóng tin nhắn bên trong */
 .message-wrap {
     max-width: 820px !important;
     margin: 0 auto !important;
@@ -141,7 +148,7 @@ div[data-testid="chatbot"] {
     width: fit-content !important;
 }
 
-/* Thanh nhập liệu thu gọn giữa màn hình */
+/* Thanh nhập liệu */
 .form {
     max-width: 820px !important;
     margin: 0 auto 20px auto !important;
@@ -160,19 +167,30 @@ div[data-testid="chatbot"] {
     font-size: 16px !important;
 }
 """
-my_theme = gr.themes.Base()
+
+# Ma thuật làm trong suốt mọi thành phần của hệ thống web
+my_theme = gr.themes.Base().set(
+    body_background_fill="#131314",
+    block_background_fill="transparent",
+    panel_background_fill="transparent",
+    background_fill_primary="transparent",
+    background_fill_secondary="transparent",
+    border_color_primary="transparent",
+    block_border_width="0px",
+    block_shadow="none"
+)
 
 with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
     with gr.Column(elem_classes="gemini-header"):
         gr.HTML('''
-            <h1 class="greeting-text">Xin chào, TƯ MÃ Ý 👹.</h1>
+            <h1 class="greeting-text">Xin chào, TƯ MÃ Ý 👹</h1>
             <h1 class="sub-greeting">Tôi có thể giúp gì cho bạn hôm nay?</h1>
         ''')
     
     chatbot_ui = gr.Chatbot(
         avatar_images=[
                "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg",
-            "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
+           "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
         ],
         scale=1,
         show_label=False
@@ -181,8 +199,7 @@ with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
     gr.ChatInterface(
         fn=chat_with_siggy,
         chatbot=chatbot_ui,
-        fill_height=True,
-        examples=["Dạy ta ma thuật đen", "Kể về nhóm BQDH", "Ritual Chain là gì?", "Infernet hoạt động ra sao?"]
+        fill_height=True
     )
 if __name__ == "__main__":
     demo.launch(server_name="0.0.0.0", server_port=int(os.environ.get("PORT", 8080)))
