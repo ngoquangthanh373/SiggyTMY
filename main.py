@@ -84,10 +84,9 @@ body, html {
     padding: 0 !important;
 }
 
-/* Container Lời chào giống hệt Gemini */
 .gemini-header {
     max-width: 820px;
-    margin: 10vh auto 30px auto;
+    margin: 8vh auto 20px auto;
     padding: 0 20px;
 }
 
@@ -113,12 +112,17 @@ body, html {
     line-height: 1.1;
 }
 
-/* Khung chat và Bong bóng chat */
-.chatbot-container {
-    max-width: 820px !important;
-    margin: 0 auto !important;
+/* Xóa bỏ mọi đường viền và màu nền của khung Chatbot để nó vô hình */
+div[data-testid="chatbot"] {
     background: transparent !important;
     border: none !important;
+}
+
+/* Căn giữa phần bong bóng tin nhắn bên trong */
+.message-wrap {
+    max-width: 820px !important;
+    margin: 0 auto !important;
+    padding: 0 20px !important;
 }
 
 .message-wrap .message {
@@ -137,7 +141,7 @@ body, html {
     width: fit-content !important;
 }
 
-/* Thanh nhập liệu (Input box) */
+/* Thanh nhập liệu thu gọn giữa màn hình */
 .form {
     max-width: 820px !important;
     margin: 0 auto 20px auto !important;
@@ -155,29 +159,7 @@ body, html {
     color: #e3e3e3 !important;
     font-size: 16px !important;
 }
-
-/* Các thẻ gợi ý (Prompt Cards) */
-.examples-container {
-    max-width: 820px !important;
-    margin: 0 auto !important;
-    padding: 0 20px !important;
-}
-
-.examples-container button {
-    background-color: #1e1f20 !important;
-    border-radius: 12px !important;
-    border: none !important;
-    color: #e3e3e3 !important;
-    padding: 15px !important;
-    font-weight: 400 !important;
-    transition: background-color 0.2s !important;
-}
-
-.examples-container button:hover {
-    background-color: #333538 !important;
-}
 """
-
 my_theme = gr.themes.Base()
 
 with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
@@ -192,7 +174,6 @@ with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
                "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg",
             "https://i.postimg.cc/j2Y3Kqhq/AI-Enhancer-Ultra-HD-z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg"
         ],
-        elem_classes="chatbot-container",
         scale=1,
         show_label=False
     )
