@@ -67,156 +67,168 @@ def chat_with_siggy(message, history):
 
 
 custom_css = """
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 
+/* Nền tảng giao diện vũ trụ (Cosmic Background) */
 body, html {
-    background-color: #131314 !important;
-    color: #e3e3e3 !important;
-    font-family: 'Google Sans', sans-serif !important;
+    background-color: #26294a !important;
+    background-image: radial-gradient(circle at top, #32355c 0%, #1e1f3a 100%) !important;
     margin: 0 !important;
     padding: 0 !important;
+    height: 100vh !important;
+    width: 100vw !important;
+    overflow: hidden !important; /* Khóa cuộn màn hình ngoài */
+    font-family: 'Nunito', sans-serif !important;
 }
 
-/* Xóa bỏ footer của Gradio */
+.gradio-container {
+    max-width: 100vw !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+}
+
+/* Xóa footer */
 footer { display: none !important; }
 
-/* PHÁ HỦY MỌI LỚP NỀN XÁM CỦA GRADIO */
-.gradio-container, .panel, .contain, .wrap, .chat-wrap {
+/* Tiêu đề SiggyTMY thay thế Poly */
+.custom-header {
+    background-color: rgba(43, 46, 82, 0.95);
+    color: #f8fafc;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Đẩy nội dung xuống dưới Header */
+.contain { margin-top: 65px !important; }
+
+/* Phá vỡ mọi lớp hộp của Gradio */
+.wrap, .panel, .chat-wrap {
     background: transparent !important;
-    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-/* Lời chào */
-.gemini-header {
-    max-width: 820px;
-    margin: 8vh auto 30px auto;
-    padding: 0 20px;
-}
-
-.greeting-text {
-    font-size: 3.5rem;
-    font-weight: 500;
-    letter-spacing: -1.5px;
-    margin: 0;
-    background: linear-gradient(74deg, #4285f4 0%, #9b72cb 46%, #d96570 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1.1;
-}
-
-.sub-greeting {
-    font-size: 3.5rem;
-    font-weight: 500;
-    letter-spacing: -1.5px;
-    color: #444746;
-    margin: 0;
-    line-height: 1.1;
-}
-
-/* Khung chat vô hình */
+/* Khu vực Chatbot tràn viền vô hình */
 div[data-testid="chatbot"] {
     background: transparent !important;
     border: none !important;
+    height: calc(100vh - 170px) !important;
 }
 
 .message-wrap {
-    max-width: 820px !important;
-    margin: 0 auto !important;
-    padding: 0 20px !important;
+    padding: 20px !important;
 }
 
-.message-wrap .message {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
+/* Kiểu dáng bong bóng tin nhắn chuẩn ảnh */
+.message {
     font-size: 16px !important;
-    padding: 10px 0 !important;
+    line-height: 1.5 !important;
+    padding: 14px 22px !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
 }
 
-.message-wrap .message.user {
-    background-color: #1e1f20 !important;
-    border-radius: 24px !important;
-    padding: 12px 20px !important;
-    margin-left: auto !important;
-    width: fit-content !important;
+/* Tin nhắn của Bot (Trái - Xanh sẫm) */
+.message.bot {
+    background-color: #3b3d6e !important;
+    color: #f8fafc !important;
+    border-radius: 20px 20px 20px 4px !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    margin-right: auto !important;
+    max-width: 75% !important;
 }
 
-/* Thanh nhập liệu đặt ở giữa */
-.form {
-    max-width: 820px !important;
-    margin: 0 auto 20px auto !important;
-    background-color: #1e1f20 !important;
-    border-radius: 32px !important;
+/* Tin nhắn của User (Phải - Tím nhạt) */
+.message.user {
+    background-color: #a8a5d8 !important;
+    color: #1a1a2e !important;
+    border-radius: 20px 20px 4px 20px !important;
     border: none !important;
-    padding: 6px 12px !important;
-    box-shadow: none !important;
+    margin-left: auto !important;
+    max-width: 75% !important;
+}
+
+/* Avatar bo tròn đẹp mắt */
+.avatar-image {
+    border-radius: 50% !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    border: 2px solid transparent !important;
+}
+
+/* Khu vực thanh nhập liệu (Input Area) */
+.form {
+    max-width: 900px !important;
+    margin: 0 auto 15px auto !important;
+    background-color: #2b2e52 !important;
+    border-radius: 35px !important;
+    padding: 8px 15px !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3) !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
 }
 
 .form textarea {
     background-color: transparent !important;
     border: none !important;
-    box-shadow: none !important;
-    color: #e3e3e3 !important;
+    color: #f8fafc !important;
     font-size: 16px !important;
+    padding: 12px 15px !important;
+    box-shadow: none !important;
 }
 
 .form textarea::placeholder {
-    color: #a0a6ac !important;
+    color: #7b7f9e !important;
 }
 
-/* BIẾN GỢI Ý THÀNH 4 THẺ CARDS GIỐNG GEMINI */
-.examples-container {
-    max-width: 820px !important;
-    margin: 0 auto 20px auto !important;
-    padding: 0 20px !important;
-}
-
-.examples-container .gallery {
-    display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 12px !important;
-}
-
-.examples-container button {
-    background-color: #1e1f20 !important;
-    border-radius: 12px !important;
+/* BIẾN NÚT SUBMIT THÀNH HÌNH TRÒN MÀU HỒNG ĐỎ CHUẨN ẢNH */
+.form button, button[aria-label="Submit"] {
+    background-color: #ff4b6e !important;
+    background-image: linear-gradient(135deg, #ff4b6e, #ff2a55) !important;
+    color: white !important;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    padding: 0 !important;
     border: none !important;
-    color: #e3e3e3 !important;
-    padding: 16px !important;
-    height: 100px !important;
-    text-align: left !important;
-    align-items: flex-start !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
-    white-space: pre-wrap !important;
-    transition: background-color 0.2s !important;
+    box-shadow: 0 4px 15px rgba(255, 75, 110, 0.4) !important;
+    transition: transform 0.2s ease !important;
+    margin-left: 10px !important;
 }
 
-.examples-container button:hover {
-    background-color: #333538 !important;
+.form button:hover {
+    transform: scale(1.08) !important;
+}
+
+/* Đổi màu icon Gửi sang trắng */
+.form button svg {
+    fill: white !important;
+    stroke: white !important;
 }
 """
 
-# Ép hệ thống dùng màu trong suốt từ lõi
 my_theme = gr.themes.Base().set(
-    body_background_fill="#131314",
+    body_background_fill="#26294a",
     block_background_fill="transparent",
     panel_background_fill="transparent",
-    background_fill_primary="transparent",
-    background_fill_secondary="transparent",
     border_color_primary="transparent",
-    block_border_width="0px",
-    block_shadow="none"
+    block_border_width="0px"
 )
 
 with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
-    with gr.Column(elem_classes="gemini-header"):
-        gr.HTML('''
-            <h1 class="greeting-text">Xin chào, TƯ MÃ Ý 👹.</h1>
-            <h1 class="sub-greeting">Tôi có thể giúp gì cho bạn hôm nay?</h1>
-        ''')
+    # Header ma thuật cố định ở trên cùng
+    gr.HTML('<div class="custom-header">SiggyTMY</div>')
     
     chatbot_ui = gr.Chatbot(
         avatar_images=[
@@ -230,13 +242,7 @@ with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
     gr.ChatInterface(
         fn=chat_with_siggy,
         chatbot=chatbot_ui,
-        fill_height=True,
-        examples=[
-            "Ritual Chain là gì?\nHãy giải thích ngắn gọn.", 
-            "Kể về nhóm BQDH.\nHọ là ai?", 
-            "Dạy ta ma thuật đen\ncủa đa vũ trụ.", 
-            "Infernet hoạt động\nra sao?"
-        ]
+        fill_height=True
     )
 if __name__ == "__main__":
     demo.launch(server_name="0.0.0.0", server_port=int(os.environ.get("PORT", 8080)))
