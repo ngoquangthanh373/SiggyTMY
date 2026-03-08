@@ -67,159 +67,155 @@ def chat_with_siggy(message, history):
 
 
 custom_css = """
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
 
-/* Nền tảng giao diện vũ trụ (Cosmic Background) */
-body, html {
-    background-color: #26294a !important;
-    background-image: radial-gradient(circle at top, #32355c 0%, #1e1f3a 100%) !important;
+/* NỀN TẢNG VŨ TRỤ TRÀN VIỀN TUYỆT ĐỐI */
+:root, body, html {
     margin: 0 !important;
     padding: 0 !important;
     height: 100vh !important;
     width: 100vw !important;
-    overflow: hidden !important; /* Khóa cuộn màn hình ngoài */
+    background-color: #26274B !important;
+    background-image: linear-gradient(180deg, #2D2E55 0%, #1A1A32 100%) !important;
     font-family: 'Nunito', sans-serif !important;
+    overflow: hidden !important;
 }
 
-.gradio-container {
-    max-width: 100vw !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    padding: 0 !important;
-    margin: 0 !important;
+/* XÓA SỔ MỌI HỘP XÁM CỦA GRADIO */
+.gradio-container, .main, .wrap, .contain, .panel, .chat-wrap, #component-0 {
     background: transparent !important;
-}
-
-/* Xóa footer */
-footer { display: none !important; }
-
-/* Tiêu đề SiggyTMY thay thế Poly */
-.custom-header {
-    background-color: rgba(43, 46, 82, 0.95);
-    color: #f8fafc;
-    text-align: center;
-    padding: 16px 0;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
-
-/* Đẩy nội dung xuống dưới Header */
-.contain { margin-top: 65px !important; }
-
-/* Phá vỡ mọi lớp hộp của Gradio */
-.wrap, .panel, .chat-wrap {
-    background: transparent !important;
+    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    max-width: 100vw !important;
+    padding: 0 !important;
 }
 
-/* Khu vực Chatbot tràn viền vô hình */
+footer { display: none !important; }
+
+/* HEADER CỐ ĐỊNH Ở TRÊN CÙNG */
+.cosmic-header {
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    background-color: #313360;
+    color: white;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    z-index: 1000;
+}
+
+/* KHUNG CHAT ĐẨY XUỐNG DƯỚI HEADER VÀ GIỮA MÀN HÌNH */
+.contain { 
+    margin-top: 70px !important; 
+    height: calc(100vh - 70px) !important;
+}
+
 div[data-testid="chatbot"] {
     background: transparent !important;
     border: none !important;
-    height: calc(100vh - 170px) !important;
 }
 
 .message-wrap {
     padding: 20px !important;
+    max-width: 850px !important;
+    margin: 0 auto !important;
 }
 
-/* Kiểu dáng bong bóng tin nhắn chuẩn ảnh */
+/* KIỂU DÁNG BONG BÓNG TIN NHẮN (TRÒN MỘT BÊN CHUẨN ẢNH GỐC) */
 .message {
-    font-size: 16px !important;
-    line-height: 1.5 !important;
+    font-size: 15px !important;
     padding: 14px 22px !important;
+    margin-bottom: 20px !important;
+    line-height: 1.5 !important;
+}
+
+/* Bot (Mèo Siggy) - Xanh thẫm, bẹt ở đuôi trái */
+.message.bot {
+    background-color: #373A6B !important;
+    color: #FFFFFF !important;
+    border-radius: 20px 20px 20px 4px !important;
+    border: none !important;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
 }
 
-/* Tin nhắn của Bot (Trái - Xanh sẫm) */
-.message.bot {
-    background-color: #3b3d6e !important;
-    color: #f8fafc !important;
-    border-radius: 20px 20px 20px 4px !important;
-    border: 1px solid rgba(255,255,255,0.05) !important;
-    margin-right: auto !important;
-    max-width: 75% !important;
-}
-
-/* Tin nhắn của User (Phải - Tím nhạt) */
+/* User (TƯ MÃ Ý) - Tím nhạt, bẹt ở đuôi phải */
 .message.user {
-    background-color: #a8a5d8 !important;
-    color: #1a1a2e !important;
+    background-color: #ACA7D8 !important;
+    color: #1A1B35 !important;
     border-radius: 20px 20px 4px 20px !important;
     border: none !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important;
     margin-left: auto !important;
-    max-width: 75% !important;
 }
 
-/* Avatar bo tròn đẹp mắt */
+/* Avatar tròn trịa */
 .avatar-image {
     border-radius: 50% !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-    border: 2px solid transparent !important;
+    background: transparent !important;
 }
 
-/* Khu vực thanh nhập liệu (Input Area) */
+/* KHU VỰC NHẬP LIỆU LƠ LỬNG Ở ĐÁY */
 .form {
-    max-width: 900px !important;
-    margin: 0 auto 15px auto !important;
-    background-color: #2b2e52 !important;
-    border-radius: 35px !important;
-    padding: 8px 15px !important;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3) !important;
-    border: 1px solid rgba(255,255,255,0.05) !important;
-}
-
-.form textarea {
     background-color: transparent !important;
     border: none !important;
-    color: #f8fafc !important;
+    box-shadow: none !important;
+    max-width: 850px !important;
+    margin: 0 auto 20px auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 15px !important;
+    padding: 0 20px !important;
+}
+
+/* Khung gõ chữ (Nhộng dài) */
+.form textarea {
+    background-color: #272A52 !important;
+    color: white !important;
+    border-radius: 30px !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    padding: 16px 20px !important;
     font-size: 16px !important;
-    padding: 12px 15px !important;
     box-shadow: none !important;
 }
+.form textarea::placeholder { color: #8C8FA8 !important; }
 
-.form textarea::placeholder {
-    color: #7b7f9e !important;
-}
-
-/* BIẾN NÚT SUBMIT THÀNH HÌNH TRÒN MÀU HỒNG ĐỎ CHUẨN ẢNH */
-.form button, button[aria-label="Submit"] {
-    background-color: #ff4b6e !important;
-    background-image: linear-gradient(135deg, #ff4b6e, #ff2a55) !important;
-    color: white !important;
+/* NÚT GỬI MÀU HỒNG TRÒN XOEA CHUẨN ẢNH GỐC */
+button[aria-label="Submit"], .form button {
+    background: linear-gradient(135deg, #FF5C77, #FF3B5C) !important;
     border-radius: 50% !important;
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px !important;
-    padding: 0 !important;
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
     border: none !important;
-    box-shadow: 0 4px 15px rgba(255, 75, 110, 0.4) !important;
+    box-shadow: 0 6px 15px rgba(255, 60, 92, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     transition: transform 0.2s ease !important;
-    margin-left: 10px !important;
 }
 
-.form button:hover {
+button[aria-label="Submit"]:hover, .form button:hover {
     transform: scale(1.08) !important;
 }
 
-/* Đổi màu icon Gửi sang trắng */
-.form button svg {
+button[aria-label="Submit"] svg, .form button svg {
     fill: white !important;
     stroke: white !important;
+    width: 24px !important;
+    height: 24px !important;
+    margin-left: -2px !important; /* Căn giữa icon máy bay */
 }
 """
 
 my_theme = gr.themes.Base().set(
-    body_background_fill="#26294a",
+    body_background_fill="transparent",
     block_background_fill="transparent",
     panel_background_fill="transparent",
     border_color_primary="transparent",
@@ -227,8 +223,8 @@ my_theme = gr.themes.Base().set(
 )
 
 with gr.Blocks(theme=my_theme, css=custom_css, fill_height=True) as demo:
-    # Header ma thuật cố định ở trên cùng
-    gr.HTML('<div class="custom-header">SiggyTMY</div>')
+    # Header SiggyTMY thay thế Poly
+    gr.HTML('<div class="cosmic-header">SiggyTMY</div>')
     
     chatbot_ui = gr.Chatbot(
         avatar_images=[
