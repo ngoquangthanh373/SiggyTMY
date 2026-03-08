@@ -129,7 +129,16 @@ HTML_TEMPLATE = r"""
         .send-btn:hover { transform: scale(1.08); }
         .send-btn svg { fill: white; width: 24px; height: 24px; margin-left: -2px;}
         
-        .typing { display: none; color: #8C8FA8; font-size: 14px; margin-left: 65px; margin-top: -10px; margin-bottom: 10px; font-style: italic;}
+        .typing { 
+    display: none; 
+    color: #8C8FA8; 
+    font-size: 14px; 
+    font-style: italic;
+    max-width: 900px;
+    width: 100%;
+    margin: -10px auto 10px auto;
+    padding-left: 89px;
+}
         
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
