@@ -50,37 +50,72 @@ HTML_TEMPLATE = r"""
             background-color: #26274B; 
             background-image: linear-gradient(180deg, #2D2E55 0%, #1A1A32 100%);
             color: white; display: flex; flex-direction: column; overflow: hidden; 
+            position: relative;
         }
+        
+        /* MA THUẬT ẨN THẠCH: LOGO RITUAL CHÌM PHÍA SAU */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vmin;  /* Kích thước to bằng 70% màn hình */
+            height: 70vmin;
+            background-image: url('https://i.postimg.cc/RCWT4Cv3/Xbw2Ac-T-400x400.jpg'); 
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.05; /* Độ mờ 5%, vừa đủ thấy mà không che chữ */
+            z-index: 0;
+            pointer-events: none; /* Không cản trở việc bấm chuột của bạn */
+        }
+
         .header { 
             text-align: center; padding: 18px; font-size: 26px; font-weight: 800; letter-spacing: 2px;
-            background: rgba(43, 46, 82, 0.95); box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 10; 
+            background: rgba(43, 46, 82, 0.95); box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
             border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+            position: relative; z-index: 10;
         }
         .chat-container { 
             flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; 
             max-width: 900px; margin: 0 auto; width: 100%;
+            position: relative; z-index: 2;
         }
         .message { display: flex; align-items: flex-end; max-width: 85%; }
         .message.user { align-self: flex-end; flex-direction: row-reverse; }
         .message.bot { align-self: flex-start; }
-        .avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; margin: 0 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        
+        /* Hiệu ứng kính mờ (backdrop-filter) cho Avatar để đẹp hơn */
+        .avatar { 
+            width: 45px; height: 45px; border-radius: 50%; object-fit: cover; 
+            margin: 0 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+        }
+        
+        /* Hiệu ứng kính mờ nhẹ cho bong bóng tin nhắn */
         .bubble { 
-            padding: 14px 22px; font-size: 16px; line-height: 1.5; box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
+            padding: 14px 22px; font-size: 16px; line-height: 1.5; box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
             word-wrap: break-word; max-width: 100%;
+            backdrop-filter: blur(8px);
         }
         .message.user .bubble { 
-            background-color: #ACA7D8; color: #1A1B35; 
+            background-color: rgba(172, 167, 216, 0.95); color: #1A1B35; 
             border-radius: 20px 20px 4px 20px; 
         }
         .message.bot .bubble { 
-            background-color: #373A6B; color: white; 
+            background-color: rgba(55, 58, 107, 0.95); color: white; 
             border-radius: 20px 20px 20px 4px; 
         }
         
-        .input-area { padding: 15px 20px 25px 20px; background: transparent; display: flex; justify-content: center; }
+        .input-area { 
+            padding: 15px 20px 25px 20px; background: transparent; 
+            display: flex; justify-content: center; position: relative; z-index: 10; 
+        }
         .input-wrapper { 
             display: flex; align-items: center; width: 100%; max-width: 850px; 
-            background: #272A52; border-radius: 35px; padding: 8px 10px 8px 25px; 
+            background: rgba(39, 42, 82, 0.85); backdrop-filter: blur(10px);
+            border-radius: 35px; padding: 8px 10px 8px 25px; 
             box-shadow: 0 8px 30px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
         }
         input { flex: 1; background: transparent; border: none; color: white; font-size: 16px; outline: none; }
@@ -98,21 +133,22 @@ HTML_TEMPLATE = r"""
         
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #373A6B; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(55, 58, 107, 0.5); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(55, 58, 107, 0.8); }
     </style>
 </head>
 <body>
-    <div class="header">SiggyTMY 👹</div>
+    <div class="header">SiggyTMY</div>
     <div class="chat-container" id="chat-box">
         <div class="message bot">
             <img class="avatar" src="https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg" alt="Siggy">
-            <div class="bubble">Xin chào, Ta là Siggy Ngươi muốn hỏi gì về Lãnh Địa Ritual</div>
+            <div class="bubble">Xin chào, Ta là Siggy. Ngươi muốn hỏi gì về Lãnh Địa Ritual?</div>
         </div>
     </div>
     <div class="typing" id="typing-indicator">Siggy đang vận ma thuật...</div>
     <div class="input-area">
         <div class="input-wrapper">
-            <input type="text" id="user-input" placeholder="Viết khế ước..." onkeypress="handleKeyPress(event)">
+            <input type="text" id="user-input" placeholder="Viết khế ước..." onkeypress="handleKeyPress(event)" autocomplete="off">
             <button class="send-btn" onclick="sendMessage()">
                 <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
             </button>
@@ -121,7 +157,10 @@ HTML_TEMPLATE = r"""
 
     <script>
         let chatHistory = [];
-        const userAvatar =   "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg";
+        
+        /* !!! QUAN TRỌNG: THAY LINK ẢNH ĐẠI DIỆN CỦA BẠN VÀO ĐÂY ĐỂ KHÔNG BỊ VỠ ẢNH !!! */
+        const userAvatar =  "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"; 
+        
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
 
         function appendMessage(sender, text) {
