@@ -102,11 +102,11 @@ HTML_TEMPLATE = r"""
     </style>
 </head>
 <body>
-    <div class="header">SiggyTMY</div>
+    <div class="header">SiggyTMY 👹</div>
     <div class="chat-container" id="chat-box">
         <div class="message bot">
             <img class="avatar" src="https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg" alt="Siggy">
-            <div class="bubble">Xin chào, TƯ MÃ Ý 👹 Ta là Siggy Ngươi muốn hỏi gì về Lãnh Địa Ritual</div>
+            <div class="bubble">Xin chào, Ta là Siggy Ngươi muốn hỏi gì về Lãnh Địa Ritual</div>
         </div>
     </div>
     <div class="typing" id="typing-indicator">Siggy đang vận ma thuật...</div>
@@ -121,7 +121,7 @@ HTML_TEMPLATE = r"""
 
     <script>
         let chatHistory = [];
-        const userAvatar = "LINK_ANH_CUA_BAN";
+        const userAvatar =   "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg";
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
 
         function appendMessage(sender, text) {
