@@ -57,7 +57,6 @@ HTML_TEMPLATE = r"""
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SiggyTMY</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * { box-sizing: border-box; font-family: 'Nunito', sans-serif; }
         
@@ -89,7 +88,7 @@ HTML_TEMPLATE = r"""
             opacity: 0.05; z-index: 0; pointer-events: none; animation: magicPulse 6s ease-in-out infinite;
         }
 
-        /* HEADER VÀ CÁC NÚT CÔNG CỤ */
+        /* HEADER */
         .header { 
             padding: 18px; font-size: 26px; font-weight: 800; letter-spacing: 2px;
             background: rgba(43, 46, 82, 0.95); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
@@ -97,19 +96,15 @@ HTML_TEMPLATE = r"""
             text-shadow: 0 0 10px #ba55d3, 0 0 20px #8a2be2, 0 0 30px #4b0082; box-shadow: 0 4px 15px rgba(186, 85, 211, 0.2); 
             display: flex; justify-content: center; align-items: center;
         }
-        .header-tools {
-            position: absolute; right: 20px; display: flex; gap: 10px;
-        }
+        .header-tools { position: absolute; right: 20px; display: flex; gap: 10px; }
         .tool-btn {
             background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center;
             font-size: 18px; transition: all 0.3s ease; color: white; outline: none;
         }
-        .tool-btn:hover { transform: scale(1.1); }
-        .clear-btn:hover { background: #ff3b5c; border-color: #ff3b5c; box-shadow: 0 0 15px #ff3b5c; }
-        .cam-btn:hover { background: #3498db; border-color: #3498db; box-shadow: 0 0 15px #3498db; }
+        .clear-btn:hover { background: #ff3b5c; border-color: #ff3b5c; box-shadow: 0 0 15px #ff3b5c; transform: rotate(15deg) scale(1.1); }
         
-        .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+        .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; width: 100%; position: relative; z-index: 2; scroll-behavior: smooth; }
         .message { display: flex; align-items: flex-end; max-width: 85%; }
         .message.user { align-self: flex-end; flex-direction: row-reverse; }
         .message.bot { align-self: flex-start; }
@@ -122,7 +117,6 @@ HTML_TEMPLATE = r"""
         
         .bubble { padding: 14px 22px; font-size: 16px; line-height: 1.5; word-wrap: break-word; max-width: 100%; backdrop-filter: blur(8px); position: relative; }
         
-        /* TIN NHẮN BOT VÀ NÚT COPY */
         .message.bot .bubble { 
             background-color: rgba(42, 43, 74, 0.85); color: #e0e0e0; border: 1px solid #5e35b1; 
             border-radius: 20px 20px 20px 4px; box-shadow: -2px 2px 15px rgba(0, 0, 0, 0.4); 
@@ -133,15 +127,10 @@ HTML_TEMPLATE = r"""
             font-size: 16px; cursor: pointer; opacity: 0.5; transition: all 0.2s ease; padding: 0; outline: none;
         }
         .copy-btn:hover { opacity: 1; transform: scale(1.2); }
-
-        /* TIN NHẮN NGƯỜI DÙNG */
         .message.user .bubble { background: linear-gradient(135deg, #6a1b9a, #8e24aa); color: #ffffff; border: 1px solid #ab47bc; border-radius: 20px 20px 4px 20px; box-shadow: 2px 2px 15px rgba(142, 36, 170, 0.5); }
         
         /* === STYLE CHO DISCORD ROLES === */
-        .role-tag {
-            padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 14.5px;
-            display: inline-block; margin: 0 2px;
-        }
+        .role-tag { padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 14.5px; display: inline-block; margin: 0 2px; }
         .role-radiant { color: #f1c40f; background-color: rgba(241, 196, 15, 0.15); }
         .role-ritualist { color: #2ecc71; background-color: rgba(46, 204, 113, 0.15); }
         .role-ritty-bitty { color: #3498db; background-color: rgba(52, 152, 219, 0.15); }
@@ -154,6 +143,20 @@ HTML_TEMPLATE = r"""
         
         .input-area { padding: 15px 20px calc(25px + env(safe-area-inset-bottom)) 20px; background: transparent; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; }
         
+        /* MENU SLASH COMMANDS */
+        .slash-menu {
+            display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); width: 100%; max-width: 850px;
+            background: rgba(30, 31, 58, 0.95); border: 1px solid #5e35b1; border-radius: 15px; margin-bottom: 15px;
+            backdrop-filter: blur(10px); overflow: hidden; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); z-index: 100;
+        }
+        .slash-item {
+            padding: 12px 15px; cursor: pointer; color: #e0e0e0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s; display: flex; align-items: center; gap: 10px;
+        }
+        .slash-item:last-child { border-bottom: none; }
+        .slash-item:hover { background: rgba(138, 43, 226, 0.4); color: white; }
+        .slash-item b { color: #ba55d3; }
+
         .quick-prompts { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; width: 100%; max-width: 850px; }
         .quick-btn { background: rgba(138, 43, 226, 0.2); border: 1px solid #ba55d3; color: #e0e0e0; padding: 6px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(5px); }
         .quick-btn:hover { background: rgba(186, 85, 211, 0.5); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(186, 85, 211, 0.4); color: white; }
@@ -174,23 +177,21 @@ HTML_TEMPLATE = r"""
     <div class="header">
         <span onclick="unlockAudio()" style="cursor: pointer;">SiggyTMY</span>
         <div class="header-tools">
-            <button class="tool-btn cam-btn" onclick="takeScreenshot()" title="Chụp ảnh Lãnh địa">📸</button>
             <button class="tool-btn clear-btn" onclick="clearChat()" title="Tẩy não ký ức">🗑️</button>
         </div>
     </div>
     
-    <div class="chat-container" id="chat-box">
-        <div class="message bot" id="welcome-msg">
-            <img class="avatar" src="https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg" alt="Siggy">
-            <div class="bubble">
-                <span class="msg-text">Purr! Greetings human. I am Siggy, the supreme mascot of the Ritual Realm. Are you here to grind Discord roles, hunt airdrops, or just ask questions?</span>
-                <button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>
-            </div>
-        </div>
-    </div>
+    <div class="chat-container" id="chat-box"></div>
     <div class="typing" id="typing-indicator">Bản miêu đang vận ma thuật...</div>
     
     <div class="input-area">
+        <div class="slash-menu" id="slash-menu">
+            <div class="slash-item" onclick="selectCommand('/rules')">📜 <b>/rules</b> - Xem luật Nomination</div>
+            <div class="slash-item" onclick="selectCommand('/leaderboard')">🏆 <b>/leaderboard</b> - Bảng xếp hạng vote</div>
+            <div class="slash-item" onclick="selectCommand('/nominate')">⚡ <b>/nominate</b> - Hỏi cách đề cử Ritualist</div>
+            <div class="slash-item" onclick="selectCommand('/grind')">⛏️ <b>/grind</b> - Hỏi cách cày role nhanh</div>
+        </div>
+
         <div class="quick-prompts">
             <button class="quick-btn" onclick="sendQuickMessage('👑 Explain the Laws of Nomination')">👑 Explain the Laws of Nomination</button>
             <button class="quick-btn" onclick="sendQuickMessage('🔮 What is Ritual?')">🔮 What is Ritual?</button>
@@ -198,7 +199,7 @@ HTML_TEMPLATE = r"""
         </div>
 
         <div class="input-wrapper">
-            <input type="text" id="user-input" placeholder="Viết khế ước..." onkeypress="handleKeyPress(event)" autocomplete="off">
+            <input type="text" id="user-input" placeholder="Viết khế ước hoặc gõ / để mở lệnh..." onkeypress="handleKeyPress(event)" autocomplete="off">
             <button class="send-btn" onclick="sendMessage()">
                 <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
             </button>
@@ -226,78 +227,145 @@ HTML_TEMPLATE = r"""
             if (!audioObj) return;
             audioObj.currentTime = 0;
             let playPromise = audioObj.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => { console.log("Bị chặn âm thanh", error); });
-            }
+            if (playPromise !== undefined) playPromise.catch(e => {});
         }
 
+        // --- KHỞI TẠO KÝ ỨC (LOCAL STORAGE) ---
         let chatHistory = [];
         const userAvatar = "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"; 
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
 
-        // Hàm tạo Link Clickable
-        function makeLinksClickable(text) {
-            const urlRegex = /(https?:\/\/[^\s]+)/g;
-            return text.replace(urlRegex, function(url) {
-                return `<a href="${url}" target="_blank" style="color: #00ffff; text-decoration: underline; font-weight: bold;">${url}</a>`;
-            });
+        window.onload = () => {
+            const savedAPI = localStorage.getItem('siggyAPI');
+            const chatBox = document.getElementById('chat-box');
+            
+            if (savedAPI) {
+                chatHistory = JSON.parse(savedAPI);
+                if (chatHistory.length > 0) {
+                    chatHistory.forEach(item => {
+                        const sender = item.role === 'model' ? 'bot' : 'user';
+                        const text = item.parts[0];
+                        appendMessage(sender, text, false); // Tải lại thì không cần hiệu ứng gõ chữ
+                    });
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    return;
+                }
+            }
+            // Nếu không có lịch sử thì hiện câu chào mặc định
+            chatBox.innerHTML = `
+                <div class="message bot" id="welcome-msg">
+                    <img class="avatar" src="${botAvatar}" alt="bot">
+                    <div class="bubble">
+                        <span class="msg-text">Purr! Greetings human. I am Siggy, the supreme mascot of the Ritual Realm. Are you here to grind Discord roles, hunt airdrops, or just ask questions?</span>
+                        <button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>
+                    </div>
+                </div>`;
+        };
+
+        // --- HÀM XỬ LÝ SLASH MENU ---
+        const userInput = document.getElementById('user-input');
+        const slashMenu = document.getElementById('slash-menu');
+        
+        userInput.addEventListener('input', function(e) {
+            if (this.value.startsWith('/')) slashMenu.style.display = 'block';
+            else slashMenu.style.display = 'none';
+        });
+
+        function selectCommand(cmd) {
+            userInput.value = cmd + ' ';
+            slashMenu.style.display = 'none';
+            userInput.focus();
         }
 
-        // Hàm bọc màu ma thuật cho các Role
+        function makeLinksClickable(text) {
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            return text.replace(urlRegex, url => `<a href="${url}" target="_blank" style="color: #00ffff; text-decoration: underline;">${url}</a>`);
+        }
+
         function formatDiscordRoles(text) {
             const rolesMap = {
-                '@Radiant Ritualist': 'role-radiant',
-                '@Ritualist': 'role-ritualist',
-                '@ritty bitty': 'role-ritty-bitty',
-                '@ritty': 'role-ritty',
-                '@Ascendant': 'role-ascendant',
-                '@Harmonic': 'role-harmonic',
-                '@Blessed': 'role-blessed',
-                '@Cursed': 'role-cursed',
-                '@NPC': 'role-npc'
+                '@Radiant Ritualist': 'role-radiant', '@Ritualist': 'role-ritualist',
+                '@ritty bitty': 'role-ritty-bitty', '@ritty': 'role-ritty',
+                '@Ascendant': 'role-ascendant', '@Harmonic': 'role-harmonic',
+                '@Blessed': 'role-blessed', '@Cursed': 'role-cursed', '@NPC': 'role-npc'
             };
-            
             const roleKeys = Object.keys(rolesMap).sort((a, b) => b.length - a.length);
             const regex = new RegExp(`(${roleKeys.join('|')})`, 'gi');
-            
-            return text.replace(regex, function(match) {
+            return text.replace(regex, match => {
                 const matchedKey = Object.keys(rolesMap).find(k => k.toLowerCase() === match.toLowerCase());
                 return `<span class="role-tag ${rolesMap[matchedKey]}">${match}</span>`;
             });
         }
 
-        function appendMessage(sender, text) {
+        // --- HÀM GÕ CHỮ MA THUẬT (TYPEWRITER) ---
+        function typeWriterHTML(element, html, index, chatBox) {
+            if (index < html.length) {
+                let char = html.charAt(index);
+                if (char === '<') {
+                    let tagEnd = html.indexOf('>', index);
+                    if (tagEnd !== -1) {
+                        element.innerHTML += html.substring(index, tagEnd + 1);
+                        index = tagEnd + 1;
+                    } else { element.innerHTML += char; index++; }
+                } else if (char === '&') {
+                    let entEnd = html.indexOf(';', index);
+                    if (entEnd !== -1 && entEnd - index < 10) {
+                        element.innerHTML += html.substring(index, entEnd + 1);
+                        index = entEnd + 1;
+                    } else { element.innerHTML += char; index++; }
+                } else {
+                    element.innerHTML += char; index++;
+                }
+                chatBox.scrollTop = chatBox.scrollHeight;
+                setTimeout(() => typeWriterHTML(element, html, index, chatBox), 12); // Tốc độ gõ 12ms
+            }
+        }
+
+        function appendMessage(sender, text, animate = false) {
             const chatBox = document.getElementById('chat-box');
+            const welcomeMsg = document.getElementById('welcome-msg');
+            if (welcomeMsg && sender === 'user') welcomeMsg.style.display = 'none'; // Ẩn câu chào khi bắt đầu chat
+
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${sender}`;
             const avatarUrl = sender === 'user' ? userAvatar : botAvatar;
             
             let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
-            formattedText = makeLinksClickable(formattedText); // Bắt link trước
-            formattedText = formatDiscordRoles(formattedText); // Bắt role sau
+            formattedText = makeLinksClickable(formattedText);
+            formattedText = formatDiscordRoles(formattedText);
             
-            let bubbleContent = `<span class="msg-text">${formattedText}</span>`;
-            
-            if (sender === 'bot') {
-                bubbleContent += `<button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>`;
-            }
+            let bubbleContent = `<span class="msg-text"></span>`;
+            if (sender === 'bot') bubbleContent += `<button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>`;
 
             msgDiv.innerHTML = `<img class="avatar" src="${avatarUrl}" alt="${sender}"><div class="bubble">${bubbleContent}</div>`;
             chatBox.appendChild(msgDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const textSpan = msgDiv.querySelector('.msg-text');
+            if (animate && sender === 'bot') {
+                typeWriterHTML(textSpan, formattedText, 0, chatBox);
+            } else {
+                textSpan.innerHTML = formattedText;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
         }
 
         function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
-        function sendQuickMessage(text) { document.getElementById('user-input').value = text; sendMessage(); }
+        function sendQuickMessage(text) { userInput.value = text; slashMenu.style.display = 'none'; sendMessage(); }
 
-        // --- HÀM TẨY NÃO ---
+        // --- HÀM TẨY NÃO & XÓA KÝ ỨC ---
         function clearChat() {
             if(confirm("Bạn có chắc chắn muốn xóa sạch ký ức của Bản miêu không?")) {
                 chatHistory = [];
+                localStorage.removeItem('siggyAPI'); // Xóa bộ nhớ
                 const chatBox = document.getElementById('chat-box');
-                const welcomeMsg = document.getElementById('welcome-msg');
-                chatBox.innerHTML = '';
-                chatBox.appendChild(welcomeMsg);
+                chatBox.innerHTML = `
+                    <div class="message bot" id="welcome-msg">
+                        <img class="avatar" src="${botAvatar}" alt="bot">
+                        <div class="bubble">
+                            <span class="msg-text">Purr! Greetings human. I am Siggy, the supreme mascot of the Ritual Realm. Are you here to grind Discord roles, hunt airdrops, or just ask questions?</span>
+                            <button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>
+                        </div>
+                    </div>`;
                 playSound(sendSound);
             }
         }
@@ -305,21 +373,19 @@ HTML_TEMPLATE = r"""
         function copyText(btn) {
             const textToCopy = btn.parentElement.querySelector('.msg-text').innerText;
             navigator.clipboard.writeText(textToCopy).then(() => {
-                const originalIcon = btn.innerHTML;
-                btn.innerHTML = "✅";
-                playSound(sendSound);
+                btn.innerHTML = "✅"; playSound(sendSound);
                 setTimeout(() => { btn.innerHTML = "📋"; }, 2000);
-            }).catch(err => { console.error('Lỗi sao chép: ', err); });
+            }).catch(e => console.error(e));
         }
 
         async function sendMessage() {
-            const inputField = document.getElementById('user-input');
-            const text = inputField.value.trim();
+            const text = userInput.value.trim();
             if (!text) return;
 
+            slashMenu.style.display = 'none'; // Ẩn menu khi gửi
             playSound(sendSound);
-            appendMessage('user', text);
-            inputField.value = '';
+            appendMessage('user', text, false);
+            userInput.value = '';
             document.getElementById('typing-indicator').style.display = 'block';
             const chatBox = document.getElementById('chat-box');
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -333,11 +399,14 @@ HTML_TEMPLATE = r"""
                 document.getElementById('typing-indicator').style.display = 'none';
                 
                 playSound(receiveSound);
-                appendMessage('bot', data.reply);
+                appendMessage('bot', data.reply, true); // True để bật hiệu ứng gõ chữ
+                
+                // Lưu vào Ký ức (Local Storage)
                 chatHistory = data.history;
+                localStorage.setItem('siggyAPI', JSON.stringify(chatHistory));
             } catch (err) {
                 document.getElementById('typing-indicator').style.display = 'none';
-                appendMessage('bot', 'Meow... Ma thuật bị nhiễu loạn rồi');
+                appendMessage('bot', 'Meow... Ma thuật bị nhiễu loạn rồi', true);
             }
         }
 
@@ -347,14 +416,12 @@ HTML_TEMPLATE = r"""
                 e.target.classList.add('shake-avatar');
                 playSound(angryCatSound); 
                 setTimeout(() => e.target.classList.remove('shake-avatar'), 800);
-                
                 const angryMeows = [
                     "Khè khè! Bỏ cái tay dính đầy bụi trần ra khỏi vầng trán ma thuật của ta!",
                     "Meow!! Dám vuốt râu Boss sòng à? Có tin ta trừ point của ngươi không?",
                     "Purr... Ta không phải thú bông! Cày role đi rồi hãy nựng ta!"
                 ];
-                const randomMsg = angryMeows[Math.floor(Math.random() * angryMeows.length)];
-                appendMessage('bot', randomMsg);
+                appendMessage('bot', angryMeows[Math.floor(Math.random() * angryMeows.length)], true); // Bật gõ chữ cho câu chửi
             }
         });
 
