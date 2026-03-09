@@ -63,8 +63,10 @@ HTML_TEMPLATE = r"""
             100% { transform: translate(-50%, -50%) scale(1); opacity: 0.04; }
         }
 
-        body, html { 
-            margin: 0; padding: 0; height: 100vh; width: 100vw;
+       body, html { 
+            margin: 0; padding: 0; 
+            height: 100vh; height: 100dvh; /* Ma thuật chống lẹm đáy màn hình di động */
+            width: 100vw;
             background-color: #26274B; 
             background-image: linear-gradient(-45deg, #2D2E55, #1A1A32, #373A6B, #1E1F3A);
             background-size: 400% 400%;
