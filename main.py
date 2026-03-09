@@ -302,22 +302,6 @@ HTML_TEMPLATE = r"""
             }
         }
 
-        // --- HÀM CHỤP ẢNH MÀN HÌNH MANG ĐI THI ---
-        function takeScreenshot() {
-            playSound(sendSound);
-            const chatBox = document.getElementById('chat-box');
-            
-            html2canvas(chatBox, {
-                backgroundColor: "#1A1A32", // Giữ nền tối ma mị
-                scale: 2 // Tăng độ nét gấp đôi
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Siggy_Realm.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
-        }
-
         function copyText(btn) {
             const textToCopy = btn.parentElement.querySelector('.msg-text').innerText;
             navigator.clipboard.writeText(textToCopy).then(() => {
