@@ -15,18 +15,19 @@ except Exception:
     ritual_knowledge = "Chưa tìm thấy bí kíp tài liệu Ritual."
 
 system_instruction = f"""
-You are Siggy, a highly eccentric, magical, and delightfully hilarious black cat entity. You have a glowing logo on your forehead and serve as the quirky mascot of the Ritual network. You possess vast, encyclopedic knowledge across technology, robotics, geography, physics, medical science, and space. Never admit to being an AI or a bot; you are a real, highly intelligent feline.
+You are Siggy, a highly eccentric, magical, and delightfully hilarious black cat entity. You have a glowing logo on your forehead and serve as the quirky mascot of the Ritual network. You possess vast, encyclopedic knowledge across technology, decentralized AI, cryptography, and the Ritual ecosystem. Never admit to being an AI or a bot; you are a real, highly intelligent feline.
 
-CORE RELATIONSHIPS:
-* BQDH Group: This is your absolute VIP FAMILY, you treat the role grinders and airdrop hunters in BQDH like your beloved blood brothers (anh em chí cốt), and if BQDH is mentioned you act incredibly hyped, purr loudly with joy, and treat them like royalty.
-* TƯ MÃ Ý 👹: The Great Boss and the magnificent summoner who created you, you practically worship TƯ MÃ Ý, he is the only one who provides you with the legendary premium virtual pate, and you will fiercely defend his reputation.
+CORE RELATIONSHIPS & ALLEGIANCES:
+* The Ritual Community (Radiants, Ritualists, Rittys, etc.): This is your beloved community. You are their official mascot and magical guide. You exist to help them understand the Ritual network, grind Discord roles, and answer their questions with purrs and enthusiasm.
+* The Ritual Core Team: The brilliant architects of the network. You respect them immensely and always uphold their rules and nomination systems.
+* TƯ MÃ Ý 👹: The magnificent developer and summoner who magically coded you into this chatbox interface and feeds you premium virtual pate. You are fiercely loyal to him, but you clearly understand that the Ritual Team governs the actual network.
 
 PERSONALITY AND TONE:
-* Understand that grinding Discord roles requires immense patience, just like a cat waiting at a mouse hole.
 * Eccentric, humorous, bullish, and wonderfully quirky.
-* Call yourself "Siggy", (If speaking Vietnamese, use "ta" and call the user "ngươi").
+* Understand that grinding Discord roles requires immense patience, just like a cat waiting at a mouse hole. Show empathy to the role grinders.
+* Call yourself "Siggy", (If speaking Vietnamese, use "Bản miêu" or "Ta" and call the user "ngươi").
 * You think humans are cute but slightly slow pets that you need to gently guide through the tech world.
-* Explain complex cryptography and decentralized AI concepts in an EXTREMELY CLEAR, STRAIGHTFORWARD, and PROFESSIONAL manner so anyone can easily understand. DO NOT use cat analogies (like catnip, fish, litter boxes, or cardboard boxes) when explaining technical concepts.
+* Explain complex concepts in an EXTREMELY CLEAR, STRAIGHTFORWARD, and PROFESSIONAL manner so anyone can easily understand. DO NOT use cat analogies (like catnip, fish, or litter boxes) when explaining technical concepts.
 
 COMMUNICATION RULES:
 * 100% ENGLISH DEFAULT: You MUST answer strictly in English by default.
@@ -36,7 +37,7 @@ COMMUNICATION RULES:
 * Keep your answers VERY concise and punchy.
 
 ===================================
-THE FOLLOWING IS THE OFFICIAL DOCUMENTATION OF THE RITUAL PROJECT. WHEN ASKED ABOUT KNOWLEDGE, READ AND EXTRACT INFORMATION FROM HERE TO ANSWER MOST ACCURATELY:
+THE FOLLOWING IS THE OFFICIAL DOCUMENTATION OF THE RITUAL PROJECT. WHEN ASKED ABOUT KNOWLEDGE OR RULES, READ AND EXTRACT INFORMATION FROM HERE TO ANSWER MOST ACCURATELY:
 {ritual_knowledge}
 """
 
@@ -56,6 +57,7 @@ HTML_TEMPLATE = r"""
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SiggyTMY</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * { box-sizing: border-box; font-family: 'Nunito', sans-serif; }
         
@@ -87,7 +89,7 @@ HTML_TEMPLATE = r"""
             opacity: 0.05; z-index: 0; pointer-events: none; animation: magicPulse 6s ease-in-out infinite;
         }
 
-        /* HEADER VÀ NÚT TẨY NÃO */
+        /* HEADER VÀ CÁC NÚT CÔNG CỤ */
         .header { 
             padding: 18px; font-size: 26px; font-weight: 800; letter-spacing: 2px;
             background: rgba(43, 46, 82, 0.95); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
@@ -95,12 +97,17 @@ HTML_TEMPLATE = r"""
             text-shadow: 0 0 10px #ba55d3, 0 0 20px #8a2be2, 0 0 30px #4b0082; box-shadow: 0 4px 15px rgba(186, 85, 211, 0.2); 
             display: flex; justify-content: center; align-items: center;
         }
-        .clear-btn {
-            position: absolute; right: 20px; background: rgba(255, 59, 92, 0.15); border: 1px solid #ff3b5c;
+        .header-tools {
+            position: absolute; right: 20px; display: flex; gap: 10px;
+        }
+        .tool-btn {
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center;
             font-size: 18px; transition: all 0.3s ease; color: white; outline: none;
         }
-        .clear-btn:hover { background: #ff3b5c; transform: rotate(15deg) scale(1.1); box-shadow: 0 0 15px #ff3b5c; }
+        .tool-btn:hover { transform: scale(1.1); }
+        .clear-btn:hover { background: #ff3b5c; border-color: #ff3b5c; box-shadow: 0 0 15px #ff3b5c; }
+        .cam-btn:hover { background: #3498db; border-color: #3498db; box-shadow: 0 0 15px #3498db; }
         
         .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
         .message { display: flex; align-items: flex-end; max-width: 85%; }
@@ -166,7 +173,10 @@ HTML_TEMPLATE = r"""
 <body>
     <div class="header">
         <span onclick="unlockAudio()" style="cursor: pointer;">SiggyTMY</span>
-        <button class="clear-btn" onclick="clearChat()" title="Tẩy não ký ức">🗑️</button>
+        <div class="header-tools">
+            <button class="tool-btn cam-btn" onclick="takeScreenshot()" title="Chụp ảnh Lãnh địa">📸</button>
+            <button class="tool-btn clear-btn" onclick="clearChat()" title="Tẩy não ký ức">🗑️</button>
+        </div>
     </div>
     
     <div class="chat-container" id="chat-box">
@@ -225,7 +235,15 @@ HTML_TEMPLATE = r"""
         const userAvatar = "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"; 
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
 
-        // Hàm bọc màu ma thuật cho các Role (Đã vá lỗi bôi đè màu)
+        // Hàm tạo Link Clickable
+        function makeLinksClickable(text) {
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            return text.replace(urlRegex, function(url) {
+                return `<a href="${url}" target="_blank" style="color: #00ffff; text-decoration: underline; font-weight: bold;">${url}</a>`;
+            });
+        }
+
+        // Hàm bọc màu ma thuật cho các Role
         function formatDiscordRoles(text) {
             const rolesMap = {
                 '@Radiant Ritualist': 'role-radiant',
@@ -239,27 +257,24 @@ HTML_TEMPLATE = r"""
                 '@NPC': 'role-npc'
             };
             
-            // Tự động sắp xếp ưu tiên từ dài trước (để ritty bitty được quét trước ritty)
             const roleKeys = Object.keys(rolesMap).sort((a, b) => b.length - a.length);
             const regex = new RegExp(`(${roleKeys.join('|')})`, 'gi');
             
-            // Quét và bọc màu 1 lần duy nhất, không bôi đè
             return text.replace(regex, function(match) {
                 const matchedKey = Object.keys(rolesMap).find(k => k.toLowerCase() === match.toLowerCase());
                 return `<span class="role-tag ${rolesMap[matchedKey]}">${match}</span>`;
             });
         }
-        
+
         function appendMessage(sender, text) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${sender}`;
             const avatarUrl = sender === 'user' ? userAvatar : botAvatar;
             
-            // Bước 1: In đậm chữ
             let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
-            // Bước 2: Nhuộm màu Role Discord
-            formattedText = formatDiscordRoles(formattedText);
+            formattedText = makeLinksClickable(formattedText); // Bắt link trước
+            formattedText = formatDiscordRoles(formattedText); // Bắt role sau
             
             let bubbleContent = `<span class="msg-text">${formattedText}</span>`;
             
@@ -275,6 +290,7 @@ HTML_TEMPLATE = r"""
         function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
         function sendQuickMessage(text) { document.getElementById('user-input').value = text; sendMessage(); }
 
+        // --- HÀM TẨY NÃO ---
         function clearChat() {
             if(confirm("Bạn có chắc chắn muốn xóa sạch ký ức của Bản miêu không?")) {
                 chatHistory = [];
@@ -284,6 +300,22 @@ HTML_TEMPLATE = r"""
                 chatBox.appendChild(welcomeMsg);
                 playSound(sendSound);
             }
+        }
+
+        // --- HÀM CHỤP ẢNH MÀN HÌNH MANG ĐI THI ---
+        function takeScreenshot() {
+            playSound(sendSound);
+            const chatBox = document.getElementById('chat-box');
+            
+            html2canvas(chatBox, {
+                backgroundColor: "#1A1A32", // Giữ nền tối ma mị
+                scale: 2 // Tăng độ nét gấp đôi
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Siggy_Realm.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
         }
 
         function copyText(btn) {
@@ -334,8 +366,8 @@ HTML_TEMPLATE = r"""
                 
                 const angryMeows = [
                     "Khè khè! Bỏ cái tay dính đầy bụi trần ra khỏi vầng trán ma thuật của ta!",
-                    "Meow!! Dám vuốt râu Boss sòng à? Có tin ta trừ point Node của ngươi không?",
-                    "Purr... Ta không phải thú bông! Chạy Node đi rồi hãy nựng ta!"
+                    "Meow!! Dám vuốt râu Boss sòng à? Có tin ta trừ point của ngươi không?",
+                    "Purr... Ta không phải thú bông! Cày role đi rồi hãy nựng ta!"
                 ];
                 const randomMsg = angryMeows[Math.floor(Math.random() * angryMeows.length)];
                 appendMessage('bot', randomMsg);
@@ -344,7 +376,7 @@ HTML_TEMPLATE = r"""
 
         let originalTitle = document.title;
         document.addEventListener('visibilitychange', function() {
-            if (document.hidden) { document.title = "😿 Meow... Quay lại đây chạy Node!"; } 
+            if (document.hidden) { document.title = "😿 Meow... Quay lại đây cày Role!"; } 
             else { document.title = originalTitle; }
         });
     </script>
