@@ -297,30 +297,33 @@ HTML_TEMPLATE = r"""
             });
         }
 
-        // --- HÀM GÕ CHỮ MA THUẬT (TYPEWRITER) ---
-        function typeWriterHTML(element, html, index, chatBox) {
+       // --- HÀM GÕ CHỮ MA THUẬT (ĐÃ VÁ LỖI MẤT MÀU) ---
+        function typeWriterHTML(element, html, index, chatBox, currentText = "") {
             if (index < html.length) {
                 let char = html.charAt(index);
                 if (char === '<') {
                     let tagEnd = html.indexOf('>', index);
                     if (tagEnd !== -1) {
-                        element.innerHTML += html.substring(index, tagEnd + 1);
+                        currentText += html.substring(index, tagEnd + 1);
                         index = tagEnd + 1;
-                    } else { element.innerHTML += char; index++; }
+                    } else { currentText += char; index++; }
                 } else if (char === '&') {
                     let entEnd = html.indexOf(';', index);
                     if (entEnd !== -1 && entEnd - index < 10) {
-                        element.innerHTML += html.substring(index, entEnd + 1);
+                        currentText += html.substring(index, entEnd + 1);
                         index = entEnd + 1;
-                    } else { element.innerHTML += char; index++; }
+                    } else { currentText += char; index++; }
                 } else {
-                    element.innerHTML += char; index++;
+                    currentText += char; index++;
                 }
+                
+                // Mấu chốt sửa lỗi: Ghi đè bộ nhớ (innerHTML = ) thay vì cộng dồn (+=)
+                element.innerHTML = currentText; 
                 chatBox.scrollTop = chatBox.scrollHeight;
-                setTimeout(() => typeWriterHTML(element, html, index, chatBox), 12); // Tốc độ gõ 12ms
+                setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText), 15);
             }
         }
-
+        
         function appendMessage(sender, text, animate = false) {
             const chatBox = document.getElementById('chat-box');
             const welcomeMsg = document.getElementById('welcome-msg');
