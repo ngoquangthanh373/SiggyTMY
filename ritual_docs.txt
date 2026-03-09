@@ -102,7 +102,8 @@ RITUAL DISCORD ROLE NOMINATION & VOTING SYSTEM:
 
 1. Overview & Commands:
 - Community members can nominate others for roles using a specific bot.
-- Use command `/leaderboard_nominations` in the "🫡┇rank" channel to check the leaderboard and vote.
+- To nominate or vote, you MUST go to the "🫡┇rank" channel here: https://discord.com/channels/1210468736205852672/1242888966118572103
+- Use command `/leaderboard_nominations` in that channel to check the leaderboard and vote.
 
 2. Rules & Limitations:
 - You may only nominate 1 person per batch (per month).
