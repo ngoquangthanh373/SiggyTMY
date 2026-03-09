@@ -320,7 +320,7 @@ HTML_TEMPLATE = r"""
                 // Mấu chốt sửa lỗi: Ghi đè bộ nhớ (innerHTML = ) thay vì cộng dồn (+=)
                 element.innerHTML = currentText; 
                 chatBox.scrollTop = chatBox.scrollHeight;
-                setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText), 15);
+                setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText), 5);
             }
         }
         
