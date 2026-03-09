@@ -129,7 +129,8 @@ HTML_TEMPLATE = r"""
         }
         
         .input-area { 
-            padding: 15px 20px 25px 20px; background: transparent; 
+            padding: 15px 20px calc(25px + env(safe-area-inset-bottom)) 20px; /* Đẩy khung lên trên vùng an toàn của iPhone */
+            background: transparent; 
             display: flex; justify-content: center; position: relative; z-index: 10; 
         }
         .input-wrapper { 
