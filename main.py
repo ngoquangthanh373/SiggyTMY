@@ -73,6 +73,19 @@ HTML_TEMPLATE = r"""
             from { box-shadow: 0 0 10px rgba(186, 85, 211, 0.5); }
             to { box-shadow: 0 0 25px rgba(186, 85, 211, 1), 0 0 40px rgba(138, 43, 226, 0.8); }
         }
+        @keyframes angryShake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
 
         body, html { 
             margin: 0; padding: 0; 
@@ -119,21 +132,27 @@ HTML_TEMPLATE = r"""
             width: 45px; height: 45px; border-radius: 50%; object-fit: cover; 
             margin: 0 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             background-color: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+            cursor: pointer; transition: transform 0.2s;
         }
+        .avatar:hover { transform: scale(1.1); }
 
-        /* Avatar của Bot phát sáng */
         .message.bot .avatar {
             border: 2px solid #ba55d3;
             box-shadow: 0 0 15px rgba(186, 85, 211, 0.8), 0 0 30px rgba(138, 43, 226, 0.6);
             animation: pulseGlow 2s infinite alternate;
         }
         
+        .shake-avatar { 
+            animation: angryShake 0.4s !important; 
+            animation-iteration-count: 2 !important; 
+            border-color: #ff3b5c !important; 
+            box-shadow: 0 0 25px #ff3b5c !important; 
+        }
+        
         .bubble { 
             padding: 14px 22px; font-size: 16px; line-height: 1.5; 
             word-wrap: break-word; max-width: 100%; backdrop-filter: blur(8px);
         }
-        
-        /* Tin nhắn của User */
         .message.user .bubble { 
             background: linear-gradient(135deg, #6a1b9a, #8e24aa);
             color: #ffffff;
@@ -141,8 +160,6 @@ HTML_TEMPLATE = r"""
             border-radius: 20px 20px 4px 20px; 
             box-shadow: 2px 2px 15px rgba(142, 36, 170, 0.5);
         }
-        
-        /* Tin nhắn của Bot */
         .message.bot .bubble { 
             background-color: rgba(42, 43, 74, 0.85);
             color: #e0e0e0;
@@ -153,8 +170,27 @@ HTML_TEMPLATE = r"""
         
         .input-area { 
             padding: 15px 20px calc(25px + env(safe-area-inset-bottom)) 20px; 
-            background: transparent; display: flex; justify-content: center; position: relative; z-index: 10; 
+            background: transparent; display: flex; flex-direction: column; align-items: center; 
+            position: relative; z-index: 10; 
         }
+        
+        /* CSS NÚT KHẾ ƯỚC NHANH */
+        .quick-prompts {
+            display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+            margin-bottom: 12px; width: 100%; max-width: 850px;
+        }
+        .quick-btn {
+            background: rgba(138, 43, 226, 0.2); border: 1px solid #ba55d3;
+            color: #e0e0e0; padding: 6px 14px; border-radius: 20px; font-size: 13px;
+            cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(5px);
+        }
+        .quick-btn:hover { 
+            background: rgba(186, 85, 211, 0.5); 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 10px rgba(186, 85, 211, 0.4); 
+            color: white;
+        }
+
         .input-wrapper { 
             display: flex; align-items: center; width: 100%; max-width: 850px; 
             background: rgba(39, 42, 82, 0.85); backdrop-filter: blur(10px);
@@ -193,7 +229,14 @@ HTML_TEMPLATE = r"""
         </div>
     </div>
     <div class="typing" id="typing-indicator">Bản miêu đang vận ma thuật...</div>
+    
     <div class="input-area">
+        <div class="quick-prompts">
+            <button class="quick-btn" onclick="sendQuickMessage('🔮 What is Ritual?')">🔮 What is Ritual?</button>
+            <button class="quick-btn" onclick="sendQuickMessage('👑 BQDH là ai?')">👑 BQDH là ai?</button>
+            <button class="quick-btn" onclick="sendQuickMessage('🐟 Nộp Pate cho Siggy')">🐟 Nộp Pate cho Siggy</button>
+        </div>
+
         <div class="input-wrapper">
             <input type="text" id="user-input" placeholder="Viết khế ước..." onkeypress="handleKeyPress(event)" autocomplete="off">
             <button class="send-btn" onclick="sendMessage()">
@@ -204,7 +247,6 @@ HTML_TEMPLATE = r"""
 
     <script>
         let chatHistory = [];
-        
         const userAvatar = "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"; 
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
 
@@ -226,6 +268,12 @@ HTML_TEMPLATE = r"""
 
         function handleKeyPress(e) {
             if (e.key === 'Enter') sendMessage();
+        }
+
+        // HÀM GỬI NHANH CHO NÚT KHẾ ƯỚC
+        function sendQuickMessage(text) {
+            document.getElementById('user-input').value = text;
+            sendMessage();
         }
 
         async function sendMessage() {
@@ -256,6 +304,35 @@ HTML_TEMPLATE = r"""
                 appendMessage('bot', 'Meow... Ma thuật bị nhiễu loạn rồi');
             }
         }
+
+        // JS HIỆU ỨNG TRÊU GHẸO BẢN MIÊU
+        document.getElementById('chat-box').addEventListener('click', function(e) {
+            if(e.target.classList.contains('avatar') && e.target.closest('.bot')) {
+                e.target.classList.add('shake-avatar');
+                setTimeout(() => e.target.classList.remove('shake-avatar'), 800);
+                
+                // Random câu chửi lầy lội không tốn API
+                const angryMeows = [
+                    "Khè khè! Bỏ cái tay dính đầy bụi trần ra khỏi vầng trán ma thuật của ta!",
+                    "Meow!! Dám vuốt râu Boss sòng à? Có tin ta trừ point Node của ngươi không?",
+                    "Purr... Ta không phải thú bông! Chạy Node đi rồi hãy nựng ta!"
+                ];
+                const randomMsg = angryMeows[Math.floor(Math.random() * angryMeows.length)];
+                
+                // Bot tự chửi lại ngay lập tức
+                appendMessage('bot', randomMsg);
+            }
+        });
+
+        // JS HIỆU ỨNG DỖI KHI ĐỔI TAB
+        let originalTitle = document.title;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                document.title = "😿 Meow... Quay lại đây chạy Node!";
+            } else {
+                document.title = originalTitle;
+            }
+        });
     </script>
 </body>
 </html>
