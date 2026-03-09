@@ -180,10 +180,11 @@ HTML_TEMPLATE = r"""
     </div>
 
     <script>
-        // --- KHỞI TẠO ÂM THANH MA THUẬT ---
-        const sendSound = new Audio("https://www.soundjay.com/buttons/sounds/button-16.mp3");
-        const receiveSound = new Audio("https://www.soundjay.com/buttons/sounds/button-09.mp3");
-        const angryCatSound = new Audio("https://www.myinstants.com/media/sounds/cat-meow-1.mp3");
+    
+       // --- KHỞI TẠO ÂM THANH MA THUẬT (Link mới chống chặn 100%) ---
+        const sendSound = new Audio("https://www.myinstants.com/media/sounds/pop-sound-effect.mp3"); // Tiếng Cụp mượt mà khi gửi
+        const receiveSound = new Audio("https://www.myinstants.com/media/sounds/ting.mp3"); // Tiếng Ting khi Siggy trả lời
+        const angryCatSound = new Audio("https://www.myinstants.com/media/sounds/cat-meow-1.mp3"); // Tiếng Meow khi trêu ghẹo
 
         sendSound.load(); receiveSound.load(); angryCatSound.load();
 
