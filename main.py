@@ -63,16 +63,11 @@ HTML_TEMPLATE = r"""
         @keyframes magicPulse { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.04; } 50% { transform: translate(-50%, -52%) scale(1.03); opacity: 0.08; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.04; } }
         @keyframes pulseGlow { from { box-shadow: 0 0 10px rgba(186, 85, 211, 0.5); } to { box-shadow: 0 0 25px rgba(186, 85, 211, 1), 0 0 40px rgba(138, 43, 226, 0.8); } }
         @keyframes angryShake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
+            0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); }
             100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
 
@@ -91,12 +86,20 @@ HTML_TEMPLATE = r"""
             opacity: 0.05; z-index: 0; pointer-events: none; animation: magicPulse 6s ease-in-out infinite;
         }
 
+        /* HEADER VÀ NÚT TẨY NÃO */
         .header { 
-            text-align: center; padding: 18px; font-size: 26px; font-weight: 800; letter-spacing: 2px;
+            padding: 18px; font-size: 26px; font-weight: 800; letter-spacing: 2px;
             background: rgba(43, 46, 82, 0.95); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
             position: relative; z-index: 10; color: #ffffff;
             text-shadow: 0 0 10px #ba55d3, 0 0 20px #8a2be2, 0 0 30px #4b0082; box-shadow: 0 4px 15px rgba(186, 85, 211, 0.2); 
+            display: flex; justify-content: center; align-items: center;
         }
+        .clear-btn {
+            position: absolute; right: 20px; background: rgba(255, 59, 92, 0.15); border: 1px solid #ff3b5c;
+            border-radius: 50%; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; transition: all 0.3s ease; color: white; outline: none;
+        }
+        .clear-btn:hover { background: #ff3b5c; transform: rotate(15deg) scale(1.1); box-shadow: 0 0 15px #ff3b5c; }
         
         .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
         .message { display: flex; align-items: flex-end; max-width: 85%; }
@@ -109,9 +112,22 @@ HTML_TEMPLATE = r"""
         
         .shake-avatar { animation: angryShake 0.4s !important; animation-iteration-count: 2 !important; border-color: #ff3b5c !important; box-shadow: 0 0 25px #ff3b5c !important; }
         
-        .bubble { padding: 14px 22px; font-size: 16px; line-height: 1.5; word-wrap: break-word; max-width: 100%; backdrop-filter: blur(8px); }
+        .bubble { padding: 14px 22px; font-size: 16px; line-height: 1.5; word-wrap: break-word; max-width: 100%; backdrop-filter: blur(8px); position: relative; }
+        
+        /* TIN NHẮN BOT VÀ NÚT COPY */
+        .message.bot .bubble { 
+            background-color: rgba(42, 43, 74, 0.85); color: #e0e0e0; border: 1px solid #5e35b1; 
+            border-radius: 20px 20px 20px 4px; box-shadow: -2px 2px 15px rgba(0, 0, 0, 0.4); 
+            padding-bottom: 30px; /* Nhường chỗ cho nút copy */
+        }
+        .copy-btn {
+            position: absolute; bottom: 6px; right: 12px; background: transparent; border: none;
+            font-size: 16px; cursor: pointer; opacity: 0.5; transition: all 0.2s ease; padding: 0; outline: none;
+        }
+        .copy-btn:hover { opacity: 1; transform: scale(1.2); }
+
+        /* TIN NHẮN NGƯỜI DÙNG */
         .message.user .bubble { background: linear-gradient(135deg, #6a1b9a, #8e24aa); color: #ffffff; border: 1px solid #ab47bc; border-radius: 20px 20px 4px 20px; box-shadow: 2px 2px 15px rgba(142, 36, 170, 0.5); }
-        .message.bot .bubble { background-color: rgba(42, 43, 74, 0.85); color: #e0e0e0; border: 1px solid #5e35b1; border-radius: 20px 20px 20px 4px; box-shadow: -2px 2px 15px rgba(0, 0, 0, 0.4); }
         
         .input-area { padding: 15px 20px calc(25px + env(safe-area-inset-bottom)) 20px; background: transparent; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; }
         
@@ -132,11 +148,18 @@ HTML_TEMPLATE = r"""
     </style>
 </head>
 <body>
-    <div class="header" onclick="unlockAudio()">SiggyTMY</div>
+    <div class="header">
+        <span onclick="unlockAudio()" style="cursor: pointer;">SiggyTMY</span>
+        <button class="clear-btn" onclick="clearChat()" title="Tẩy não ký ức">🗑️</button>
+    </div>
+    
     <div class="chat-container" id="chat-box">
-        <div class="message bot">
+        <div class="message bot" id="welcome-msg">
             <img class="avatar" src="https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg" alt="Siggy">
-            <div class="bubble">Purr! Greetings human. I am Siggy, the supreme mascot of the Ritual Realm. Have you brought node compute power or just questions?</div>
+            <div class="bubble">
+                <span class="msg-text">Purr! Greetings human. I am Siggy, the supreme mascot of the Ritual Realm. Have you brought node compute power or just questions?</span>
+                <button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>
+            </div>
         </div>
     </div>
     <div class="typing" id="typing-indicator">Bản miêu đang vận ma thuật...</div>
@@ -144,7 +167,7 @@ HTML_TEMPLATE = r"""
     <div class="input-area">
         <div class="quick-prompts">
             <button class="quick-btn" onclick="sendQuickMessage('🔮 What is Ritual?')">🔮 What is Ritual?</button>
-            <button class="quick-btn" onclick="sendQuickMessage('👑 Tư Mã Ý là ai?')">👑 Tư Mã Ý là ai?</button>
+            <button class="quick-btn" onclick="sendQuickMessage('👑 BQDH là ai?')">👑 BQDH là ai?</button>
             <button class="quick-btn" onclick="sendQuickMessage('🐟 Nộp Pate cho Siggy')">🐟 Nộp Pate cho Siggy</button>
         </div>
 
@@ -157,23 +180,18 @@ HTML_TEMPLATE = r"""
     </div>
 
     <script>
-        // --- KHỞI TẠO ÂM THANH MA THUẬT (Link MP3 siêu chuẩn) ---
+        // --- KHỞI TẠO ÂM THANH MA THUẬT ---
         const sendSound = new Audio("https://www.soundjay.com/buttons/sounds/button-16.mp3");
         const receiveSound = new Audio("https://www.soundjay.com/buttons/sounds/button-09.mp3");
         const angryCatSound = new Audio("https://www.myinstants.com/media/sounds/cat-meow-1.mp3");
 
-        // Ép trình duyệt tải trước
         sendSound.load(); receiveSound.load(); angryCatSound.load();
 
         let audioUnlocked = false;
-
-        // Mẹo: Mở khóa âm thanh ở lần chạm đầu tiên vào web
         function unlockAudio() {
             if (!audioUnlocked) {
                 sendSound.play().then(() => {
-                    sendSound.pause();
-                    sendSound.currentTime = 0;
-                    audioUnlocked = true;
+                    sendSound.pause(); sendSound.currentTime = 0; audioUnlocked = true;
                 }).catch(e => console.log("Chưa mở khóa được âm thanh"));
             }
         }
@@ -184,9 +202,7 @@ HTML_TEMPLATE = r"""
             audioObj.currentTime = 0;
             let playPromise = audioObj.play();
             if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Trình duyệt đang chặn âm thanh. Hãy click vào web 1 lần để mở khóa!", error);
-                });
+                playPromise.catch(error => { console.log("Bị chặn âm thanh", error); });
             }
         }
 
@@ -200,7 +216,15 @@ HTML_TEMPLATE = r"""
             msgDiv.className = `message ${sender}`;
             const avatarUrl = sender === 'user' ? userAvatar : botAvatar;
             let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
-            msgDiv.innerHTML = `<img class="avatar" src="${avatarUrl}" alt="${sender}"><div class="bubble">${formattedText}</div>`;
+            
+            let bubbleContent = `<span class="msg-text">${formattedText}</span>`;
+            
+            // Chỉ thêm nút copy cho tin nhắn của bot
+            if (sender === 'bot') {
+                bubbleContent += `<button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>`;
+            }
+
+            msgDiv.innerHTML = `<img class="avatar" src="${avatarUrl}" alt="${sender}"><div class="bubble">${bubbleContent}</div>`;
             chatBox.appendChild(msgDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
@@ -208,13 +232,37 @@ HTML_TEMPLATE = r"""
         function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
         function sendQuickMessage(text) { document.getElementById('user-input').value = text; sendMessage(); }
 
+        // --- HÀM TẨY NÃO (XÓA CHAT) ---
+        function clearChat() {
+            if(confirm("Bạn có chắc chắn muốn xóa sạch ký ức của Bản miêu không?")) {
+                chatHistory = [];
+                const chatBox = document.getElementById('chat-box');
+                const welcomeMsg = document.getElementById('welcome-msg');
+                chatBox.innerHTML = '';
+                chatBox.appendChild(welcomeMsg);
+                playSound(sendSound);
+            }
+        }
+
+        // --- HÀM SAO CHÉP (COPY TEXT) ---
+        function copyText(btn) {
+            const textToCopy = btn.parentElement.querySelector('.msg-text').innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalIcon = btn.innerHTML;
+                btn.innerHTML = "✅";
+                playSound(sendSound);
+                setTimeout(() => { btn.innerHTML = "📋"; }, 2000);
+            }).catch(err => {
+                console.error('Lỗi sao chép: ', err);
+            });
+        }
+
         async function sendMessage() {
             const inputField = document.getElementById('user-input');
             const text = inputField.value.trim();
             if (!text) return;
 
-            playSound(sendSound); // Phát tiếng gửi tin nhắn
-
+            playSound(sendSound);
             appendMessage('user', text);
             inputField.value = '';
             document.getElementById('typing-indicator').style.display = 'block';
@@ -229,8 +277,7 @@ HTML_TEMPLATE = r"""
                 const data = await response.json();
                 document.getElementById('typing-indicator').style.display = 'none';
                 
-                playSound(receiveSound); // Phát tiếng Ting khi nhận phản hồi
-                
+                playSound(receiveSound);
                 appendMessage('bot', data.reply);
                 chatHistory = data.history;
             } catch (err) {
@@ -239,11 +286,11 @@ HTML_TEMPLATE = r"""
             }
         }
 
-        // JS HIỆU ỨNG TRÊU GHẸO BẢN MIÊU
+        // JS HIỆU ỨNG TRÊU GHẸO
         document.getElementById('chat-box').addEventListener('click', function(e) {
             if(e.target.classList.contains('avatar') && e.target.closest('.bot')) {
                 e.target.classList.add('shake-avatar');
-                playSound(angryCatSound); // Tiếng Meow gắt gỏng
+                playSound(angryCatSound); 
                 setTimeout(() => e.target.classList.remove('shake-avatar'), 800);
                 
                 const angryMeows = [
@@ -265,7 +312,6 @@ HTML_TEMPLATE = r"""
 </body>
 </html>
 """
-
 @app.route("/")
 def home():
     return HTML_TEMPLATE
