@@ -118,7 +118,7 @@ HTML_TEMPLATE = r"""
         .message.bot .bubble { 
             background-color: rgba(42, 43, 74, 0.85); color: #e0e0e0; border: 1px solid #5e35b1; 
             border-radius: 20px 20px 20px 4px; box-shadow: -2px 2px 15px rgba(0, 0, 0, 0.4); 
-            padding-bottom: 30px; /* Nhường chỗ cho nút copy */
+            padding-bottom: 30px; 
         }
         .copy-btn {
             position: absolute; bottom: 6px; right: 12px; background: transparent; border: none;
@@ -128,6 +128,21 @@ HTML_TEMPLATE = r"""
 
         /* TIN NHẮN NGƯỜI DÙNG */
         .message.user .bubble { background: linear-gradient(135deg, #6a1b9a, #8e24aa); color: #ffffff; border: 1px solid #ab47bc; border-radius: 20px 20px 4px 20px; box-shadow: 2px 2px 15px rgba(142, 36, 170, 0.5); }
+        
+        /* === STYLE CHO DISCORD ROLES === */
+        .role-tag {
+            padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 14.5px;
+            display: inline-block; margin: 0 2px;
+        }
+        .role-radiant { color: #f1c40f; background-color: rgba(241, 196, 15, 0.15); }
+        .role-ritualist { color: #2ecc71; background-color: rgba(46, 204, 113, 0.15); }
+        .role-ritty-bitty { color: #c39bd3; background-color: rgba(195, 155, 211, 0.15); }
+        .role-ritty { color: #9b59b6; background-color: rgba(155, 89, 182, 0.15); }
+        .role-blessed { color: #d4af37; background-color: rgba(212, 175, 55, 0.15); }
+        .role-cursed { color: #8e44ad; background-color: rgba(142, 68, 173, 0.15); }
+        .role-npc { color: #95a5a6; background-color: rgba(149, 165, 166, 0.15); }
+        .role-ascendant { color: #3498db; background-color: rgba(52, 152, 219, 0.15); }
+        .role-harmonic { color: #bdc3c7; background-color: rgba(189, 195, 199, 0.15); }
         
         .input-area { padding: 15px 20px calc(25px + env(safe-area-inset-bottom)) 20px; background: transparent; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; }
         
@@ -166,8 +181,8 @@ HTML_TEMPLATE = r"""
     
     <div class="input-area">
         <div class="quick-prompts">
+            <button class="quick-btn" onclick="sendQuickMessage('👑 Explain the Laws of Nomination')">👑 Explain the Laws of Nomination</button>
             <button class="quick-btn" onclick="sendQuickMessage('🔮 What is Ritual?')">🔮 What is Ritual?</button>
-            <button class="quick-btn" onclick="sendQuickMessage('👑 BQDH là ai?')">👑 BQDH là ai?</button>
             <button class="quick-btn" onclick="sendQuickMessage('🐟 Nộp Pate cho Siggy')">🐟 Nộp Pate cho Siggy</button>
         </div>
 
@@ -180,11 +195,9 @@ HTML_TEMPLATE = r"""
     </div>
 
     <script>
-    
-       // --- KHỞI TẠO ÂM THANH MA THUẬT (Link mới chống chặn 100%) ---
-        const sendSound = new Audio("https://www.myinstants.com/media/sounds/pop-sound-effect.mp3"); // Tiếng Cụp mượt mà khi gửi
-        const receiveSound = new Audio("https://www.myinstants.com/media/sounds/ting.mp3"); // Tiếng Ting khi Siggy trả lời
-        const angryCatSound = new Audio("https://www.myinstants.com/media/sounds/cat-meow-1.mp3"); // Tiếng Meow khi trêu ghẹo
+        const sendSound = new Audio("https://www.myinstants.com/media/sounds/pop-sound-effect.mp3");
+        const receiveSound = new Audio("https://www.myinstants.com/media/sounds/ting.mp3");
+        const angryCatSound = new Audio("https://www.myinstants.com/media/sounds/cat-meow-1.mp3");
 
         sendSound.load(); receiveSound.load(); angryCatSound.load();
 
@@ -211,16 +224,42 @@ HTML_TEMPLATE = r"""
         const userAvatar = "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"; 
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
 
+        // Hàm bọc màu ma thuật cho các Role
+        function formatDiscordRoles(text) {
+            let formatted = text;
+            const rolesMap = {
+                '@Radiant Ritualist': 'role-radiant',
+                '@ritty bitty': 'role-ritty-bitty',
+                '@Ritualist': 'role-ritualist',
+                '@Ascendant': 'role-ascendant',
+                '@Harmonic': 'role-harmonic',
+                '@Blessed': 'role-blessed',
+                '@Cursed': 'role-cursed',
+                '@ritty': 'role-ritty',
+                '@NPC': 'role-npc'
+            };
+            
+            for (const [role, className] of Object.entries(rolesMap)) {
+                // Tạo Regex tự động tìm chữ khớp (không phân biệt chữ hoa thường)
+                const regex = new RegExp(role, 'gi'); 
+                formatted = formatted.replace(regex, `<span class="role-tag ${className}">${role}</span>`);
+            }
+            return formatted;
+        }
+
         function appendMessage(sender, text) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${sender}`;
             const avatarUrl = sender === 'user' ? userAvatar : botAvatar;
+            
+            // Bước 1: In đậm chữ
             let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+            // Bước 2: Nhuộm màu Role Discord
+            formattedText = formatDiscordRoles(formattedText);
             
             let bubbleContent = `<span class="msg-text">${formattedText}</span>`;
             
-            // Chỉ thêm nút copy cho tin nhắn của bot
             if (sender === 'bot') {
                 bubbleContent += `<button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>`;
             }
@@ -233,7 +272,6 @@ HTML_TEMPLATE = r"""
         function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
         function sendQuickMessage(text) { document.getElementById('user-input').value = text; sendMessage(); }
 
-        // --- HÀM TẨY NÃO (XÓA CHAT) ---
         function clearChat() {
             if(confirm("Bạn có chắc chắn muốn xóa sạch ký ức của Bản miêu không?")) {
                 chatHistory = [];
@@ -245,7 +283,6 @@ HTML_TEMPLATE = r"""
             }
         }
 
-        // --- HÀM SAO CHÉP (COPY TEXT) ---
         function copyText(btn) {
             const textToCopy = btn.parentElement.querySelector('.msg-text').innerText;
             navigator.clipboard.writeText(textToCopy).then(() => {
@@ -253,9 +290,7 @@ HTML_TEMPLATE = r"""
                 btn.innerHTML = "✅";
                 playSound(sendSound);
                 setTimeout(() => { btn.innerHTML = "📋"; }, 2000);
-            }).catch(err => {
-                console.error('Lỗi sao chép: ', err);
-            });
+            }).catch(err => { console.error('Lỗi sao chép: ', err); });
         }
 
         async function sendMessage() {
