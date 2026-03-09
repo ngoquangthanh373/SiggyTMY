@@ -224,29 +224,31 @@ HTML_TEMPLATE = r"""
         const userAvatar = "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"; 
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
 
-        // Hàm bọc màu ma thuật cho các Role
+        // Hàm bọc màu ma thuật cho các Role (Đã vá lỗi bôi đè màu)
         function formatDiscordRoles(text) {
-            let formatted = text;
             const rolesMap = {
                 '@Radiant Ritualist': 'role-radiant',
-                '@ritty bitty': 'role-ritty-bitty',
                 '@Ritualist': 'role-ritualist',
+                '@ritty bitty': 'role-ritty-bitty',
+                '@ritty': 'role-ritty',
                 '@Ascendant': 'role-ascendant',
                 '@Harmonic': 'role-harmonic',
                 '@Blessed': 'role-blessed',
                 '@Cursed': 'role-cursed',
-                '@ritty': 'role-ritty',
                 '@NPC': 'role-npc'
             };
             
-            for (const [role, className] of Object.entries(rolesMap)) {
-                // Tạo Regex tự động tìm chữ khớp (không phân biệt chữ hoa thường)
-                const regex = new RegExp(role, 'gi'); 
-                formatted = formatted.replace(regex, `<span class="role-tag ${className}">${role}</span>`);
-            }
-            return formatted;
+            // Tự động sắp xếp ưu tiên từ dài trước (để ritty bitty được quét trước ritty)
+            const roleKeys = Object.keys(rolesMap).sort((a, b) => b.length - a.length);
+            const regex = new RegExp(`(${roleKeys.join('|')})`, 'gi');
+            
+            // Quét và bọc màu 1 lần duy nhất, không bôi đè
+            return text.replace(regex, function(match) {
+                const matchedKey = Object.keys(rolesMap).find(k => k.toLowerCase() === match.toLowerCase());
+                return `<span class="role-tag ${rolesMap[matchedKey]}">${match}</span>`;
+            });
         }
-
+        
         function appendMessage(sender, text) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
