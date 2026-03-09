@@ -174,7 +174,6 @@ HTML_TEMPLATE = r"""
             position: relative; z-index: 10; 
         }
         
-        /* CSS NÚT KHẾ ƯỚC NHANH */
         .quick-prompts {
             display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
             margin-bottom: 12px; width: 100%; max-width: 850px;
@@ -246,6 +245,16 @@ HTML_TEMPLATE = r"""
     </div>
 
     <script>
+        // --- KHỞI TẠO ÂM THANH MA THUẬT ---
+        const sendSound = new Audio("https://actions.google.com/sounds/v1/water/water_drop.ogg");
+        const receiveSound = new Audio("https://actions.google.com/sounds/v1/science_fiction/beep_short.ogg");
+        const angryCatSound = new Audio("https://actions.google.com/sounds/v1/pets/cat_meow.ogg");
+
+        function playSound(audioObj) {
+            audioObj.currentTime = 0; // Tua lại từ đầu để phát mượt mà
+            audioObj.play().catch(e => console.log("Trình duyệt chặn autoplay:", e));
+        }
+
         let chatHistory = [];
         const userAvatar = "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"; 
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
@@ -270,7 +279,6 @@ HTML_TEMPLATE = r"""
             if (e.key === 'Enter') sendMessage();
         }
 
-        // HÀM GỬI NHANH CHO NÚT KHẾ ƯỚC
         function sendQuickMessage(text) {
             document.getElementById('user-input').value = text;
             sendMessage();
@@ -280,6 +288,8 @@ HTML_TEMPLATE = r"""
             const inputField = document.getElementById('user-input');
             const text = inputField.value.trim();
             if (!text) return;
+
+            playSound(sendSound); // Phát tiếng gửi tin nhắn
 
             appendMessage('user', text);
             inputField.value = '';
@@ -297,6 +307,9 @@ HTML_TEMPLATE = r"""
                 
                 const data = await response.json();
                 document.getElementById('typing-indicator').style.display = 'none';
+                
+                playSound(receiveSound); // Phát tiếng Ting khi Siggy trả lời
+                
                 appendMessage('bot', data.reply);
                 chatHistory = data.history;
             } catch (err) {
@@ -305,13 +318,13 @@ HTML_TEMPLATE = r"""
             }
         }
 
-        // JS HIỆU ỨNG TRÊU GHẸO BẢN MIÊU
+        // JS HIỆU ỨNG TRÊU GHẸO BẢN MIÊU (CÓ TIẾNG MEOW)
         document.getElementById('chat-box').addEventListener('click', function(e) {
             if(e.target.classList.contains('avatar') && e.target.closest('.bot')) {
                 e.target.classList.add('shake-avatar');
+                playSound(angryCatSound); // Phát tiếng mèo kêu khè khè
                 setTimeout(() => e.target.classList.remove('shake-avatar'), 800);
                 
-                // Random câu chửi lầy lội không tốn API
                 const angryMeows = [
                     "Khè khè! Bỏ cái tay dính đầy bụi trần ra khỏi vầng trán ma thuật của ta!",
                     "Meow!! Dám vuốt râu Boss sòng à? Có tin ta trừ point Node của ngươi không?",
@@ -319,7 +332,6 @@ HTML_TEMPLATE = r"""
                 ];
                 const randomMsg = angryMeows[Math.floor(Math.random() * angryMeows.length)];
                 
-                // Bot tự chửi lại ngay lập tức
                 appendMessage('bot', randomMsg);
             }
         });
