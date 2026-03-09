@@ -96,3 +96,30 @@ L2 RaaS (Rollup-as-a-Service): Cung cấp bộ công cụ để bất kỳ ai c�
 Where we're going (Hướng đi): Ritual đang tập trung đưa mạng lưới lên Mainnet, hoàn thiện Symphony và cơ chế Resonance. Mục tiêu là biến Ritual thành "Schelling point" (điểm hội tụ) cho toàn bộ Web3 về xử lý tính toán.
 
 Where everyone else is not going (Nơi người khác không đi): Trong khi các chain khác vẫn mải mê đua nhau về thông lượng (TPS) và giảm phí gas một cách mù quáng, Ritual tập trung vào "Độ biểu đạt" (Expressivity) – mở rộng giới hạn NHỮNG GÌ bạn có thể làm trên blockchain, chứ không chỉ là làm nó NHANH HƠN.
+
+---
+RITUAL DISCORD ROLE NOMINATION & VOTING SYSTEM:
+
+1. Overview & Commands:
+- Community members can nominate others for roles using a specific bot.
+- Use command `/leaderboard_nominations` in the "🫡┇rank" channel to check the leaderboard and vote.
+
+2. Rules & Limitations:
+- You may only nominate 1 person per batch (per month).
+- You cannot nominate yourself, bots, or someone for a rank they already possess.
+- Candidates must meet secret message and contribution prerequisites.
+- Campaigning or begging for nominations is strictly forbidden and results in getting "Dunce'd".
+- Nominations do not guarantee a role; they are indicators for the Ritual team's final review.
+
+3. Voting System:
+- Only members with Ritty, Ritualist, or Ritty Bitty roles can vote.
+- Each member can vote on 3 candidates per month.
+- A nomination automatically counts as one vote.
+- Weighted voting power: A Radiant Ritualist's vote counts 5x. A Ritualist's vote counts 2x.
+
+4. The Hierarchical Laws of Nomination:
+- Submissions can be anonymous.
+- To nominate @Ritualist: Only @Radiant Ritualist can nominate.
+- To nominate @ritty: Only @Radiant Ritualist and @Ritualist can nominate.
+- To nominate @ritty bitty: @Radiant Ritualist, @Ritualist, and @ritty can nominate.
+---
