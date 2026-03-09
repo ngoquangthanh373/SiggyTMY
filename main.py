@@ -136,7 +136,7 @@ HTML_TEMPLATE = r"""
         }
         .role-radiant { color: #f1c40f; background-color: rgba(241, 196, 15, 0.15); }
         .role-ritualist { color: #2ecc71; background-color: rgba(46, 204, 113, 0.15); }
-        .role-ritty-bitty { color: #c39bd3; background-color: rgba(195, 155, 211, 0.15); }
+        .role-ritty-bitty { color: #3498db; background-color: rgba(52, 152, 219, 0.15); }
         .role-ritty { color: #9b59b6; background-color: rgba(155, 89, 182, 0.15); }
         .role-blessed { color: #d4af37; background-color: rgba(212, 175, 55, 0.15); }
         .role-cursed { color: #8e44ad; background-color: rgba(142, 68, 173, 0.15); }
