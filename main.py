@@ -176,7 +176,7 @@ HTML_TEMPLATE = r"""
     <div class="chat-container" id="chat-box">
         <div class="message bot">
             <img class="avatar" src="https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg" alt="Siggy">
-            <div class="bubble">Xin chào, Ta là Siggy. Ngươi muốn hỏi gì về Lãnh Địa Ritual?</div>
+            <div class="bubble">Hello, I'm Siggy. What do you want to ask about the Ritual Realm?</div>
         </div>
     </div>
     <div class="typing" id="typing-indicator">Siggy đang vận ma thuật...</div>
