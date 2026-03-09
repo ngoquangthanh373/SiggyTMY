@@ -144,7 +144,7 @@ HTML_TEMPLATE = r"""
     <div class="input-area">
         <div class="quick-prompts">
             <button class="quick-btn" onclick="sendQuickMessage('🔮 What is Ritual?')">🔮 What is Ritual?</button>
-            <button class="quick-btn" onclick="sendQuickMessage('👑 BQDH là ai?')">👑 BQDH là ai?</button>
+            <button class="quick-btn" onclick="sendQuickMessage('👑 Tư Mã Ý là ai?')">👑 Tư Mã Ý là ai?</button>
             <button class="quick-btn" onclick="sendQuickMessage('🐟 Nộp Pate cho Siggy')">🐟 Nộp Pate cho Siggy</button>
         </div>
 
