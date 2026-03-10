@@ -508,7 +508,13 @@ HTML_TEMPLATE = r"""
 
             isGenerating = true; 
 
-            if (text.toLowerCase() === '/pate' || text.includes('Nộp Pate cho Siggy')) { triggerPateRain(); }
+            if (text.toLowerCase() === '/pate' || text.includes('Nộp Pate cho Siggy')) { 
+                triggerPateRain(); 
+    
+                // Thêm tiếng Meow rùng rợn/đáng yêu ở đây
+                 let meowSound = new Audio('https://assets.mixkit.co/active_storage/sfx/94/94-preview.mp3');
+                meowSound.play();
+            }
 
             slashMenu.style.display = 'none'; 
             playSound(sendSound);
