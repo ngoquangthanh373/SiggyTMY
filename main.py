@@ -61,32 +61,6 @@ HTML_TEMPLATE = r"""
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; font-family: 'Nunito', sans-serif; }
-
-        /* === BẢNG ĐIỀU KHIỂN 2 BÊN (HOLOGRAM PANELS) === */
-        .side-panel {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            width: 260px; padding: 22px;
-            background: rgba(30, 31, 58, 0.3); border: 1px solid rgba(186, 85, 211, 0.2);
-            border-radius: 15px; backdrop-filter: blur(8px); box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            color: #e0e0e0; font-size: 14px;
-            display: flex; flex-direction: column; gap: 16px;
-            z-index: 1; pointer-events: none; /* Không cản trở việc click chuột */
-        }
-        .left-panel { left: 30px; }
-        .right-panel { right: 30px; }
-        
-        .panel-title { color: #ba55d3; font-weight: 800; font-size: 16px; border-bottom: 1px solid rgba(186, 85, 211, 0.3); padding-bottom: 10px; text-align: center; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 0 8px rgba(186, 85, 211, 0.5);}
-        .stat-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 8px;}
-        .stat-item:last-child { border-bottom: none; padding-bottom: 0;}
-        .stat-label { color: #8C8FA8; font-weight: 600; font-size: 13px;}
-        .stat-value { font-weight: 800; font-size: 13px;}
-        .glow-cyan { color: #00ffff; text-shadow: 0 0 5px rgba(0,255,255,0.5); }
-        .glow-red { color: #ff3b5c; text-shadow: 0 0 5px rgba(255,59,92,0.5); }
-        
-        /* Tự động ẩn 2 bảng này nếu màn hình nhỏ hơn 1300px (Laptop nhỏ/Điện thoại) */
-        @media (max-width: 1300px) {
-            .side-panel { display: none; }
-        }
         
         /* HIỆU ỨNG ĐỘNG */
         @keyframes cosmicDrift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -211,21 +185,7 @@ HTML_TEMPLATE = r"""
 </head>
 <body>
     <div class="header">
-    <div class="side-panel left-panel">
-        <div class="panel-title">🔮 Ritual Realm</div>
-        <div class="stat-item"><span class="stat-label">Network</span><span class="stat-value glow-cyan">Online</span></div>
-        <div class="stat-item"><span class="stat-label">Nomination Era</span><span class="stat-value" style="color: #2ecc71;">Active</span></div>
-        <div class="stat-item"><span class="stat-label">Siggy Mood</span><span class="stat-value">Eccentric</span></div>
-        <div class="stat-item"><span class="stat-label">Active Radiants</span><span class="stat-value">Top Secret</span></div>
-    </div>
-
-    <div class="side-panel right-panel">
-        <div class="panel-title">👹 Summoner</div>
-        <div class="stat-item"><span class="stat-label">Identity</span><span class="stat-value glow-red">TƯ MÃ Ý</span></div>
-        <div class="stat-item"><span class="stat-label">Class</span><span class="stat-value">Airdrop Hunter</span></div>
-        <div class="stat-item"><span class="stat-label">Objective</span><span class="stat-value">Role Grinding</span></div>
-        <div class="stat-item"><span class="stat-label">Pate Provided</span><span class="stat-value">Max Level</span></div>
-    </div>
+    
         <span onclick="unlockAudio()" style="cursor: pointer;">SiggyTMY</span>
         <div class="header-tools">
             <button class="tool-btn clear-btn" onclick="clearChat()" title="Tẩy não ký ức">🗑️</button>
