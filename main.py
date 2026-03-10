@@ -361,9 +361,24 @@ HTML_TEMPLATE = r"""
 
         function copyText(btn) { const t = btn.parentElement.querySelector('.msg-text').innerText; navigator.clipboard.writeText(t).then(() => { btn.innerHTML = "✅"; playSound(sendSound); setTimeout(() => { btn.innerHTML = "📋"; }, 2000); }).catch(e => {}); }
 
-       async function sendMessage() {
+      // --- THÊM CÔNG TẮC TỔNG Ở ĐÂY ---
+        let isGenerating = false;
+
+        function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
+        
+        function sendQuickMessage(text) { 
+            if (isGenerating) return; // Khóa click nút gợi ý khi đang load
+            userInput.value = text; 
+            slashMenu.style.display = 'none'; 
+            sendMessage(); 
+        }
+
+        async function sendMessage() {
+            if (isGenerating) return; // Khóa toàn bộ luồng gửi tin
             const text = userInput.value.trim();
             if (!text) return;
+
+            isGenerating = true; // Bật công tắc khóa
 
             // KÍCH HOẠT EASTER EGG
             if (text.toLowerCase() === '/pate' || text.includes('Nộp Pate cho Siggy')) { triggerPateRain(); }
@@ -378,11 +393,12 @@ HTML_TEMPLATE = r"""
 
             userInput.value = '';
             
-            // --- BẮT ĐẦU KHÓA MÕM ANTI-SPAM ---
+            // Khóa mõm ô nhập liệu
             userInput.disabled = true;
             userInput.placeholder = "Bản miêu đang nặn chữ...";
             
             document.getElementById('typing-indicator').style.display = 'flex';
+            const chatBox = document.getElementById('chat-box');
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
@@ -395,7 +411,6 @@ HTML_TEMPLATE = r"""
                 
                 document.getElementById('typing-indicator').style.display = 'none';
                 
-                // --- MỞ KHÓA SAU KHI CÓ KẾT QUẢ ---
                 userInput.disabled = false;
                 userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
                 userInput.focus();
@@ -407,13 +422,12 @@ HTML_TEMPLATE = r"""
                 localStorage.setItem('siggyAPI', JSON.stringify(chatHistory));
             } catch (err) {
                 document.getElementById('typing-indicator').style.display = 'none';
-                
-                // --- MỞ KHÓA NGAY CẢ KHI LỖI ---
                 userInput.disabled = false;
                 userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
                 userInput.focus();
-                
                 appendMessage('bot', 'Meow... Ma thuật bị nhiễu loạn rồi', true);
+            } finally {
+                isGenerating = false; // Nhả công tắc khóa khi xử lý xong (hoặc bị lỗi)
             }
         }
 
