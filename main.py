@@ -302,6 +302,7 @@ HTML_TEMPLATE = r"""
             return html;
         }
         
+        // 1. Cập nhật hàm gõ chữ: Thêm onComplete để báo cáo khi gõ xong chữ cuối cùng
         function typeWriterHTML(element, html, index, chatBox, currentText = "", onComplete = null) {
             if (index < html.length) {
                 let char = html.charAt(index);
@@ -316,7 +317,8 @@ HTML_TEMPLATE = r"""
             }
         }
 
-       function appendMessage(sender, text, animate = false, timestamp = getCurrentTime(), onComplete = null) {
+        // 2. Cập nhật hàm appendMessage: Truyền onComplete vào hàm gõ chữ
+        function appendMessage(sender, text, animate = false, timestamp = getCurrentTime(), onComplete = null) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${sender}`;
@@ -355,46 +357,7 @@ HTML_TEMPLATE = r"""
             return timestamp;
         }
 
-            msgDiv.innerHTML = `
-                <img class="avatar" src="${avatarUrl}" alt="${sender}">
-                <div class="message-content">
-                    <div class="message-header"><span class="sender-name">${senderName}</span><span class="timestamp">${timestamp}</span></div>
-                    <div class="bubble">${bubbleContent}</div>
-                </div>`;
-            chatBox.appendChild(msgDiv);
-
-            const textSpan = msgDiv.querySelector('.msg-text');
-            if (animate && sender === 'bot') { typeWriterHTML(textSpan, formattedText, 0, chatBox); } 
-            else { textSpan.innerHTML = formattedText; chatBox.scrollTop = chatBox.scrollHeight; }
-            return timestamp;
-        }
-
-        function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
-        function sendQuickMessage(text) { userInput.value = text; slashMenu.style.display = 'none'; sendMessage(); }
-
-        function clearChat() {
-            if(confirm("Bạn có chắc chắn muốn xóa sạch ký ức của Bản miêu không?")) {
-                chatHistory = []; localStorage.removeItem('siggyAPI'); 
-                document.getElementById('chat-box').innerHTML = '';
-                appendMessage('bot', 'Purr! Greetings human. I am Siggy, the supreme mascot of the Ritual Realm. Are you here to grind Discord roles, hunt airdrops, or just ask questions?', false, getCurrentTime());
-                playSound(sendSound);
-            }
-        }
-
-        function copyText(btn) { const t = btn.parentElement.querySelector('.msg-text').innerText; navigator.clipboard.writeText(t).then(() => { btn.innerHTML = "✅"; playSound(sendSound); setTimeout(() => { btn.innerHTML = "📋"; }, 2000); }).catch(e => {}); }
-
-      // --- THÊM CÔNG TẮC TỔNG Ở ĐÂY ---
-        let isGenerating = false;
-
-        function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
-        
-        function sendQuickMessage(text) { 
-            if (isGenerating) return; // Khóa click nút gợi ý khi đang load
-            userInput.value = text; 
-            slashMenu.style.display = 'none'; 
-            sendMessage(); 
-        }
-
+        // 3. Cập nhật sendMessage: Chỉ mở khóa khi được onComplete gọi
         async function sendMessage() {
             if (isGenerating) return; 
             const text = userInput.value.trim();
