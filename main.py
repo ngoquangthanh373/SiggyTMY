@@ -281,11 +281,22 @@ HTML_TEMPLATE = r"""
             }
         }
 
+        // Hàm thả cảm xúc (Chỉ cho phép chọn 1)
         window.toggleReaction = function(btn) {
             playSound(sendSound);
-            btn.classList.toggle('active');
+            
+            // Kiểm tra xem nút mình vừa bấm đã sáng chưa
+            const isActive = btn.classList.contains('active');
+            
+            // Tắt hết đèn của tất cả các nút trong cùng cái khung đó
+            const allBtns = btn.parentElement.querySelectorAll('.reaction-btn');
+            allBtns.forEach(b => b.classList.remove('active'));
+            
+            // Nếu nút lúc nãy chưa sáng, thì bây giờ bật nó lên (còn nếu sáng rồi thì thôi, coi như Hủy thả cảm xúc)
+            if (!isActive) {
+                btn.classList.add('active');
+            }
         }
-
         function formatMarkdownAndRoles(text) {
             let html = text || "Meow...";
             html = html.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank" style="color: #00ffff; text-decoration: underline;">${url}</a>`);
