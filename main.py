@@ -301,19 +301,22 @@ HTML_TEMPLATE = r"""
             html = html.replace(/\n/g, '<br>'); html = html.replace(/<\/div><br>/g, '</div>');
             return html;
         }
-
-        function typeWriterHTML(element, html, index, chatBox, currentText = "") {
+        
+        function typeWriterHTML(element, html, index, chatBox, currentText = "", onComplete = null) {
             if (index < html.length) {
                 let char = html.charAt(index);
                 if (char === '<') { let tagEnd = html.indexOf('>', index); if (tagEnd !== -1) { currentText += html.substring(index, tagEnd + 1); index = tagEnd + 1; } else { currentText += char; index++; } } 
                 else if (char === '&') { let entEnd = html.indexOf(';', index); if (entEnd !== -1 && entEnd - index < 10) { currentText += html.substring(index, entEnd + 1); index = entEnd + 1; } else { currentText += char; index++; } } 
                 else { currentText += char; index++; }
                 element.innerHTML = currentText; chatBox.scrollTop = chatBox.scrollHeight;
-                setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText), 1);
+                
+                setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText, onComplete), 1);
+            } else {
+                if (onComplete) onComplete(); // Gõ xong mới gọi hàm mở khóa!
             }
         }
 
-        function appendMessage(sender, text, animate = false, timestamp = getCurrentTime()) {
+       function appendMessage(sender, text, animate = false, timestamp = getCurrentTime(), onComplete = null) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
             msgDiv.className = `message ${sender}`;
@@ -332,6 +335,25 @@ HTML_TEMPLATE = r"""
                     <button class="reaction-btn" onclick="toggleReaction(this)">😹</button>
                 </div>`;
             }
+
+            msgDiv.innerHTML = `
+                <img class="avatar" src="${avatarUrl}" alt="${sender}">
+                <div class="message-content">
+                    <div class="message-header"><span class="sender-name">${senderName}</span><span class="timestamp">${timestamp}</span></div>
+                    <div class="bubble">${bubbleContent}</div>
+                </div>`;
+            chatBox.appendChild(msgDiv);
+
+            const textSpan = msgDiv.querySelector('.msg-text');
+            if (animate && sender === 'bot') { 
+                typeWriterHTML(textSpan, formattedText, 0, chatBox, "", onComplete); 
+            } else { 
+                textSpan.innerHTML = formattedText; 
+                chatBox.scrollTop = chatBox.scrollHeight; 
+                if (onComplete) onComplete();
+            }
+            return timestamp;
+        }
 
             msgDiv.innerHTML = `
                 <img class="avatar" src="${avatarUrl}" alt="${sender}">
@@ -374,13 +396,12 @@ HTML_TEMPLATE = r"""
         }
 
         async function sendMessage() {
-            if (isGenerating) return; // Khóa toàn bộ luồng gửi tin
+            if (isGenerating) return; 
             const text = userInput.value.trim();
             if (!text) return;
 
-            isGenerating = true; // Bật công tắc khóa
+            isGenerating = true; 
 
-            // KÍCH HOẠT EASTER EGG
             if (text.toLowerCase() === '/pate' || text.includes('Nộp Pate cho Siggy')) { triggerPateRain(); }
 
             slashMenu.style.display = 'none'; 
@@ -393,10 +414,9 @@ HTML_TEMPLATE = r"""
 
             userInput.value = '';
             
-            // Khóa mõm ô nhập liệu
+            // Khóa mõm ngay khi gửi
             userInput.disabled = true;
             userInput.placeholder = "Bản miêu đang nặn chữ...";
-            
             document.getElementById('typing-indicator').style.display = 'flex';
             const chatBox = document.getElementById('chat-box');
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -411,12 +431,18 @@ HTML_TEMPLATE = r"""
                 
                 document.getElementById('typing-indicator').style.display = 'none';
                 
-                userInput.disabled = false;
-                userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
-                userInput.focus();
+                // TẠO HÀM MỞ KHÓA (CHỈ CHẠY KHI GÕ XONG)
+                const unlockChat = () => {
+                    userInput.disabled = false;
+                    userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
+                    userInput.focus();
+                    isGenerating = false; 
+                };
                 
                 playSound(receiveSound);
-                const botTime = appendMessage('bot', data.reply, true); 
+                // Truyền hàm unlockChat vào để đợi gõ xong mới chạy
+                const botTime = appendMessage('bot', data.reply, true, getCurrentTime(), unlockChat); 
+                
                 chatHistory = data.history;
                 chatHistory[chatHistory.length - 1].timestamp = botTime;
                 localStorage.setItem('siggyAPI', JSON.stringify(chatHistory));
@@ -425,12 +451,10 @@ HTML_TEMPLATE = r"""
                 userInput.disabled = false;
                 userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
                 userInput.focus();
+                isGenerating = false;
                 appendMessage('bot', 'Meow... Ma thuật bị nhiễu loạn rồi', true);
-            } finally {
-                isGenerating = false; // Nhả công tắc khóa khi xử lý xong (hoặc bị lỗi)
             }
         }
-
         document.getElementById('chat-box').addEventListener('click', function(e) {
             if(e.target.classList.contains('avatar') && e.target.closest('.bot')) {
                 e.target.classList.add('shake-avatar'); playSound(angryCatSound); 
