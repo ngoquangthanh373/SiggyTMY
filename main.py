@@ -225,6 +225,7 @@ HTML_TEMPLATE = r"""
         function playSound(audioObj) { if (!audioObj) return; audioObj.currentTime = 0; let p = audioObj.play(); if (p !== undefined) p.catch(e => {}); }
 
         let chatHistory = [];
+        let isGenerating = false; // CÔNG TẮC TỔNG ANTI-SPAM
         const userAvatar = "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"; 
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
 
@@ -256,7 +257,6 @@ HTML_TEMPLATE = r"""
 
         function selectCommand(cmd) { userInput.value = cmd + ' '; slashMenu.style.display = 'none'; userInput.focus(); }
 
-        // Logic Cuộn Tin Nhắn (Scroll To Bottom)
         const chatBox = document.getElementById('chat-box');
         const scrollBtn = document.getElementById('scroll-btn');
         chatBox.addEventListener('scroll', () => {
@@ -265,7 +265,6 @@ HTML_TEMPLATE = r"""
         });
         function scrollToBottom() { chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' }); }
 
-        // Logic Mưa Pate
         function triggerPateRain() {
             playSound(purrSound);
             const emojis = ['🐟', '🐟', '🥫', '🐟', '😻'];
@@ -282,14 +281,13 @@ HTML_TEMPLATE = r"""
             }
         }
 
-        // Logic Thả Cảm Xúc
         window.toggleReaction = function(btn) {
             playSound(sendSound);
             btn.classList.toggle('active');
         }
 
         function formatMarkdownAndRoles(text) {
-            let html = text;
+            let html = text || "Meow...";
             html = html.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank" style="color: #00ffff; text-decoration: underline;">${url}</a>`);
             html = html.replace(/```([\s\S]*?)```/g, '<div class="md-code">$1</div>');
             html = html.replace(/`([^`]+)`/g, '<span class="inline-code">$1</span>');
@@ -301,11 +299,7 @@ HTML_TEMPLATE = r"""
             html = html.replace(/\n/g, '<br>'); html = html.replace(/<\/div><br>/g, '</div>');
             return html;
         }
-        
-        // --- CÔNG TẮC TỔNG (BẮT BUỘC PHẢI CÓ ĐỂ TRÁNH LỖI UNDEFINED) ---
-        let isGenerating = false;
 
-        // 1. Hàm gõ chữ ma thuật (Có báo cáo khi gõ xong)
         function typeWriterHTML(element, html, index, chatBox, currentText = "", onComplete = null) {
             if (index < html.length) {
                 let char = html.charAt(index);
@@ -320,17 +314,14 @@ HTML_TEMPLATE = r"""
                     else { currentText += char; index++; } 
                 } 
                 else { currentText += char; index++; }
-                
                 element.innerHTML = currentText; 
                 chatBox.scrollTop = chatBox.scrollHeight;
-                
                 setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText, onComplete), 1);
             } else {
-                if (onComplete) onComplete(); // Gõ xong chữ cuối cùng mới mở khóa!
+                if (onComplete) onComplete();
             }
         }
 
-        // 2. Hàm in tin nhắn ra màn hình
         function appendMessage(sender, text, animate = false, timestamp = getCurrentTime(), onComplete = null) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
@@ -338,7 +329,7 @@ HTML_TEMPLATE = r"""
             const avatarUrl = sender === 'user' ? userAvatar : botAvatar;
             const senderName = sender === 'user' ? 'You' : 'Siggy';
             
-            let formattedText = formatMarkdownAndRoles(text || "Meow...");
+            let formattedText = formatMarkdownAndRoles(text);
             
             let bubbleContent = `<span class="msg-text"></span>`;
             if (sender === 'bot') {
@@ -370,13 +361,32 @@ HTML_TEMPLATE = r"""
             return timestamp;
         }
 
-        // 3. Hàm gửi tin đi và nhận kết quả
+        function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
+        function sendQuickMessage(text) { 
+            if (isGenerating) return;
+            userInput.value = text; 
+            slashMenu.style.display = 'none'; 
+            sendMessage(); 
+        }
+
+        function clearChat() {
+            if (isGenerating) return;
+            if(confirm("Bạn có chắc chắn muốn xóa sạch ký ức của Bản miêu không?")) {
+                chatHistory = []; localStorage.removeItem('siggyAPI'); 
+                document.getElementById('chat-box').innerHTML = '';
+                appendMessage('bot', 'Purr! Greetings human. I am Siggy, the supreme mascot of the Ritual Realm. Are you here to grind Discord roles, hunt airdrops, or just ask questions?', false, getCurrentTime());
+                playSound(sendSound);
+            }
+        }
+
+        function copyText(btn) { const t = btn.parentElement.querySelector('.msg-text').innerText; navigator.clipboard.writeText(t).then(() => { btn.innerHTML = "✅"; playSound(sendSound); setTimeout(() => { btn.innerHTML = "📋"; }, 2000); }).catch(e => {}); }
+
         async function sendMessage() {
-            if (isGenerating) return; // Nếu đang chạy thì chặn mọi thao tác
+            if (isGenerating) return;
             const text = userInput.value.trim();
             if (!text) return;
 
-            isGenerating = true; // Sập cầu dao, bật chế độ khóa
+            isGenerating = true; 
 
             if (text.toLowerCase() === '/pate' || text.includes('Nộp Pate cho Siggy')) { triggerPateRain(); }
 
@@ -390,14 +400,12 @@ HTML_TEMPLATE = r"""
 
             userInput.value = '';
             
-            // Khóa mõm ngay khi gửi
             userInput.disabled = true;
             userInput.placeholder = "Bản miêu đang nặn chữ...";
             document.getElementById('typing-indicator').style.display = 'flex';
             const chatBox = document.getElementById('chat-box');
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // HÀM MỞ KHÓA (Dùng chung cho cả lúc thành công và thất bại)
             const unlockChat = () => {
                 userInput.disabled = false;
                 userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
@@ -416,7 +424,6 @@ HTML_TEMPLATE = r"""
                 document.getElementById('typing-indicator').style.display = 'none';
                 playSound(receiveSound);
                 
-                // Đưa hàm unlockChat vào để chờ gõ xong mới chạy
                 const botTime = appendMessage('bot', data.reply, true, getCurrentTime(), unlockChat); 
                 
                 chatHistory = data.history;
@@ -424,18 +431,25 @@ HTML_TEMPLATE = r"""
                 localStorage.setItem('siggyAPI', JSON.stringify(chatHistory));
             } catch (err) {
                 document.getElementById('typing-indicator').style.display = 'none';
-                
-                // Nếu lỗi, cũng phải chờ gõ xong câu thông báo lỗi mới được mở khóa
                 appendMessage('bot', 'Meow... Ma thuật bị nhiễu loạn rồi', true, getCurrentTime(), unlockChat);
             }
         }
+
         document.getElementById('chat-box').addEventListener('click', function(e) {
             if(e.target.classList.contains('avatar') && e.target.closest('.bot')) {
                 e.target.classList.add('shake-avatar'); playSound(angryCatSound); 
                 setTimeout(() => e.target.classList.remove('shake-avatar'), 800);
                 const angryMeows = ["Khè khè! Bỏ tay ra khỏi vầng trán ma thuật của ta!", "Meow!! Dám vuốt râu Boss sòng à?", "Purr... Ta không phải thú bông! Cày role đi rồi nựng!"];
-                appendMessage('bot', angryMeows[Math.floor(Math.random() * angryMeows.length)], true); 
+                if (!isGenerating) {
+                    appendMessage('bot', angryMeows[Math.floor(Math.random() * angryMeows.length)], true); 
+                }
             }
+        });
+
+        let originalTitle = document.title;
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) { document.title = "😿 Meow... Quay lại đây cày Role!"; } 
+            else { document.title = originalTitle; }
         });
     </script>
 </body>
