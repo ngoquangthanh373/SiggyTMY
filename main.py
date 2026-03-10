@@ -308,7 +308,7 @@ HTML_TEMPLATE = r"""
                 else if (char === '&') { let entEnd = html.indexOf(';', index); if (entEnd !== -1 && entEnd - index < 10) { currentText += html.substring(index, entEnd + 1); index = entEnd + 1; } else { currentText += char; index++; } } 
                 else { currentText += char; index++; }
                 element.innerHTML = currentText; chatBox.scrollTop = chatBox.scrollHeight;
-                setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText), 5);
+                setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText), 1);
             }
         }
 
