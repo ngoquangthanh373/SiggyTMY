@@ -180,41 +180,39 @@ HTML_TEMPLATE = r"""
 
         /* --- ĐIỀU CHỈNH GIAO DIỆN RIÊNG CHO ĐIỆN THOẠI (MOBILE) --- */
         @media (max-width: 768px) {
-            /* Biến nút gợi ý thành thanh lướt ngang */
+            /* 1. Gọt mỏng lề 2 bên của toàn bộ trang web và khung chat */
+            body { padding: 5px !important; }
+            #chat-box { padding: 10px 5px !important; }
+            
+            /* 2. Nới rộng tối đa bong bóng chat (chiếm 92% diện tích) */
+            .message-content { max-width: 92% !important; }
+            .message.bot .bubble { 
+                padding: 12px 15px !important; 
+                width: 100%; 
+                box-sizing: border-box; 
+            }
+            
+            /* 3. Thu nhỏ avatar một chút cho đỡ tốn chỗ */
+            .avatar { width: 32px; height: 32px; margin-right: 8px; }
+            
+            /* 4. Thanh nút bấm trượt ngang mượt mà */
             .quick-prompts {
                 flex-wrap: nowrap; 
                 overflow-x: auto; 
                 justify-content: flex-start;
                 padding-bottom: 5px;
-                -webkit-overflow-scrolling: touch; /* Vuốt mượt trên iOS */
+                -webkit-overflow-scrolling: touch;
             }
             .prompt-btn {
-                flex: 0 0 auto; /* Không cho nút bị bóp méo */
+                flex: 0 0 auto;
                 font-size: 13px;
                 padding: 8px 12px;
-                white-space: nowrap; /* Giữ chữ trên 1 dòng */
+                white-space: nowrap;
             }
-            /* Giấu cái thanh cuộn ngang đi cho gọn mắt */
-            .quick-prompts::-webkit-scrollbar {
-                display: none; 
-            }
+            .quick-prompts::-webkit-scrollbar { display: none; }
             
-            /* Nới rộng bong bóng chat và thu nhỏ avatar */
-            .message-content {
-                max-width: 85%; 
-            }
-            .avatar {
-                width: 35px; 
-                height: 35px;
-            }
-            
-            /* Chỉnh lại vị trí nút cuộn xuống cho đỡ vướng */
-            #scroll-btn {
-                bottom: 80px;
-                right: 15px;
-                width: 35px;
-                height: 35px;
-            }
+            /* 5. Chỉnh lại vị trí nút cuộn xuống */
+            #scroll-btn { bottom: 80px; right: 15px; width: 35px; height: 35px; }
         }
     
     </style>
