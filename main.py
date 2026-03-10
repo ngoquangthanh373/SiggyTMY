@@ -107,7 +107,7 @@ HTML_TEMPLATE = r"""
         .shake-avatar { animation: angryShake 0.4s !important; animation-iteration-count: 2 !important; border-color: #ff3b5c !important; box-shadow: 0 0 25px #ff3b5c !important; }
         
         .bubble { padding: 14px 22px; font-size: 16px; line-height: 1.5; word-wrap: break-word; max-width: 100%; backdrop-filter: blur(8px); position: relative; }
-        .message.bot .bubble { background-color: rgba(42, 43, 74, 0.85); color: #e0e0e0; border: 1px solid #5e35b1; border-radius: 4px 20px 20px 20px; box-shadow: -2px 2px 15px rgba(0, 0, 0, 0.4); padding-bottom: 30px; }
+        .message.bot .bubble { background-color: rgba(42, 43, 74, 0.85); color: #ffffff; border: 1px solid #5e35b1; border-radius: 4px 20px 20px 20px; box-shadow: -2px 2px 15px rgba(0, 0, 0, 0.4); padding-bottom: 30px; letter-spacing: 0.3px; text-shadow: 0 0 1px rgba(255,255,255,0.2); }
         .message.user .bubble { background: linear-gradient(135deg, #6a1b9a, #8e24aa); color: #ffffff; border: 1px solid #ab47bc; border-radius: 20px 4px 20px 20px; box-shadow: 2px 2px 15px rgba(142, 36, 170, 0.5); }
         
         .copy-btn { position: absolute; bottom: 6px; right: 12px; background: transparent; border: none; font-size: 16px; cursor: pointer; opacity: 0.5; transition: all 0.2s ease; padding: 0; outline: none; }
