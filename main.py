@@ -168,6 +168,10 @@ HTML_TEMPLATE = r"""
     </style>
 </head>
 <body>
+    <div class="header-tools">
+            <button class="tool-btn sound-btn" onclick="toggleSound()" title="Bật/Tắt Âm Thanh">🔊</button>
+            <button class="tool-btn clear-btn" onclick="clearChat()" title="Tẩy não ký ức">🗑️</button>
+    </div>
     <div class="header">
         <span onclick="unlockAudio()" style="cursor: pointer;">SiggyTMY</span>
         <div class="header-tools">
@@ -222,7 +226,20 @@ HTML_TEMPLATE = r"""
             }
         }
         document.body.addEventListener('click', unlockAudio, { once: true });
-        function playSound(audioObj) { if (!audioObj) return; audioObj.currentTime = 0; let p = audioObj.play(); if (p !== undefined) p.catch(e => {}); }
+       let isMuted = false;
+        
+        function toggleSound() {
+            isMuted = !isMuted;
+            document.querySelector('.sound-btn').innerText = isMuted ? '🔇' : '🔊';
+            if (!isMuted) playSound(sendSound);
+        }
+
+        function playSound(audioObj) { 
+            if (!audioObj || isMuted) return; 
+            audioObj.currentTime = 0; 
+            let p = audioObj.play(); 
+            if (p !== undefined) p.catch(e => {}); 
+        }
 
         let chatHistory = [];
         let isGenerating = false; // CÔNG TẮC TỔNG ANTI-SPAM
