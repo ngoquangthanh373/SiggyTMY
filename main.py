@@ -168,13 +168,11 @@ HTML_TEMPLATE = r"""
     </style>
 </head>
 <body>
-    <div class="header-tools">
-            <button class="tool-btn sound-btn" onclick="toggleSound()" title="Bật/Tắt Âm Thanh">🔊</button>
-            <button class="tool-btn clear-btn" onclick="clearChat()" title="Tẩy não ký ức">🗑️</button>
-    </div>
+   
     <div class="header">
         <span onclick="unlockAudio()" style="cursor: pointer;">SiggyTMY</span>
         <div class="header-tools">
+            <button class="tool-btn sound-btn" onclick="toggleSound()" title="Bật/Tắt Âm Thanh">🔊</button>
             <button class="tool-btn clear-btn" onclick="clearChat()" title="Tẩy não ký ức">🗑️</button>
         </div>
     </div>
@@ -476,7 +474,7 @@ HTML_TEMPLATE = r"""
 
         let originalTitle = document.title;
         document.addEventListener('visibilitychange', function() {
-            if (document.hidden) { document.title = "😿 Meow... Quay lại đây cày Role!"; } 
+            if (document.hidden) { document.title = "Meow... Quay lại đây cày Role!"; } 
             else { document.title = originalTitle; }
         });
     </script>
