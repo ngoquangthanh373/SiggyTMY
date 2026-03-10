@@ -68,19 +68,6 @@ HTML_TEMPLATE = r"""
         @keyframes pulseGlow { from { box-shadow: 0 0 10px rgba(186, 85, 211, 0.5); } to { box-shadow: 0 0 25px rgba(186, 85, 211, 1), 0 0 40px rgba(138, 43, 226, 0.8); } }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); box-shadow: 0 0 8px #ba55d3;} }
         @keyframes angryShake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
-
-        /* Khóa vĩnh viễn trục ngang của trang web, chống vuốt trượt lung tung */
-        html, body {
-            overflow-x: hidden;
-            width: 100vw;
-        }
-
-        /* Ép toàn bộ chữ, đặc biệt là các đường link dài phải tự động bẻ gãy để rớt dòng */
-        .bubble, .msg-text, .msg-text a {
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            word-break: break-word;
-        }
         
         /* HIỆU ỨNG MƯA PATE (EASTER EGG) */
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
@@ -177,6 +164,19 @@ HTML_TEMPLATE = r"""
         .scroll-bottom-btn { position: absolute; bottom: 90px; right: 30px; width: 45px; height: 45px; border-radius: 50%; background: rgba(43, 46, 82, 0.9); border: 1px solid #ba55d3; color: white; font-size: 20px; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 50; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: all 0.2s; }
         .scroll-bottom-btn:hover { background: #ba55d3; transform: scale(1.1); }
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(55, 58, 107, 0.5); border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: rgba(55, 58, 107, 0.8); }
+
+         /* Khóa vĩnh viễn trục ngang của trang web, chống vuốt trượt lung tung */
+        html, body {
+            overflow-x: hidden;
+            width: 100vw;
+        }
+
+        /* Ép toàn bộ chữ, đặc biệt là các đường link dài phải tự động bẻ gãy để rớt dòng */
+        .bubble, .msg-text, .msg-text a {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
 
         /* --- ĐIỀU CHỈNH GIAO DIỆN RIÊNG CHO ĐIỆN THOẠI (MOBILE) --- */
         @media (max-width: 768px) {
