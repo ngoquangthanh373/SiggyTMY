@@ -238,14 +238,8 @@ HTML_TEMPLATE = r"""
             }
             .quick-prompts::-webkit-scrollbar { display: none !important; }
             
-          /* 7. Đẩy nút cuộn xuống lên cao để không đè lên thanh nhập liệu và nút gợi ý */
-            #scroll-btn {
-                bottom: 130px !important; /* Nâng từ 80px lên 130px (hoặc 140px tùy mắt Boss) */
-                right: 15px !important;
-                width: 35px !important;
-                height: 35px !important;
-                z-index: 100 !important; /* Đảm bảo nó luôn nổi lên trên cùng */
-            }
+          /* 7. Ẩn hoàn toàn nút cuộn xuống trên Mobile cho màn hình thoáng đãng */
+            #scroll-btn { display: none !important; }
         }
     
     </style>
