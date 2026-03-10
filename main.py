@@ -121,7 +121,7 @@ HTML_TEMPLATE = r"""
         .reaction-btn.active { background: rgba(186, 85, 211, 0.4); border: 1px solid #ba55d3; filter: grayscale(0%); opacity: 1;}
 
         .list-item { display: flex; align-items: flex-start; margin: 4px 0; }
-        .bullet { margin-right: 8px; color: #8C8FA8; font-weight: bold; }
+        .bullet { margin-right: 8px; color: #ba55d3; font-weight: bold; }
         .inline-code { background: rgba(0, 0, 0, 0.4); padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 14.5px; color: #ff79c6; border: 1px solid rgba(255,255,255,0.1); }
         .md-code { background: #1e1e2e; border: 1px solid #44475a; border-radius: 8px; padding: 12px; margin: 8px 0; font-family: 'Courier New', monospace; font-size: 14px; color: #f8f8f2; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         
@@ -330,10 +330,10 @@ HTML_TEMPLATE = r"""
             const roleRegex = new RegExp(`(${Object.keys(rolesMap).sort((a,b)=>b.length-a.length).join('|')})`, 'gi');
             html = html.replace(roleRegex, match => `<span class="role-tag ${rolesMap[Object.keys(rolesMap).find(k => k.toLowerCase() === match.toLowerCase())]}">${match}</span>`);
             
-            // 5. Danh sách: Dùng chấm tròn, không dùng gạch ngang, và tự xóa dấu chấm thừa ở cuối dòng
+            // 5. Danh sách: Dùng chấm tròn màu Xám dịu (#8C8FA8) để nhường spotlight cho chữ Tím
             html = html.replace(/^\s*(?:\*|\-)\s+(.*)$/gm, (match, content) => {
                 let cleanText = content.replace(/\.$/, ''); 
-                return `<div class="list-item" style="margin-top: 6px; margin-bottom: 6px;"><span class="bullet" style="color: #ba55d3; margin-right: 8px;">•</span><span class="list-text">${cleanText}</span></div>`;
+                return `<div class="list-item" style="margin-top: 6px; margin-bottom: 6px;"><span class="bullet" style="color: #8C8FA8; margin-right: 8px;">•</span><span class="list-text">${cleanText}</span></div>`;
             });
             
             // 6. Căn chỉnh khoảng trắng và xuống dòng
