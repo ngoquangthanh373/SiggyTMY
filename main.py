@@ -165,53 +165,80 @@ HTML_TEMPLATE = r"""
         .scroll-bottom-btn:hover { background: #ba55d3; transform: scale(1.1); }
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(55, 58, 107, 0.5); border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: rgba(55, 58, 107, 0.8); }
 
-         /* Khóa vĩnh viễn trục ngang của trang web, chống vuốt trượt lung tung */
+         /* =========================================================
+           ĐỊNH DẠNG CHỐNG TRÀN VÀ TỰ ĐỘNG XUỐNG DÒNG (CHUNG)
+           ========================================================= */
         html, body {
             overflow-x: hidden;
             width: 100vw;
         }
 
-        /* Ép toàn bộ chữ, đặc biệt là các đường link dài phải tự động bẻ gãy để rớt dòng */
         .bubble, .msg-text, .msg-text a {
             overflow-wrap: break-word;
             word-wrap: break-word;
             word-break: break-word;
         }
 
-        /* --- ĐIỀU CHỈNH GIAO DIỆN RIÊNG CHO ĐIỆN THOẠI (MOBILE) --- */
+        /* =========================================================
+           ĐIỀU CHỈNH GIAO DIỆN RIÊNG CHO ĐIỆN THOẠI (MOBILE)
+           Phiên bản Siêu Rộng - Xóa sạch lề thừa!
+           ========================================================= */
         @media (max-width: 768px) {
-            /* 1. Gọt mỏng lề 2 bên của toàn bộ trang web và khung chat */
-            body { padding: 5px !important; }
-            #chat-box { padding: 10px 5px !important; }
-            
-            /* 2. Nới rộng tối đa bong bóng chat (chiếm 92% diện tích) */
-            .message-content { max-width: 92% !important; }
-            .message.bot .bubble { 
-                padding: 12px 15px !important; 
-                width: 100%; 
-                box-sizing: border-box; 
+            /* 1. Ép toàn bộ khung nền ngoài cùng sát ván */
+            body, html { padding: 0 !important; margin: 0 !important; }
+            .chat-container { 
+                width: 100vw !important; 
+                max-width: 100% !important; 
+                border-radius: 0 !important; 
+                margin: 0 !important; 
             }
+
+            /* 2. Dọn sạch lề của khu vực chat */
+            #chat-box { padding: 10px 8px !important; }
+            .message { 
+                margin: 10px 0 !important; 
+                padding: 0 !important; 
+                gap: 8px !important; /* Ép Avatar và Bong bóng xích lại gần nhau */
+            }
+
+            /* 3. Thu nhỏ Avatar gọn gàng */
+            .avatar { 
+                width: 30px !important; 
+                height: 30px !important; 
+                margin: 0 !important;
+            }
+
+            /* 4. Ép bong bóng chat chiếm trọn vẹn không gian còn lại */
+            .message-content { 
+                max-width: calc(100% - 38px) !important; 
+                width: 100% !important;
+            }
+            .message.bot .bubble, .message.user .bubble { 
+                padding: 12px 14px !important; 
+                width: 100% !important; 
+                box-sizing: border-box !important;
+            }
+
+            /* 5. Giảm nhẹ size chữ một chút cho thanh thoát */
+            .msg-text { font-size: 14.5px !important; }
             
-            /* 3. Thu nhỏ avatar một chút cho đỡ tốn chỗ */
-            .avatar { width: 32px; height: 32px; margin-right: 8px; }
-            
-            /* 4. Thanh nút bấm trượt ngang mượt mà */
+            /* 6. Thanh nút bấm trượt ngang */
             .quick-prompts {
-                flex-wrap: nowrap; 
-                overflow-x: auto; 
-                justify-content: flex-start;
-                padding-bottom: 5px;
+                flex-wrap: nowrap !important; 
+                overflow-x: auto !important; 
+                justify-content: flex-start !important;
+                padding-bottom: 5px !important;
                 -webkit-overflow-scrolling: touch;
             }
             .prompt-btn {
-                flex: 0 0 auto;
-                font-size: 13px;
-                padding: 8px 12px;
-                white-space: nowrap;
+                flex: 0 0 auto !important;
+                font-size: 13px !important;
+                padding: 8px 12px !important;
+                white-space: nowrap !important;
             }
-            .quick-prompts::-webkit-scrollbar { display: none; }
+            .quick-prompts::-webkit-scrollbar { display: none !important; }
             
-            /* 5. Chỉnh lại vị trí nút cuộn xuống */
+            /* 7. Nút cuộn xuống */
             #scroll-btn { bottom: 80px; right: 15px; width: 35px; height: 35px; }
         }
     
