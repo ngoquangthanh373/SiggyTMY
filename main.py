@@ -58,6 +58,7 @@ HTML_TEMPLATE = r"""
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SiggyTMY</title>
+    <link rel="icon" href="https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg" type="image/jpeg">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; font-family: 'Nunito', sans-serif; }
@@ -360,7 +361,7 @@ HTML_TEMPLATE = r"""
 
         function copyText(btn) { const t = btn.parentElement.querySelector('.msg-text').innerText; navigator.clipboard.writeText(t).then(() => { btn.innerHTML = "✅"; playSound(sendSound); setTimeout(() => { btn.innerHTML = "📋"; }, 2000); }).catch(e => {}); }
 
-        async function sendMessage() {
+       async function sendMessage() {
             const text = userInput.value.trim();
             if (!text) return;
 
@@ -371,16 +372,33 @@ HTML_TEMPLATE = r"""
             playSound(sendSound);
             const userTime = appendMessage('user', text, false);
             
-            if(chatHistory.length === 0 || chatHistory[chatHistory.length-1].role !== 'user') { chatHistory.push({ role: 'user', parts: [text], timestamp: userTime }); }
+            if(chatHistory.length === 0 || chatHistory[chatHistory.length-1].role !== 'user') { 
+                chatHistory.push({ role: 'user', parts: [text], timestamp: userTime }); 
+            }
 
             userInput.value = '';
+            
+            // --- BẮT ĐẦU KHÓA MÕM ANTI-SPAM ---
+            userInput.disabled = true;
+            userInput.placeholder = "Bản miêu đang nặn chữ...";
+            
             document.getElementById('typing-indicator').style.display = 'flex';
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                const response = await fetch('/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text, history: chatHistory.map(h => ({role: h.role, parts: h.parts})) }) });
+                const response = await fetch('/chat', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ message: text, history: chatHistory.map(h => ({role: h.role, parts: h.parts})) }) 
+                });
                 const data = await response.json();
+                
                 document.getElementById('typing-indicator').style.display = 'none';
+                
+                // --- MỞ KHÓA SAU KHI CÓ KẾT QUẢ ---
+                userInput.disabled = false;
+                userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
+                userInput.focus();
                 
                 playSound(receiveSound);
                 const botTime = appendMessage('bot', data.reply, true); 
@@ -389,6 +407,12 @@ HTML_TEMPLATE = r"""
                 localStorage.setItem('siggyAPI', JSON.stringify(chatHistory));
             } catch (err) {
                 document.getElementById('typing-indicator').style.display = 'none';
+                
+                // --- MỞ KHÓA NGAY CẢ KHI LỖI ---
+                userInput.disabled = false;
+                userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
+                userInput.focus();
+                
                 appendMessage('bot', 'Meow... Ma thuật bị nhiễu loạn rồi', true);
             }
         }
