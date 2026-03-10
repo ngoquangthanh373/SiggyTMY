@@ -302,22 +302,35 @@ HTML_TEMPLATE = r"""
             return html;
         }
         
-        // 1. Cập nhật hàm gõ chữ: Thêm onComplete để báo cáo khi gõ xong chữ cuối cùng
+        // --- CÔNG TẮC TỔNG (BẮT BUỘC PHẢI CÓ ĐỂ TRÁNH LỖI UNDEFINED) ---
+        let isGenerating = false;
+
+        // 1. Hàm gõ chữ ma thuật (Có báo cáo khi gõ xong)
         function typeWriterHTML(element, html, index, chatBox, currentText = "", onComplete = null) {
             if (index < html.length) {
                 let char = html.charAt(index);
-                if (char === '<') { let tagEnd = html.indexOf('>', index); if (tagEnd !== -1) { currentText += html.substring(index, tagEnd + 1); index = tagEnd + 1; } else { currentText += char; index++; } } 
-                else if (char === '&') { let entEnd = html.indexOf(';', index); if (entEnd !== -1 && entEnd - index < 10) { currentText += html.substring(index, entEnd + 1); index = entEnd + 1; } else { currentText += char; index++; } } 
+                if (char === '<') { 
+                    let tagEnd = html.indexOf('>', index); 
+                    if (tagEnd !== -1) { currentText += html.substring(index, tagEnd + 1); index = tagEnd + 1; } 
+                    else { currentText += char; index++; } 
+                } 
+                else if (char === '&') { 
+                    let entEnd = html.indexOf(';', index); 
+                    if (entEnd !== -1 && entEnd - index < 10) { currentText += html.substring(index, entEnd + 1); index = entEnd + 1; } 
+                    else { currentText += char; index++; } 
+                } 
                 else { currentText += char; index++; }
-                element.innerHTML = currentText; chatBox.scrollTop = chatBox.scrollHeight;
+                
+                element.innerHTML = currentText; 
+                chatBox.scrollTop = chatBox.scrollHeight;
                 
                 setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText, onComplete), 1);
             } else {
-                if (onComplete) onComplete(); // Gõ xong mới gọi hàm mở khóa!
+                if (onComplete) onComplete(); // Gõ xong chữ cuối cùng mới mở khóa!
             }
         }
 
-        // 2. Cập nhật hàm appendMessage: Truyền onComplete vào hàm gõ chữ
+        // 2. Hàm in tin nhắn ra màn hình
         function appendMessage(sender, text, animate = false, timestamp = getCurrentTime(), onComplete = null) {
             const chatBox = document.getElementById('chat-box');
             const msgDiv = document.createElement('div');
@@ -325,7 +338,7 @@ HTML_TEMPLATE = r"""
             const avatarUrl = sender === 'user' ? userAvatar : botAvatar;
             const senderName = sender === 'user' ? 'You' : 'Siggy';
             
-            let formattedText = formatMarkdownAndRoles(text);
+            let formattedText = formatMarkdownAndRoles(text || "Meow...");
             
             let bubbleContent = `<span class="msg-text"></span>`;
             if (sender === 'bot') {
@@ -357,13 +370,13 @@ HTML_TEMPLATE = r"""
             return timestamp;
         }
 
-        // 3. Cập nhật sendMessage: Chỉ mở khóa khi được onComplete gọi
+        // 3. Hàm gửi tin đi và nhận kết quả
         async function sendMessage() {
-            if (isGenerating) return; 
+            if (isGenerating) return; // Nếu đang chạy thì chặn mọi thao tác
             const text = userInput.value.trim();
             if (!text) return;
 
-            isGenerating = true; 
+            isGenerating = true; // Sập cầu dao, bật chế độ khóa
 
             if (text.toLowerCase() === '/pate' || text.includes('Nộp Pate cho Siggy')) { triggerPateRain(); }
 
@@ -384,6 +397,14 @@ HTML_TEMPLATE = r"""
             const chatBox = document.getElementById('chat-box');
             chatBox.scrollTop = chatBox.scrollHeight;
 
+            // HÀM MỞ KHÓA (Dùng chung cho cả lúc thành công và thất bại)
+            const unlockChat = () => {
+                userInput.disabled = false;
+                userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
+                userInput.focus();
+                isGenerating = false; 
+            };
+
             try {
                 const response = await fetch('/chat', { 
                     method: 'POST', 
@@ -393,17 +414,9 @@ HTML_TEMPLATE = r"""
                 const data = await response.json();
                 
                 document.getElementById('typing-indicator').style.display = 'none';
-                
-                // TẠO HÀM MỞ KHÓA (CHỈ CHẠY KHI GÕ XONG)
-                const unlockChat = () => {
-                    userInput.disabled = false;
-                    userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
-                    userInput.focus();
-                    isGenerating = false; 
-                };
-                
                 playSound(receiveSound);
-                // Truyền hàm unlockChat vào để đợi gõ xong mới chạy
+                
+                // Đưa hàm unlockChat vào để chờ gõ xong mới chạy
                 const botTime = appendMessage('bot', data.reply, true, getCurrentTime(), unlockChat); 
                 
                 chatHistory = data.history;
@@ -411,11 +424,9 @@ HTML_TEMPLATE = r"""
                 localStorage.setItem('siggyAPI', JSON.stringify(chatHistory));
             } catch (err) {
                 document.getElementById('typing-indicator').style.display = 'none';
-                userInput.disabled = false;
-                userInput.placeholder = "Viết khế ước hoặc gõ / để mở lệnh...";
-                userInput.focus();
-                isGenerating = false;
-                appendMessage('bot', 'Meow... Ma thuật bị nhiễu loạn rồi', true);
+                
+                // Nếu lỗi, cũng phải chờ gõ xong câu thông báo lỗi mới được mở khóa
+                appendMessage('bot', 'Meow... Ma thuật bị nhiễu loạn rồi', true, getCurrentTime(), unlockChat);
             }
         }
         document.getElementById('chat-box').addEventListener('click', function(e) {
