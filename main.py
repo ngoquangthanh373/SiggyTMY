@@ -314,18 +314,38 @@ HTML_TEMPLATE = r"""
         }
         function formatMarkdownAndRoles(text) {
             let html = text || "Meow...";
-            html = html.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank" style="color: #00ffff; text-decoration: underline;">${url}</a>`);
+            
+            // 1. Tô xanh và làm sáng Link
+            html = html.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank" style="color: #00ffff; text-decoration: underline; text-shadow: 0 0 5px rgba(0,255,255,0.5);">$1</a>`);
+            
+            // 2. Format Code Block
             html = html.replace(/```([\s\S]*?)```/g, '<div class="md-code">$1</div>');
             html = html.replace(/`([^`]+)`/g, '<span class="inline-code">$1</span>');
-            html = html.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            
+            // 3. Làm sáng chữ in đậm (**text**)
+            html = html.replace(/\*\*(.*?)\*\*/g, '<b style="color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.5);">$1</b>');
+            
+            // 4. Tô màu Role Discord
             const rolesMap = { '@Radiant Ritualist': 'role-radiant', '@Ritualist': 'role-ritualist', '@ritty bitty': 'role-ritty-bitty', '@ritty': 'role-ritty', '@Ascendant': 'role-ascendant', '@Harmonic': 'role-harmonic', '@Blessed': 'role-blessed', '@Cursed': 'role-cursed', '@NPC': 'role-npc' };
             const roleRegex = new RegExp(`(${Object.keys(rolesMap).sort((a,b)=>b.length-a.length).join('|')})`, 'gi');
             html = html.replace(roleRegex, match => `<span class="role-tag ${rolesMap[Object.keys(rolesMap).find(k => k.toLowerCase() === match.toLowerCase())]}">${match}</span>`);
-            html = html.replace(/^(?:\*|\-)\s+(.*)/gm, '<div class="list-item"><span class="bullet">•</span><span class="list-text">$1</span></div>');
-            html = html.replace(/\n/g, '<br>'); html = html.replace(/<\/div><br>/g, '</div>');
+            
+            // 5. NÂNG CẤP: Làm nổi bật các Tiêu đề số (VD: 1. EVM++:) thành màu Vàng rực rỡ
+            html = html.replace(/^\s*(\d+\.\s+.*)$/gm, '<div style="color: #f1c40f; font-weight: 800; font-size: 17.5px; margin-top: 18px; margin-bottom: 6px; text-transform: uppercase; text-shadow: 0 0 5px rgba(241,196,15,0.4); letter-spacing: 0.5px;">$1</div>');
+
+            // 6. NÂNG CẤP: Biến dấu * khô khan thành icon ✦ phát sáng màu Cyan, thêm khoảng cách dòng
+            html = html.replace(/^\s*(?:\*|\-)\s+(.*)$/gm, '<div class="list-item" style="margin-bottom: 8px; line-height: 1.6;"><span class="bullet" style="color: #00ffff; text-shadow: 0 0 8px rgba(0,255,255,0.8); margin-right: 10px; font-size: 18px;">✦</span><span class="list-text">$1</span></div>');
+            
+            // 7. NÂNG CẤP: Tự động tô màu tím đoạn chữ trước dấu hai chấm (:) ở trong các mục nhỏ để dễ đọc hơn
+            html = html.replace(/<span class="list-text">(.*?):/g, '<span class="list-text"><b style="color: #ba55d3;">$1:</b>');
+
+            // 8. Xử lý khoảng trắng và xuống dòng mượt mà
+            html = html.replace(/\n/g, '<br>'); 
+            html = html.replace(/<\/div><br>/g, '</div>');
+            html = html.replace(/<br><br>/g, '<div style="height: 12px;"></div>'); // Tạo khoảng nghỉ giữa các đoạn
+            
             return html;
         }
-
         function typeWriterHTML(element, html, index, chatBox, currentText = "", onComplete = null) {
             if (index < html.length) {
                 let char = html.charAt(index);
