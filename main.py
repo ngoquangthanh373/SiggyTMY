@@ -62,19 +62,15 @@ HTML_TEMPLATE = r"""
     <style>
         * { box-sizing: border-box; font-family: 'Nunito', sans-serif; }
         
-        /* HIỆU ỨNG ĐỘNG */
         @keyframes cosmicDrift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes magicPulse { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.04; } 50% { transform: translate(-50%, -52%) scale(1.03); opacity: 0.08; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.04; } }
         @keyframes pulseGlow { from { box-shadow: 0 0 10px rgba(186, 85, 211, 0.5); } to { box-shadow: 0 0 25px rgba(186, 85, 211, 1), 0 0 40px rgba(138, 43, 226, 0.8); } }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); box-shadow: 0 0 8px #ba55d3;} }
-        @keyframes angryShake {
-            0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-        }
+        @keyframes angryShake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+        
+        /* HIỆU ỨNG MƯA PATE (EASTER EGG) */
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        .pate-drop { position: fixed; top: -50px; font-size: 35px; animation: fall linear forwards; z-index: 999; pointer-events: none; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
 
         body, html { 
             margin: 0; padding: 0; height: 100vh; height: 100dvh; width: 100vw;
@@ -83,40 +79,21 @@ HTML_TEMPLATE = r"""
             color: white; display: flex; flex-direction: column; overflow: hidden; position: relative;
         }
         
-        body::before {
-            content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 70vmin; height: 70vmin;
-            background-image: url('https://i.postimg.cc/dQRGqhz1/645381008-1585292369354180-3393125602103760530-n.png'); 
-            background-size: contain; background-repeat: no-repeat; background-position: center;
-            opacity: 0.05; z-index: 0; pointer-events: none; animation: magicPulse 6s ease-in-out infinite;
-        }
+        body::before { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70vmin; height: 70vmin; background-image: url('https://i.postimg.cc/dQRGqhz1/645381008-1585292369354180-3393125602103760530-n.png'); background-size: contain; background-repeat: no-repeat; background-position: center; opacity: 0.05; z-index: 0; pointer-events: none; animation: magicPulse 6s ease-in-out infinite; }
 
-        /* HEADER */
-        .header { 
-            padding: 18px; font-size: 26px; font-weight: 800; letter-spacing: 2px;
-            background: rgba(43, 46, 82, 0.95); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
-            position: relative; z-index: 10; color: #ffffff;
-            text-shadow: 0 0 10px #ba55d3, 0 0 20px #8a2be2, 0 0 30px #4b0082; box-shadow: 0 4px 15px rgba(186, 85, 211, 0.2); 
-            display: flex; justify-content: center; align-items: center;
-        }
+        .header { padding: 18px; font-size: 26px; font-weight: 800; letter-spacing: 2px; background: rgba(43, 46, 82, 0.95); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; position: relative; z-index: 10; color: #ffffff; text-shadow: 0 0 10px #ba55d3, 0 0 20px #8a2be2, 0 0 30px #4b0082; box-shadow: 0 4px 15px rgba(186, 85, 211, 0.2); display: flex; justify-content: center; align-items: center; }
         .header-tools { position: absolute; right: 20px; display: flex; gap: 10px; }
-        .tool-btn {
-            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 18px; transition: all 0.3s ease; color: white; outline: none;
-        }
+        .tool-btn { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all 0.3s ease; color: white; outline: none; }
         .clear-btn:hover { background: #ff3b5c; border-color: #ff3b5c; box-shadow: 0 0 15px #ff3b5c; transform: rotate(15deg) scale(1.1); }
         
-        /* CHAT CONTAINER VÀ BỐ CỤC TIN NHẮN CHUẨN DISCORD */
         .chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; width: 100%; position: relative; z-index: 2; scroll-behavior: smooth; }
         .message { display: flex; align-items: flex-start; max-width: 90%; }
         .message.user { align-self: flex-end; flex-direction: row-reverse; }
         .message.bot { align-self: flex-start; }
         
-        .message-content { display: flex; flex-direction: column; max-width: calc(100% - 65px); }
+        .message-content { display: flex; flex-direction: column; max-width: calc(100% - 65px); position: relative; }
         .message.user .message-content { align-items: flex-end; }
         
-        /* HEADER TIN NHẮN (TÊN + THỜI GIAN) */
         .message-header { margin-bottom: 6px; display: flex; align-items: baseline; gap: 8px; padding: 0 4px; }
         .message.user .message-header { flex-direction: row-reverse; }
         .sender-name { font-weight: 800; font-size: 15px; color: #e0e0e0; letter-spacing: 0.5px; }
@@ -135,13 +112,18 @@ HTML_TEMPLATE = r"""
         .copy-btn { position: absolute; bottom: 6px; right: 12px; background: transparent; border: none; font-size: 16px; cursor: pointer; opacity: 0.5; transition: all 0.2s ease; padding: 0; outline: none; }
         .copy-btn:hover { opacity: 1; transform: scale(1.2); }
         
-        /* === STYLE CHO MARKDOWN (LIST & CODE) === */
+        /* === BỘ REACTION THẢ CẢM XÚC CHUẨN DISCORD === */
+        .reaction-bar { position: absolute; top: -15px; right: 15px; background: rgba(30, 31, 58, 0.95); border: 1px solid #5e35b1; border-radius: 8px; display: flex; gap: 4px; padding: 4px 6px; opacity: 0; transition: opacity 0.2s; pointer-events: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 5;}
+        .message.bot .bubble:hover .reaction-bar { opacity: 1; pointer-events: auto; }
+        .reaction-btn { background: none; border: none; cursor: pointer; font-size: 16px; transition: transform 0.2s; border-radius: 4px; padding: 2px 4px; outline: none; filter: grayscale(100%); opacity: 0.7;}
+        .reaction-btn:hover { transform: scale(1.2); background: rgba(255,255,255,0.1); filter: grayscale(0%); opacity: 1;}
+        .reaction-btn.active { background: rgba(186, 85, 211, 0.4); border: 1px solid #ba55d3; filter: grayscale(0%); opacity: 1;}
+
         .list-item { display: flex; align-items: flex-start; margin: 4px 0; }
         .bullet { margin-right: 8px; color: #ba55d3; font-weight: bold; }
         .inline-code { background: rgba(0, 0, 0, 0.4); padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 14.5px; color: #ff79c6; border: 1px solid rgba(255,255,255,0.1); }
         .md-code { background: #1e1e2e; border: 1px solid #44475a; border-radius: 8px; padding: 12px; margin: 8px 0; font-family: 'Courier New', monospace; font-size: 14px; color: #f8f8f2; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         
-        /* === STYLE CHO DISCORD ROLES === */
         .role-tag { padding: 2px 6px; border-radius: 6px; font-weight: 700; font-size: 14.5px; display: inline-block; margin: 0 2px; }
         .role-radiant { color: #f1c40f; background-color: rgba(241, 196, 15, 0.15); }
         .role-ritualist { color: #2ecc71; background-color: rgba(46, 204, 113, 0.15); }
@@ -153,16 +135,13 @@ HTML_TEMPLATE = r"""
         .role-ascendant { color: #3498db; background-color: rgba(52, 152, 219, 0.15); }
         .role-harmonic { color: #bdc3c7; background-color: rgba(189, 195, 199, 0.15); }
         
-        /* HIỆU ỨNG BOUNCING DOTS (ĐANG GÕ...) */
         .typing-indicator { display: none; align-items: flex-end; max-width: 90%; margin: 0 auto; width: 100%; max-width: 900px; padding: 0 20px 10px 20px; z-index: 2; position: relative;}
         .typing-bubble { background-color: rgba(42, 43, 74, 0.85); border: 1px solid #5e35b1; border-radius: 4px 20px 20px 20px; padding: 16px 20px; display: flex; gap: 6px; align-items: center; box-shadow: -2px 2px 15px rgba(0, 0, 0, 0.4); height: 44px;}
         .dot { width: 8px; height: 8px; background-color: #ba55d3; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
+        .dot:nth-child(1) { animation-delay: -0.32s; } .dot:nth-child(2) { animation-delay: -0.16s; }
 
         .input-area { padding: 5px 20px calc(25px + env(safe-area-inset-bottom)) 20px; background: transparent; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10; }
         
-        /* MENU SLASH COMMANDS */
         .slash-menu { display: none; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); width: 100%; max-width: 850px; background: rgba(30, 31, 58, 0.95); border: 1px solid #5e35b1; border-radius: 15px; margin-bottom: 15px; backdrop-filter: blur(10px); overflow: hidden; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); z-index: 100; }
         .slash-item { padding: 12px 15px; cursor: pointer; color: #e0e0e0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.2s; display: flex; align-items: center; gap: 10px; }
         .slash-item:last-child { border-bottom: none; }
@@ -180,12 +159,15 @@ HTML_TEMPLATE = r"""
         .send-btn:hover { transform: scale(1.08); }
         .send-btn svg { fill: white; width: 24px; height: 24px; margin-left: -2px;}
         
+        /* NÚT SCROLL TO BOTTOM */
+        .scroll-bottom-btn { position: absolute; bottom: 90px; right: 30px; width: 45px; height: 45px; border-radius: 50%; background: rgba(43, 46, 82, 0.9); border: 1px solid #ba55d3; color: white; font-size: 20px; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 50; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: all 0.2s; }
+        .scroll-bottom-btn:hover { background: #ba55d3; transform: scale(1.1); }
+        
         ::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(55, 58, 107, 0.5); border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: rgba(55, 58, 107, 0.8); }
     </style>
 </head>
 <body>
     <div class="header">
-    
         <span onclick="unlockAudio()" style="cursor: pointer;">SiggyTMY</span>
         <div class="header-tools">
             <button class="tool-btn clear-btn" onclick="clearChat()" title="Tẩy não ký ức">🗑️</button>
@@ -201,18 +183,20 @@ HTML_TEMPLATE = r"""
         </div>
     </div>
     
+    <div class="scroll-bottom-btn" id="scroll-btn" onclick="scrollToBottom()" title="Cuộn xuống mới nhất">↓</div>
+    
     <div class="input-area">
         <div class="slash-menu" id="slash-menu">
             <div class="slash-item" onclick="selectCommand('/rules')">📜 <b>/rules</b> - Xem luật Nomination</div>
             <div class="slash-item" onclick="selectCommand('/leaderboard')">🏆 <b>/leaderboard</b> - Bảng xếp hạng vote</div>
-            <div class="slash-item" onclick="selectCommand('/nomi')">⚡ <b>/nomi</b> - Lấy link kênh Rank để đề cử</div>
-            <div class="slash-item" onclick="selectCommand('/grind')">⛏️ <b>/grind</b> - Hỏi cách cày role nhanh</div>
+            <div class="slash-item" onclick="selectCommand('/nomi')">⚡ <b>/nomi</b> - Lấy link kênh Rank</div>
+            <div class="slash-item" onclick="selectCommand('/pate')">🐟 <b>/pate</b> - Trứng phục sinh nộp Pate</div>
         </div>
 
         <div class="quick-prompts">
             <button class="quick-btn" onclick="sendQuickMessage('👑 Explain the Laws of Nomination')">👑 Explain the Laws of Nomination</button>
             <button class="quick-btn" onclick="sendQuickMessage('🔮 What is Ritual?')">🔮 What is Ritual?</button>
-            <button class="quick-btn" onclick="sendQuickMessage('🐟 Nộp Pate cho Siggy')">🐟 Nộp Pate cho Siggy</button>
+            <button class="quick-btn" onclick="sendQuickMessage('/pate')">🐟 Nộp Pate cho Siggy</button>
         </div>
 
         <div class="input-wrapper">
@@ -227,45 +211,33 @@ HTML_TEMPLATE = r"""
         const sendSound = new Audio("https://www.myinstants.com/media/sounds/pop-sound-effect.mp3");
         const receiveSound = new Audio("https://www.myinstants.com/media/sounds/ting.mp3");
         const angryCatSound = new Audio("https://www.myinstants.com/media/sounds/cat-meow-1.mp3");
-        sendSound.load(); receiveSound.load(); angryCatSound.load();
+        const purrSound = new Audio("https://www.myinstants.com/media/sounds/cat-purring-and-meow-5928.mp3");
+        sendSound.load(); receiveSound.load(); angryCatSound.load(); purrSound.load();
 
         let audioUnlocked = false;
         function unlockAudio() {
             if (!audioUnlocked) {
-                sendSound.play().then(() => {
-                    sendSound.pause(); sendSound.currentTime = 0; audioUnlocked = true;
-                }).catch(e => console.log("Chưa mở khóa được âm thanh"));
+                sendSound.play().then(() => { sendSound.pause(); sendSound.currentTime = 0; audioUnlocked = true; }).catch(e => {});
             }
         }
         document.body.addEventListener('click', unlockAudio, { once: true });
-
-        function playSound(audioObj) {
-            if (!audioObj) return;
-            audioObj.currentTime = 0;
-            let playPromise = audioObj.play();
-            if (playPromise !== undefined) playPromise.catch(e => {});
-        }
+        function playSound(audioObj) { if (!audioObj) return; audioObj.currentTime = 0; let p = audioObj.play(); if (p !== undefined) p.catch(e => {}); }
 
         let chatHistory = [];
         const userAvatar = "https://i.postimg.cc/7LpmMPdS/AI-Enhancer-Ultra-HD-unnamed-(2).jpg"; 
         const botAvatar = "https://i.postimg.cc/MTg2B8b9/z7598803279886-7c5e8e1354c47fbf426f0829ced5b670.jpg";
 
-        function getCurrentTime() {
-            const now = new Date();
-            return "Hôm nay lúc " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        }
+        function getCurrentTime() { const now = new Date(); return "Hôm nay lúc " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); }
 
         window.onload = () => {
             const savedAPI = localStorage.getItem('siggyAPI');
             const chatBox = document.getElementById('chat-box');
-            
             if (savedAPI) {
                 chatHistory = JSON.parse(savedAPI);
                 if (chatHistory.length > 0) {
                     chatHistory.forEach(item => {
                         const sender = item.role === 'model' ? 'bot' : 'user';
-                        const text = item.parts[0];
-                        appendMessage(sender, text, false, item.timestamp || getCurrentTime()); 
+                        appendMessage(sender, item.parts[0], false, item.timestamp || getCurrentTime()); 
                     });
                     chatBox.scrollTop = chatBox.scrollHeight;
                     return;
@@ -278,65 +250,65 @@ HTML_TEMPLATE = r"""
         const slashMenu = document.getElementById('slash-menu');
         
         userInput.addEventListener('input', function(e) {
-            if (this.value.startsWith('/')) slashMenu.style.display = 'block';
-            else slashMenu.style.display = 'none';
+            if (this.value.startsWith('/')) slashMenu.style.display = 'block'; else slashMenu.style.display = 'none';
         });
 
         function selectCommand(cmd) { userInput.value = cmd + ' '; slashMenu.style.display = 'none'; userInput.focus(); }
 
-        // --- MARKDOWN & DISCORD PARSER CHUẨN XỊN ---
+        // Logic Cuộn Tin Nhắn (Scroll To Bottom)
+        const chatBox = document.getElementById('chat-box');
+        const scrollBtn = document.getElementById('scroll-btn');
+        chatBox.addEventListener('scroll', () => {
+            if (chatBox.scrollHeight - chatBox.scrollTop - chatBox.clientHeight > 200) scrollBtn.style.display = 'flex';
+            else scrollBtn.style.display = 'none';
+        });
+        function scrollToBottom() { chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' }); }
+
+        // Logic Mưa Pate
+        function triggerPateRain() {
+            playSound(purrSound);
+            const emojis = ['🐟', '🐟', '🥫', '🐟', '😻'];
+            for(let i=0; i<35; i++) {
+                setTimeout(() => {
+                    const pate = document.createElement('div');
+                    pate.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    pate.className = 'pate-drop';
+                    pate.style.left = Math.random() * 100 + 'vw';
+                    pate.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                    document.body.appendChild(pate);
+                    setTimeout(() => pate.remove(), 4000);
+                }, i * 100);
+            }
+        }
+
+        // Logic Thả Cảm Xúc
+        window.toggleReaction = function(btn) {
+            playSound(sendSound);
+            btn.classList.toggle('active');
+        }
+
         function formatMarkdownAndRoles(text) {
             let html = text;
-            // 1. Clickable Links
             html = html.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank" style="color: #00ffff; text-decoration: underline;">${url}</a>`);
-            
-            // 2. Code blocks (Khung code)
             html = html.replace(/```([\s\S]*?)```/g, '<div class="md-code">$1</div>');
-            // 3. Inline code
             html = html.replace(/`([^`]+)`/g, '<span class="inline-code">$1</span>');
-            // 4. Bold (In đậm)
             html = html.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-            
-            // 5. Discord Roles (Nhuộm màu)
-            const rolesMap = {
-                '@Radiant Ritualist': 'role-radiant', '@Ritualist': 'role-ritualist',
-                '@ritty bitty': 'role-ritty-bitty', '@ritty': 'role-ritty',
-                '@Ascendant': 'role-ascendant', '@Harmonic': 'role-harmonic',
-                '@Blessed': 'role-blessed', '@Cursed': 'role-cursed', '@NPC': 'role-npc'
-            };
-            const roleKeys = Object.keys(rolesMap).sort((a, b) => b.length - a.length);
-            const roleRegex = new RegExp(`(${roleKeys.join('|')})`, 'gi');
-            html = html.replace(roleRegex, match => {
-                const matchedKey = Object.keys(rolesMap).find(k => k.toLowerCase() === match.toLowerCase());
-                return `<span class="role-tag ${rolesMap[matchedKey]}">${match}</span>`;
-            });
-
-            // 6. Lists (Dấu chấm tròn chuẩn Discord)
+            const rolesMap = { '@Radiant Ritualist': 'role-radiant', '@Ritualist': 'role-ritualist', '@ritty bitty': 'role-ritty-bitty', '@ritty': 'role-ritty', '@Ascendant': 'role-ascendant', '@Harmonic': 'role-harmonic', '@Blessed': 'role-blessed', '@Cursed': 'role-cursed', '@NPC': 'role-npc' };
+            const roleRegex = new RegExp(`(${Object.keys(rolesMap).sort((a,b)=>b.length-a.length).join('|')})`, 'gi');
+            html = html.replace(roleRegex, match => `<span class="role-tag ${rolesMap[Object.keys(rolesMap).find(k => k.toLowerCase() === match.toLowerCase())]}">${match}</span>`);
             html = html.replace(/^(?:\*|\-)\s+(.*)/gm, '<div class="list-item"><span class="bullet">•</span><span class="list-text">$1</span></div>');
-            
-            // 7. Line breaks
-            html = html.replace(/\n/g, '<br>');
-            html = html.replace(/<\/div><br>/g, '</div>'); // Xóa khoảng trắng thừa dưới list/code
-            
+            html = html.replace(/\n/g, '<br>'); html = html.replace(/<\/div><br>/g, '</div>');
             return html;
         }
 
         function typeWriterHTML(element, html, index, chatBox, currentText = "") {
             if (index < html.length) {
                 let char = html.charAt(index);
-                if (char === '<') {
-                    let tagEnd = html.indexOf('>', index);
-                    if (tagEnd !== -1) { currentText += html.substring(index, tagEnd + 1); index = tagEnd + 1; } 
-                    else { currentText += char; index++; }
-                } else if (char === '&') {
-                    let entEnd = html.indexOf(';', index);
-                    if (entEnd !== -1 && entEnd - index < 10) { currentText += html.substring(index, entEnd + 1); index = entEnd + 1; } 
-                    else { currentText += char; index++; }
-                } else { currentText += char; index++; }
-                
-                element.innerHTML = currentText; 
-                chatBox.scrollTop = chatBox.scrollHeight;
-                setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText), 5); // Tốc độ nhanh mượt (5ms)
+                if (char === '<') { let tagEnd = html.indexOf('>', index); if (tagEnd !== -1) { currentText += html.substring(index, tagEnd + 1); index = tagEnd + 1; } else { currentText += char; index++; } } 
+                else if (char === '&') { let entEnd = html.indexOf(';', index); if (entEnd !== -1 && entEnd - index < 10) { currentText += html.substring(index, entEnd + 1); index = entEnd + 1; } else { currentText += char; index++; } } 
+                else { currentText += char; index++; }
+                element.innerHTML = currentText; chatBox.scrollTop = chatBox.scrollHeight;
+                setTimeout(() => typeWriterHTML(element, html, index, chatBox, currentText), 5);
             }
         }
 
@@ -350,15 +322,20 @@ HTML_TEMPLATE = r"""
             let formattedText = formatMarkdownAndRoles(text);
             
             let bubbleContent = `<span class="msg-text"></span>`;
-            if (sender === 'bot') bubbleContent += `<button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>`;
+            if (sender === 'bot') {
+                bubbleContent += `
+                <button class="copy-btn" onclick="copyText(this)" title="Sao chép">📋</button>
+                <div class="reaction-bar">
+                    <button class="reaction-btn" onclick="toggleReaction(this)">❤️</button>
+                    <button class="reaction-btn" onclick="toggleReaction(this)">🔥</button>
+                    <button class="reaction-btn" onclick="toggleReaction(this)">😹</button>
+                </div>`;
+            }
 
             msgDiv.innerHTML = `
                 <img class="avatar" src="${avatarUrl}" alt="${sender}">
                 <div class="message-content">
-                    <div class="message-header">
-                        <span class="sender-name">${senderName}</span>
-                        <span class="timestamp">${timestamp}</span>
-                    </div>
+                    <div class="message-header"><span class="sender-name">${senderName}</span><span class="timestamp">${timestamp}</span></div>
                     <div class="bubble">${bubbleContent}</div>
                 </div>`;
             chatBox.appendChild(msgDiv);
@@ -366,8 +343,7 @@ HTML_TEMPLATE = r"""
             const textSpan = msgDiv.querySelector('.msg-text');
             if (animate && sender === 'bot') { typeWriterHTML(textSpan, formattedText, 0, chatBox); } 
             else { textSpan.innerHTML = formattedText; chatBox.scrollTop = chatBox.scrollHeight; }
-            
-            return timestamp; // Trả về thời gian để lưu vào history
+            return timestamp;
         }
 
         function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
@@ -375,55 +351,41 @@ HTML_TEMPLATE = r"""
 
         function clearChat() {
             if(confirm("Bạn có chắc chắn muốn xóa sạch ký ức của Bản miêu không?")) {
-                chatHistory = [];
-                localStorage.removeItem('siggyAPI'); 
+                chatHistory = []; localStorage.removeItem('siggyAPI'); 
                 document.getElementById('chat-box').innerHTML = '';
                 appendMessage('bot', 'Purr! Greetings human. I am Siggy, the supreme mascot of the Ritual Realm. Are you here to grind Discord roles, hunt airdrops, or just ask questions?', false, getCurrentTime());
                 playSound(sendSound);
             }
         }
 
-        function copyText(btn) {
-            const textToCopy = btn.parentElement.querySelector('.msg-text').innerText;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                btn.innerHTML = "✅"; playSound(sendSound);
-                setTimeout(() => { btn.innerHTML = "📋"; }, 2000);
-            }).catch(e => console.error(e));
-        }
+        function copyText(btn) { const t = btn.parentElement.querySelector('.msg-text').innerText; navigator.clipboard.writeText(t).then(() => { btn.innerHTML = "✅"; playSound(sendSound); setTimeout(() => { btn.innerHTML = "📋"; }, 2000); }).catch(e => {}); }
 
         async function sendMessage() {
             const text = userInput.value.trim();
             if (!text) return;
 
+            // KÍCH HOẠT EASTER EGG
+            if (text.toLowerCase() === '/pate' || text.includes('Nộp Pate cho Siggy')) { triggerPateRain(); }
+
             slashMenu.style.display = 'none'; 
             playSound(sendSound);
             const userTime = appendMessage('user', text, false);
             
-            // Lưu thời gian của user vào history
-            if(chatHistory.length === 0 || chatHistory[chatHistory.length-1].role !== 'user') {
-                chatHistory.push({ role: 'user', parts: [text], timestamp: userTime });
-            }
+            if(chatHistory.length === 0 || chatHistory[chatHistory.length-1].role !== 'user') { chatHistory.push({ role: 'user', parts: [text], timestamp: userTime }); }
 
             userInput.value = '';
-            document.getElementById('typing-indicator').style.display = 'flex'; // Hiện Bouncing Dots
-            const chatBox = document.getElementById('chat-box');
+            document.getElementById('typing-indicator').style.display = 'flex';
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                const response = await fetch('/chat', {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text, history: chatHistory.map(h => ({role: h.role, parts: h.parts})) })
-                });
+                const response = await fetch('/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: text, history: chatHistory.map(h => ({role: h.role, parts: h.parts})) }) });
                 const data = await response.json();
-                document.getElementById('typing-indicator').style.display = 'none'; // Ẩn Bouncing Dots
+                document.getElementById('typing-indicator').style.display = 'none';
                 
                 playSound(receiveSound);
                 const botTime = appendMessage('bot', data.reply, true); 
-                
-                // Cập nhật history với timestamp
                 chatHistory = data.history;
                 chatHistory[chatHistory.length - 1].timestamp = botTime;
-                
                 localStorage.setItem('siggyAPI', JSON.stringify(chatHistory));
             } catch (err) {
                 document.getElementById('typing-indicator').style.display = 'none';
@@ -433,22 +395,11 @@ HTML_TEMPLATE = r"""
 
         document.getElementById('chat-box').addEventListener('click', function(e) {
             if(e.target.classList.contains('avatar') && e.target.closest('.bot')) {
-                e.target.classList.add('shake-avatar');
-                playSound(angryCatSound); 
+                e.target.classList.add('shake-avatar'); playSound(angryCatSound); 
                 setTimeout(() => e.target.classList.remove('shake-avatar'), 800);
-                const angryMeows = [
-                    "Khè khè! Bỏ cái tay dính đầy bụi trần ra khỏi vầng trán ma thuật của ta!",
-                    "Meow!! Dám vuốt râu Boss sòng à? Có tin ta trừ point của ngươi không?",
-                    "Purr... Ta không phải thú bông! Cày role đi rồi hãy nựng ta!"
-                ];
+                const angryMeows = ["Khè khè! Bỏ tay ra khỏi vầng trán ma thuật của ta!", "Meow!! Dám vuốt râu Boss sòng à?", "Purr... Ta không phải thú bông! Cày role đi rồi nựng!"];
                 appendMessage('bot', angryMeows[Math.floor(Math.random() * angryMeows.length)], true); 
             }
-        });
-
-        let originalTitle = document.title;
-        document.addEventListener('visibilitychange', function() {
-            if (document.hidden) { document.title = "😿 Meow... Quay lại đây cày Role!"; } 
-            else { document.title = originalTitle; }
         });
     </script>
 </body>
