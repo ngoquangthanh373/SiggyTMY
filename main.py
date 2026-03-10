@@ -315,8 +315,8 @@ HTML_TEMPLATE = r"""
         function formatMarkdownAndRoles(text) {
             let html = text || "Meow...";
             
-            // 1. Link (Màu Cyan)
-            html = html.replace(/(https?:\/\/[^\s]+)/g, url => `<a href="${url}" target="_blank" style="color: #00ffff; text-decoration: underline;">$1</a>`);
+            // 1. Link (Fix lỗi $1, hiển thị URL chuẩn xác màu Cyan)
+            html = html.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color: #00ffff; text-decoration: underline;">$1</a>');
             
             // 2. Code Block
             html = html.replace(/```([\s\S]*?)```/g, '<div class="md-code">$1</div>');
@@ -325,12 +325,12 @@ HTML_TEMPLATE = r"""
             // 3. TỪ QUAN TRỌNG: Chỉ đổi màu Tím (#ba55d3) cho những từ khóa được AI in đậm
             html = html.replace(/\*\*(.*?)\*\*/g, '<b style="color: #ba55d3;">$1</b>');
             
-            // 4. Discord Roles (Giữ nguyên khả năng tự đổi màu Role)
+            // 4. Discord Roles
             const rolesMap = { '@Radiant Ritualist': 'role-radiant', '@Ritualist': 'role-ritualist', '@ritty bitty': 'role-ritty-bitty', '@ritty': 'role-ritty', '@Ascendant': 'role-ascendant', '@Harmonic': 'role-harmonic', '@Blessed': 'role-blessed', '@Cursed': 'role-cursed', '@NPC': 'role-npc' };
             const roleRegex = new RegExp(`(${Object.keys(rolesMap).sort((a,b)=>b.length-a.length).join('|')})`, 'gi');
             html = html.replace(roleRegex, match => `<span class="role-tag ${rolesMap[Object.keys(rolesMap).find(k => k.toLowerCase() === match.toLowerCase())]}">${match}</span>`);
             
-            // 5. Danh sách: Dùng chấm tròn màu Xám dịu (#8C8FA8) để nhường spotlight cho chữ Tím
+            // 5. Danh sách: Dùng chấm tròn màu Xám dịu (#8C8FA8), xóa sạch dấu chấm ở cuối câu
             html = html.replace(/^\s*(?:\*|\-)\s+(.*)$/gm, (match, content) => {
                 let cleanText = content.replace(/\.$/, ''); 
                 return `<div class="list-item" style="margin-top: 6px; margin-bottom: 6px;"><span class="bullet" style="color: #8C8FA8; margin-right: 8px;">•</span><span class="list-text">${cleanText}</span></div>`;
